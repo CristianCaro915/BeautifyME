@@ -125,7 +125,7 @@ struct ServiceDetailedView: View {
                 }
                 .padding(.bottom, 20)
             }
-            .padding(.top, 20)
+            .padding(.leading)
             .background(Color(UIColor.systemBackground))
         }
 }

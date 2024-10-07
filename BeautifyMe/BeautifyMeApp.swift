@@ -9,9 +9,17 @@ import SwiftUI
 
 @main
 struct BeautifyMeApp: App {
+    init() {
+        _locationViewModel = StateObject(wrappedValue: LocationSearchViewModel())
+    }
+    
+    @StateObject var locationViewModel: LocationSearchViewModel
+    
+    
     var body: some Scene {
         WindowGroup {
-            LogInView()
+            MapView()
+                .environmentObject(locationViewModel)
         }
     }
 }
