@@ -8,66 +8,20 @@
 import SwiftUI
 
 struct ServiceListView: View {
+    let textImages6: [String:String] =
+    ["lock":"password","pencil":"password","rectangle":"password","pencil.tip":"password","lasso":"helloword","trash":"trashy"]
+    
     var body: some View {
             VStack(spacing: 20) {
                 // Sección de iconos
                 ScrollView(.horizontal, showsIndicators: false) {
                     
                     HStack(spacing: 16) {
-                        // service 1
-                        VStack{
-                            Image(systemName: "lock")
-                                .font(.system(size: 40))
-                                .frame(width: 60, height: 60)
-                                .background(Color.gray.opacity(0.2))
-                                .clipShape(Circle())
-                            Text("New password")
-                                .font(.footnote)
-                                .foregroundColor(.gray)
-                        }
-                        // service 2
-                        VStack{
-                            Image(systemName: "lock")
-                                .font(.system(size: 40))
-                                .frame(width: 60, height: 60)
-                                .background(Color.gray.opacity(0.2))
-                                .clipShape(Circle())
-                            Text("New password")
-                                .font(.footnote)
-                                .foregroundColor(.gray)
-                        }
-                        // service 3
-                        VStack{
-                            Image(systemName: "lock")
-                                .font(.system(size: 40))
-                                .frame(width: 60, height: 60)
-                                .background(Color.gray.opacity(0.2))
-                                .clipShape(Circle())
-                            Text("New password")
-                                .font(.footnote)
-                                .foregroundColor(.gray)
-                        }
-                        // service 4
-                        VStack{
-                            Image(systemName: "lock")
-                                .font(.system(size: 40))
-                                .frame(width: 60, height: 60)
-                                .background(Color.gray.opacity(0.2))
-                                .clipShape(Circle())
-                            Text("New password")
-                                .font(.footnote)
-                                .foregroundColor(.gray)
-                        }
-                        // service 5
-                        VStack{
-                            Image(systemName: "lock")
-                                .font(.system(size: 40))
-                                .frame(width: 60, height: 60)
-                                .background(Color.gray.opacity(0.2))
-                                .clipShape(Circle())
-                            Text("New password")
-                                .font(.footnote)
-                                .foregroundColor(.gray)
+                        // services
+                        ForEach(Array(textImages6.keys), id: \.self) { key in
+                            if let value = textImages6[key] {
+                                IconTextView(image: key, title: value)
+                            }
                         }
                     }
                     .padding(.horizontal)
@@ -82,7 +36,7 @@ struct ServiceListView: View {
                         
                         ServiceCardView(imageName: "person.3", title: "Medium Length Layer Cut", price: "$80", duration: "1 hour", discount: "", description: "Layered hair is a hairstyle that gives the illusion.", iconButton: "plus.circle")
                         
-                        ServiceCardView(imageName: "person.4", title: "V-Shaped Cut", price: "$90", duration: "2.5 hours", discount: "-5%", description: "There are a lot of variations between v-shaped.", iconButton: "plus.circle")
+                        ServiceCardView(imageName: "person.fill", title: "V-Shaped Cut", price: "$90", duration: "2.5 hours", discount: "-5%", description: "There are a lot of variations between v-shaped.", iconButton: "plus.circle")
                     }
                     .padding(.horizontal)
                     
@@ -93,9 +47,12 @@ struct ServiceListView: View {
                             Text("Total (1 Service)")
                                 .font(.headline)
                             Spacer()
-                            Text("$40 $10")
+                            Text("$40")
                                 .font(.headline)
-                                .foregroundColor(.green)
+                                .foregroundColor(AppColors.darkBlue)
+                            Text("$10")
+                                .font(.headline)
+                                .foregroundColor(AppColors.darkBlue)
                         }
                         .padding(.horizontal)
                         
@@ -118,67 +75,6 @@ struct ServiceListView: View {
             .padding(.top, 20)
             .background(Color(UIColor.systemBackground))
         }
-}
-
-struct ServiceCardView: View {
-    var imageName: String
-    var title: String
-    var price: String
-    var duration: String
-    var discount: String
-    var description: String
-    var iconButton: String
-    
-    var body: some View {
-        HStack {
-            // Imagen de la izquierda
-            Image(systemName: imageName)
-                .resizable()
-                .frame(width: 80, height: 80)
-                .cornerRadius(10)
-            
-            // Información del servicio
-            VStack(alignment: .leading, spacing: 5) {
-                HStack {
-                    Text(title)
-                        .font(.headline)
-                    if !discount.isEmpty {
-                        Text(discount)
-                            .font(.caption)
-                            .foregroundColor(.red)
-                    }
-                }
-                
-                Text(price)
-                    .font(.subheadline)
-                    .foregroundColor(.green)
-                
-                Text(duration)
-                    .font(.subheadline)
-                    .foregroundColor(.gray)
-                
-                Text(description)
-                    .font(.caption)
-                    .foregroundColor(.gray)
-                    .lineLimit(2)
-            }
-            
-            Spacer()
-            
-            // Botón de acción (icono)
-            Button(action: {
-                // Acción para el botón
-            }) {
-                Image(systemName: iconButton)
-                    .font(.system(size: 24))
-                    .foregroundColor(.blue)
-            }
-        }
-        .padding()
-        .background(Color(UIColor.systemGray6))
-        .cornerRadius(10)
-        .shadow(radius: 2)
-    }
 }
 
 

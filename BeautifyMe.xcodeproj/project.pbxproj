@@ -27,6 +27,14 @@
 		86E79A272C8FD75C0011EBE0 /* BeautifyMeTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 86E79A262C8FD75C0011EBE0 /* BeautifyMeTests.swift */; };
 		86E79A312C8FD75C0011EBE0 /* BeautifyMeUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 86E79A302C8FD75C0011EBE0 /* BeautifyMeUITests.swift */; };
 		86E79A332C8FD75C0011EBE0 /* BeautifyMeUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 86E79A322C8FD75C0011EBE0 /* BeautifyMeUITestsLaunchTests.swift */; };
+		86F362B92CB2F88500E6C2BA /* IconTextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 86F362B82CB2F88500E6C2BA /* IconTextView.swift */; };
+		86F362BC2CB2F93600E6C2BA /* IconAloneView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 86F362BB2CB2F93600E6C2BA /* IconAloneView.swift */; };
+		86F362BE2CB2F98000E6C2BA /* IconRectangleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 86F362BD2CB2F98000E6C2BA /* IconRectangleView.swift */; };
+		86F362C02CB2FF7800E6C2BA /* ServiceCardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 86F362BF2CB2FF7800E6C2BA /* ServiceCardView.swift */; };
+		86F362C22CB3051100E6C2BA /* ProfileCardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 86F362C12CB3051100E6C2BA /* ProfileCardView.swift */; };
+		86F362C42CB3176600E6C2BA /* PaymentCardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 86F362C32CB3176600E6C2BA /* PaymentCardView.swift */; };
+		86F362C62CB3687C00E6C2BA /* MapRepresentable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 86F362C52CB3687C00E6C2BA /* MapRepresentable.swift */; };
+		86F362C82CB368F100E6C2BA /* AppState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 86F362C72CB368F100E6C2BA /* AppState.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -71,6 +79,14 @@
 		86E79A2C2C8FD75C0011EBE0 /* BeautifyMeUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = BeautifyMeUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		86E79A302C8FD75C0011EBE0 /* BeautifyMeUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BeautifyMeUITests.swift; sourceTree = "<group>"; };
 		86E79A322C8FD75C0011EBE0 /* BeautifyMeUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BeautifyMeUITestsLaunchTests.swift; sourceTree = "<group>"; };
+		86F362B82CB2F88500E6C2BA /* IconTextView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IconTextView.swift; sourceTree = "<group>"; };
+		86F362BB2CB2F93600E6C2BA /* IconAloneView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IconAloneView.swift; sourceTree = "<group>"; };
+		86F362BD2CB2F98000E6C2BA /* IconRectangleView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IconRectangleView.swift; sourceTree = "<group>"; };
+		86F362BF2CB2FF7800E6C2BA /* ServiceCardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ServiceCardView.swift; sourceTree = "<group>"; };
+		86F362C12CB3051100E6C2BA /* ProfileCardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileCardView.swift; sourceTree = "<group>"; };
+		86F362C32CB3176600E6C2BA /* PaymentCardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaymentCardView.swift; sourceTree = "<group>"; };
+		86F362C52CB3687C00E6C2BA /* MapRepresentable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapRepresentable.swift; sourceTree = "<group>"; };
+		86F362C72CB368F100E6C2BA /* AppState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppState.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -101,6 +117,7 @@
 		86CE7AC82CB1CEAD00C5F207 /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				86F362BA2CB2F8FE00E6C2BA /* Cards */,
 				86CE7AD02CB235DC00C5F207 /* SignInView.swift */,
 				86CE7ACB2CB1CED500C5F207 /* LogInView.swift */,
 				86CE7AD32CB23A9100C5F207 /* ForgotPasswordView.swift */,
@@ -135,6 +152,8 @@
 			children = (
 				86CE7ACE2CB1D1BD00C5F207 /* AppColors.swift */,
 				86CE7AD92CB243A700C5F207 /* Tabvar.swift */,
+				86F362C52CB3687C00E6C2BA /* MapRepresentable.swift */,
+				86F362C72CB368F100E6C2BA /* AppState.swift */,
 			);
 			path = Utilities;
 			sourceTree = "<group>";
@@ -198,6 +217,19 @@
 				86E79A322C8FD75C0011EBE0 /* BeautifyMeUITestsLaunchTests.swift */,
 			);
 			path = BeautifyMeUITests;
+			sourceTree = "<group>";
+		};
+		86F362BA2CB2F8FE00E6C2BA /* Cards */ = {
+			isa = PBXGroup;
+			children = (
+				86F362B82CB2F88500E6C2BA /* IconTextView.swift */,
+				86F362BB2CB2F93600E6C2BA /* IconAloneView.swift */,
+				86F362BD2CB2F98000E6C2BA /* IconRectangleView.swift */,
+				86F362BF2CB2FF7800E6C2BA /* ServiceCardView.swift */,
+				86F362C12CB3051100E6C2BA /* ProfileCardView.swift */,
+				86F362C32CB3176600E6C2BA /* PaymentCardView.swift */,
+			);
+			path = Cards;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -330,19 +362,27 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				86F362C42CB3176600E6C2BA /* PaymentCardView.swift in Sources */,
 				86CE7ADC2CB2486400C5F207 /* ServiceListView.swift in Sources */,
+				86F362BC2CB2F93600E6C2BA /* IconAloneView.swift in Sources */,
+				86F362C62CB3687C00E6C2BA /* MapRepresentable.swift in Sources */,
 				86CE7AE02CB24A7400C5F207 /* PaymentView.swift in Sources */,
 				86CE7ACC2CB1CED500C5F207 /* LogInView.swift in Sources */,
 				86CE7ACF2CB1D1BD00C5F207 /* AppColors.swift in Sources */,
 				86E79A172C8FD75A0011EBE0 /* ContentView.swift in Sources */,
 				86CE7AD62CB23AA300C5F207 /* ResetPasswordView.swift in Sources */,
+				86F362B92CB2F88500E6C2BA /* IconTextView.swift in Sources */,
 				86CE7ADE2CB2492500C5F207 /* ServiceDetailedView.swift in Sources */,
 				86E79A152C8FD75A0011EBE0 /* BeautifyMeApp.swift in Sources */,
+				86F362C22CB3051100E6C2BA /* ProfileCardView.swift in Sources */,
 				86CE7AE22CB24B6900C5F207 /* Payment.swift in Sources */,
 				86CE7AD82CB23CB600C5F207 /* HomeView.swift in Sources */,
+				86F362C02CB2FF7800E6C2BA /* ServiceCardView.swift in Sources */,
 				86CE7AD42CB23A9100C5F207 /* ForgotPasswordView.swift in Sources */,
+				86F362C82CB368F100E6C2BA /* AppState.swift in Sources */,
 				86CE7ADA2CB243A700C5F207 /* Tabvar.swift in Sources */,
 				86CE7AE42CB24DDB00C5F207 /* ProfileView.swift in Sources */,
+				86F362BE2CB2F98000E6C2BA /* IconRectangleView.swift in Sources */,
 				86CE7AE62CB24F8100C5F207 /* FavouritesView.swift in Sources */,
 				86CE7AD12CB235DC00C5F207 /* SignInView.swift in Sources */,
 			);

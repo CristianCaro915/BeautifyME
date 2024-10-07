@@ -8,6 +8,11 @@
 import SwiftUI
 
 struct HomeView: View {
+    let images6 = ["lock", "trash", "lock","pencil", "lock"]
+    let images4 = ["lock", "lock", "lock","lock"]
+    let textImages6: [String:String] =
+    ["lock":"password","pencil":"password","rectangle":"password","pencil.tip":"password","lasso":"helloword","trash":"trashy"]
+    
     var body: some View {
         ScrollView{
             VStack(alignment: .leading, spacing: 20) {
@@ -41,49 +46,11 @@ struct HomeView: View {
                     // Services
                     ScrollView(.horizontal, showsIndicators: false) {
                         HStack(spacing: 20) {
-                            // service 1
-                            VStack{
-                                Image(systemName: "lock")
-                                    .font(.system(size: 40))
-                                    .frame(width: 60, height: 60)
-                                    .background(Color.gray.opacity(0.2))
-                                    .clipShape(Circle())
-                                Text("New password")
-                                    .font(.footnote)
-                                    .foregroundColor(.gray)
-                            }
-                            // service 2
-                            VStack{
-                                Image(systemName: "lock")
-                                    .font(.system(size: 40))
-                                    .frame(width: 60, height: 60)
-                                    .background(Color.gray.opacity(0.2))
-                                    .clipShape(Circle())
-                                Text("New password")
-                                    .font(.footnote)
-                                    .foregroundColor(.gray)
-                            }
-                            // service 3
-                            VStack{
-                                Image(systemName: "lock")
-                                    .font(.system(size: 40))
-                                    .frame(width: 60, height: 60)
-                                    .background(Color.gray.opacity(0.2))
-                                    .clipShape(Circle())
-                                Text("New password")
-                                    .font(.footnote)
-                                    .foregroundColor(.gray)
-                            }
-                            // service 4
-                            VStack{
-                                Image(systemName: "lock")
-                                    .font(.system(size: 40))
-                                    .frame(width: 60, height: 60)
-                                    .background(Color.gray.opacity(0.2))
-                                    .clipShape(Circle())
-                                Text("New password")
-                                    .font(.footnote)
-                                    .foregroundColor(.gray)
+                            // services listed
+                            ForEach(Array(textImages6.keys), id: \.self) { key in
+                                if let value = textImages6[key] {
+                                    IconTextView(image: key, title: value)
+                                }
                             }
                         }
                         .padding(.horizontal)
@@ -99,52 +66,14 @@ struct HomeView: View {
                     // Scroll of businesses
                     ScrollView(.horizontal, showsIndicators: false) {
                         HStack(spacing: 16) {
-                            // salon 1
-                            Image(systemName: "lock")
-                                .resizable()
-                                .frame(width: 60, height: 60)
-                                .clipShape(Circle())
-                                .overlay(Circle().stroke(Color.gray, lineWidth: 2))
-                            
-                            // salon 2
-                            Image(systemName: "lock")
-                                .resizable()
-                                .frame(width: 60, height: 60)
-                                .clipShape(Circle())
-                                .overlay(Circle().stroke(Color.gray, lineWidth: 2))
-                            
-                            // salon 3
-                            Image(systemName: "lock")
-                                .resizable()
-                                .frame(width: 60, height: 60)
-                                .clipShape(Circle())
-                                .overlay(Circle().stroke(Color.gray, lineWidth: 2))
-                            
-                            // salon 4
-                            Image(systemName: "lock")
-                                .resizable()
-                                .frame(width: 60, height: 60)
-                                .clipShape(Circle())
-                                .overlay(Circle().stroke(Color.gray, lineWidth: 2))
-                            
-                            // salon 5
-                            Image(systemName: "lock")
-                                .resizable()
-                                .frame(width: 60, height: 60)
-                                .clipShape(Circle())
-                                .overlay(Circle().stroke(Color.gray, lineWidth: 2))
-                            
-                            // salon 6
-                            Image(systemName: "lock")
-                                .resizable()
-                                .frame(width: 60, height: 60)
-                                .clipShape(Circle())
-                                .overlay(Circle().stroke(Color.gray, lineWidth: 2))
+                            // businesses
+                            ForEach(images6, id: \.self) { image in
+                                IconAloneView(image: image)
+                            }
                         }
                         .padding(.horizontal)
                     }
                 }
-                
                 // Sección 3: Salones destacados
                 VStack(alignment: .leading, spacing: 16) {
                     HStack {
@@ -157,33 +86,13 @@ struct HomeView: View {
                     }
                     .padding(.horizontal)
                     
-                    // Imágenes destacadas
+                    // featured salon
                     ScrollView(.horizontal, showsIndicators: false) {
                         HStack(spacing: 16) {
-                            // salon 1
-                            Image(systemName: "lock")
-                                .resizable()
-                                .frame(width: 200, height: 120)
-                                .cornerRadius(10)
-                                .overlay(Rectangle().stroke(Color.gray, lineWidth: 2))
-                            // salon 2
-                            Image(systemName: "lock")
-                                .resizable()
-                                .frame(width: 200, height: 120)
-                                .cornerRadius(10)
-                                .overlay(Rectangle().stroke(Color.gray, lineWidth: 2))
-                            // salon 3
-                            Image(systemName: "lock")
-                                .resizable()
-                                .frame(width: 200, height: 120)
-                                .cornerRadius(10)
-                                .overlay(Rectangle().stroke(Color.gray, lineWidth: 2))
-                            // salon 4
-                            Image(systemName: "lock")
-                                .resizable()
-                                .frame(width: 200, height: 120)
-                                .cornerRadius(10)
-                                .overlay(Rectangle().stroke(Color.gray, lineWidth: 2))
+                            // featured businesses
+                            ForEach(images4, id: \.self) { image in
+                                IconRectangleView(image: image)
+                            }
                         }
                         .padding(.horizontal)
                     }
@@ -200,55 +109,16 @@ struct HomeView: View {
                     // Imágenes destacadas
                     ScrollView(.horizontal, showsIndicators: false) {
                         HStack(spacing: 20) {
-                            // service 1
-                            VStack{
-                                Image(systemName: "lock")
-                                    .font(.system(size: 40))
-                                    .frame(width: 60, height: 60)
-                                    .background(Color.gray.opacity(0.2))
-                                    .clipShape(Circle())
-                                Text("New password")
-                                    .font(.footnote)
-                                    .foregroundColor(.gray)
-                            }
-                            // service 2
-                            VStack{
-                                Image(systemName: "lock")
-                                    .font(.system(size: 40))
-                                    .frame(width: 60, height: 60)
-                                    .background(Color.gray.opacity(0.2))
-                                    .clipShape(Circle())
-                                Text("New password")
-                                    .font(.footnote)
-                                    .foregroundColor(.gray)
-                            }
-                            // service 3
-                            VStack{
-                                Image(systemName: "lock")
-                                    .font(.system(size: 40))
-                                    .frame(width: 60, height: 60)
-                                    .background(Color.gray.opacity(0.2))
-                                    .clipShape(Circle())
-                                Text("New password")
-                                    .font(.footnote)
-                                    .foregroundColor(.gray)
-                            }
-                            // service 4
-                            VStack{
-                                Image(systemName: "lock")
-                                    .font(.system(size: 40))
-                                    .frame(width: 60, height: 60)
-                                    .background(Color.gray.opacity(0.2))
-                                    .clipShape(Circle())
-                                Text("New password")
-                                    .font(.footnote)
-                                    .foregroundColor(.gray)
+                            // services
+                            ForEach(Array(textImages6.keys), id: \.self) { key in
+                                if let value = textImages6[key] {
+                                    IconTextView(image: key, title: value)
+                                }
                             }
                         }
                         .padding(.horizontal)
                     }
                 }
-                
                 // Section 5
                 VStack(alignment: .leading, spacing: 16) {
                     HStack {
@@ -264,35 +134,14 @@ struct HomeView: View {
                     // Imágenes destacadas
                     ScrollView(.horizontal, showsIndicators: false) {
                         HStack(spacing: 16) {
-                            // salon 1
-                            Image(systemName: "lock")
-                                .resizable()
-                                .frame(width: 200, height: 120)
-                                .cornerRadius(10)
-                                .overlay(Rectangle().stroke(Color.gray, lineWidth: 2))
-                            // salon 2
-                            Image(systemName: "lock")
-                                .resizable()
-                                .frame(width: 200, height: 120)
-                                .cornerRadius(10)
-                                .overlay(Rectangle().stroke(Color.gray, lineWidth: 2))
-                            // salon 3
-                            Image(systemName: "lock")
-                                .resizable()
-                                .frame(width: 200, height: 120)
-                                .cornerRadius(10)
-                                .overlay(Rectangle().stroke(Color.gray, lineWidth: 2))
-                            // salon 4
-                            Image(systemName: "lock")
-                                .resizable()
-                                .frame(width: 200, height: 120)
-                                .cornerRadius(10)
-                                .overlay(Rectangle().stroke(Color.gray, lineWidth: 2))
+                            // salons
+                            ForEach(images4, id: \.self) { image in
+                                IconRectangleView(image: image)
+                            }
                         }
                         .padding(.horizontal)
                     }
                 }
-                
                 Spacer()
             }
             .padding(.top, 20)

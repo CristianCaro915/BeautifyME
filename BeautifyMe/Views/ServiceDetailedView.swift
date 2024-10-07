@@ -11,9 +11,10 @@ struct ServiceDetailedView: View {
     @State private var selectedDate = "10"
     @State private var selectedTime = "10:00 AM"
     @State private var notes = ""
+    let textImages6: [String:String] =
+    ["lock":"password","pencil":"password","rectangle":"password","pencil.tip":"password","lasso":"helloword","trash":"trashy"]
     
-    
-    var body: some View {
+    var body: some View{
             VStack(spacing: 20) {
                 // Primera sección: Lista de iconos (Especialistas)
                 VStack(alignment: .leading) {
@@ -22,49 +23,11 @@ struct ServiceDetailedView: View {
                     
                     ScrollView(.horizontal, showsIndicators: false) {
                         HStack(spacing: 16) {
-                            // professional 1
-                            VStack{
-                                Image(systemName: "lock.fill")
-                                    .font(.system(size: 40))
-                                    .frame(width: 60, height: 60)
-                                    .background(Color.gray.opacity(0.2))
-                                    .clipShape(Circle())
-                                Text("New password")
-                                    .font(.footnote)
-                                    .foregroundColor(.gray)
-                            }
-                            // professional 2
-                            VStack{
-                                Image(systemName: "lock.fill")
-                                    .font(.system(size: 40))
-                                    .frame(width: 60, height: 60)
-                                    .background(Color.gray.opacity(0.2))
-                                    .clipShape(Circle())
-                                Text("New password")
-                                    .font(.footnote)
-                                    .foregroundColor(.gray)
-                            }
-                            // professional 3
-                            VStack{
-                                Image(systemName: "lock.fill")
-                                    .font(.system(size: 40))
-                                    .frame(width: 60, height: 60)
-                                    .background(Color.gray.opacity(0.2))
-                                    .clipShape(Circle())
-                                Text("New password")
-                                    .font(.footnote)
-                                    .foregroundColor(.gray)
-                            }
-                            // professional 4
-                            VStack{
-                                Image(systemName: "lock.fill")
-                                    .font(.system(size: 40))
-                                    .frame(width: 60, height: 60)
-                                    .background(Color.gray.opacity(0.2))
-                                    .clipShape(Circle())
-                                Text("New password")
-                                    .font(.footnote)
-                                    .foregroundColor(.gray)
+                            // professionals
+                            ForEach(Array(textImages6.keys), id: \.self) { key in
+                                if let value = textImages6[key] {
+                                    IconTextView(image: key, title: value)
+                                }
                             }
                         }
                         .padding(.horizontal)
@@ -81,6 +44,7 @@ struct ServiceDetailedView: View {
                             // Acción para día anterior
                         }) {
                             Image(systemName: "chevron.left")
+                                .foregroundColor(AppColors.darkBlue)
                         }
                         
                         ScrollView(.horizontal, showsIndicators: false) {
@@ -98,6 +62,7 @@ struct ServiceDetailedView: View {
                             // Acción para día siguiente
                         }) {
                             Image(systemName: "chevron.right")
+                                .foregroundColor(AppColors.darkBlue)
                         }
                     }
                     .padding(.horizontal)
@@ -141,7 +106,7 @@ struct ServiceDetailedView: View {
                         Spacer()
                         Text("$40 $10")
                             .font(.headline)
-                            .foregroundColor(.green)
+                            .foregroundColor(AppColors.darkBlue)
                     }
                     .padding(.horizontal)
                     
@@ -153,7 +118,7 @@ struct ServiceDetailedView: View {
                             .foregroundColor(.white)
                             .padding()
                             .frame(maxWidth: .infinity)
-                            .background(Color.blue)
+                            .background(AppColors.darkBlue)
                             .cornerRadius(10)
                     }
                     .padding(.horizontal)
@@ -173,14 +138,14 @@ struct DayPickerView: View {
         VStack {
             Text("Thu")
                 .font(.caption)
-                .foregroundColor(isSelected ? .white : .gray)
+                .foregroundColor(isSelected ? AppColors.white : AppColors.darkGrey)
             Text(day)
                 .font(.headline)
-                .foregroundColor(isSelected ? .white : .black)
+                .foregroundColor(isSelected ? AppColors.white : AppColors.black)
         }
         .padding()
         .frame(width: 60, height: 60)
-        .background(isSelected ? Color.blue : Color(UIColor.systemGray6))
+        .background(isSelected ? AppColors.darkBlue : AppColors.lightGrey)
         .clipShape(Circle())
     }
 }
@@ -192,9 +157,9 @@ struct TimePickerView: View {
     var body: some View {
         Text(time)
             .font(.subheadline)
-            .foregroundColor(isSelected ? .white : .black)
+            .foregroundColor(isSelected ? AppColors.white : AppColors.black)
             .padding()
-            .background(isSelected ? Color.blue : Color(UIColor.systemGray6))
+            .background(isSelected ? AppColors.darkBlue : AppColors.lightGrey)
             .cornerRadius(10)
     }
 }

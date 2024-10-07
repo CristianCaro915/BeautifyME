@@ -44,7 +44,7 @@ struct BusinessCardView: View {
                 
                 // Ícono de corazón
                 Image(systemName: "heart.fill")
-                    .foregroundColor(.red)
+                    .foregroundColor(AppColors.orange)
             }
             
             // Descripción del negocio
@@ -61,14 +61,15 @@ struct BusinessCardView: View {
                     Text("Reorder Booking")
                         .padding()
                         .frame(minWidth: 150)
-                        .background(Color(UIColor.systemGray6))
-                        .foregroundColor(.primary)
+                        .background(AppColors.white)
+                        .foregroundColor(AppColors.darkBlue)
                         .cornerRadius(10)
+                        .overlay(RoundedRectangle(cornerRadius: 10).stroke(AppColors.darkBlue, lineWidth: 1))
                 }
             }
         }
         .padding()
-        .background(Color(UIColor.systemGray5))
+        .background(AppColors.darkWhite)
         .cornerRadius(10)
         .shadow(radius: 2)
     }

@@ -13,6 +13,9 @@ struct PaymentView: View {
     @State private var selectedMake: String?
     @State private var isShowingNewView = false
     
+    let textImages6: [String:String] =
+    ["lock":"password","pencil":"password","rectangle":"password","pencil.tip":"password","lasso":"helloword","trash":"trashy"]
+    
     private let paymentOptions = [
         "PayPal",
         "DaviPlata",
@@ -33,22 +36,10 @@ struct PaymentView: View {
                 }
             }
             //LIST
-            
-            // payment 1
-            HStack(spacing: 8){
-                Image(systemName: "lock.fill")
-                    .padding(2)
-                    .foregroundColor(.black)
-                Text("payment")
-                    .foregroundColor(.black)
-            }
-            //payment 2
-            HStack(spacing: 8){
-                Image(systemName: "lock.fill")
-                    .padding(2)
-                    .foregroundColor(.black)
-                Text("payment")
-                    .foregroundColor(.black)
+            ForEach(Array(textImages6.keys), id: \.self) { key in
+                if let value = textImages6[key] {
+                    PaymentCardView(image: key, text: value)
+                }
             }
             // extra
             HStack(spacing: 8){
@@ -57,7 +48,9 @@ struct PaymentView: View {
                     .padding(2)
                 Text("Add new payment method")
                     .foregroundColor(.black)
+                Spacer()
             }
+            .padding(.leading, 20)
             
             // button
             // Botón de acción (icono)
