@@ -35,7 +35,7 @@ struct Tabvar: View {
             .tag(Tab.home) // Tag this view with the corresponding enum value
             
             //MapView
-            HomeView()
+            MapView()
             .tabItem {
                 Image(systemName: "circle.grid.3x3.fill")
                 Text("Services")
@@ -46,14 +46,14 @@ struct Tabvar: View {
             HomeView()
             .tabItem {
                 Image(systemName: "calendar")
-                Text("Activity")
+                Text("Calendar")
             }
             .tag(Tab.activity)
             
             ProfileView()
             .tabItem {
                 Image(systemName: "person.fill")
-                Text("Account")
+                Text("Profile")
             }
             .tag(Tab.account)
         }

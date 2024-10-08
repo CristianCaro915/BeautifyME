@@ -33,7 +33,10 @@ struct MapView: View {
                     .padding(.top,4)
                 
             }
-            
+            if appState == .locationSelected || appState == .polylineaddded{
+                BusinessSelectedCard(appState: $appState)
+                    .transition(.move(edge: .bottom))
+            }
         }
     }
 }

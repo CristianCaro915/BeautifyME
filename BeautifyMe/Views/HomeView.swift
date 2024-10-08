@@ -8,10 +8,13 @@
 import SwiftUI
 
 struct HomeView: View {
-    let images6 = ["lock", "trash", "lock","pencil", "lock"]
-    let images4 = ["lock", "lock", "lock","lock"]
-    let textImages6: [String:String] =
-    ["lock":"password","pencil":"password","rectangle":"password","pencil.tip":"password","lasso":"helloword","trash":"trashy"]
+    let salons = ["chickens_beauty_logo", "hair&flair"]
+    let businesses = ["salon_belleza1", "salon_belleza2", "salon_belleza3","spa_center1","spa_center2"]
+    let someBusinesses = ["salon_belleza3","spa_center1","spa_center2"]
+    let desired: [String:String] =
+    ["hair_cut_woman_service":"hair cut","manicure_service":"manicure","spa_service":"spa","pedicire_logo":"pedicure"]
+    let services: [String:String] =
+    ["barber_service":"barber","hair_cut_woman_service":"hair cut","hair_polish_service":"hair polish","manicure_service":"manicure","spa_service":"spa","pedicire_logo":"pedicure"]
     
     var body: some View {
         ScrollView{
@@ -47,8 +50,8 @@ struct HomeView: View {
                     ScrollView(.horizontal, showsIndicators: false) {
                         HStack(spacing: 20) {
                             // services listed
-                            ForEach(Array(textImages6.keys), id: \.self) { key in
-                                if let value = textImages6[key] {
+                            ForEach(Array(services.keys), id: \.self) { key in
+                                if let value = services[key] {
                                     IconTextView(image: key, title: value)
                                 }
                             }
@@ -67,7 +70,7 @@ struct HomeView: View {
                     ScrollView(.horizontal, showsIndicators: false) {
                         HStack(spacing: 16) {
                             // businesses
-                            ForEach(images6, id: \.self) { image in
+                            ForEach(salons, id: \.self) { image in
                                 IconAloneView(image: image)
                             }
                         }
@@ -90,7 +93,7 @@ struct HomeView: View {
                     ScrollView(.horizontal, showsIndicators: false) {
                         HStack(spacing: 16) {
                             // featured businesses
-                            ForEach(images4, id: \.self) { image in
+                            ForEach(businesses, id: \.self) { image in
                                 IconRectangleView(image: image)
                             }
                         }
@@ -110,8 +113,8 @@ struct HomeView: View {
                     ScrollView(.horizontal, showsIndicators: false) {
                         HStack(spacing: 20) {
                             // services
-                            ForEach(Array(textImages6.keys), id: \.self) { key in
-                                if let value = textImages6[key] {
+                            ForEach(Array(desired.keys), id: \.self) { key in
+                                if let value = desired[key] {
                                     IconTextView(image: key, title: value)
                                 }
                             }
@@ -135,7 +138,7 @@ struct HomeView: View {
                     ScrollView(.horizontal, showsIndicators: false) {
                         HStack(spacing: 16) {
                             // salons
-                            ForEach(images4, id: \.self) { image in
+                            ForEach(someBusinesses, id: \.self) { image in
                                 IconRectangleView(image: image)
                             }
                         }

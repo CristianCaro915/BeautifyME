@@ -13,7 +13,10 @@ struct PaymentCardView: View {
     
     var body: some View {
         HStack(spacing: 16){
-            Image(systemName: image)
+            Image(image)
+                .resizable()
+                .aspectRatio(contentMode: .fit)
+                .frame(width: 60, height: 60)
                 .padding(2)
                 .foregroundColor(.black)
             Text(text)
@@ -33,5 +36,5 @@ struct PaymentCardView: View {
 }
 
 #Preview {
-    PaymentCardView(image: "lock.fill", text:"payment")
+    PaymentCardView(image: "debit:credit_icon", text:"payment")
 }

@@ -11,8 +11,9 @@ struct IconAloneView: View {
     let image: String
     
     var body: some View {
-        Image(systemName: image)
+        Image(image)
             .resizable()
+            .aspectRatio(contentMode: .fit)
             .frame(width: 60, height: 60)
             .clipShape(Circle())
             .overlay(Circle().stroke(Color.gray, lineWidth: 2))
@@ -20,5 +21,5 @@ struct IconAloneView: View {
 }
 
 #Preview {
-    IconAloneView(image: "lock")
+    IconAloneView(image: "hair&flair")
 }

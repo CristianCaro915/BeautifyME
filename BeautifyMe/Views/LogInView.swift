@@ -32,7 +32,7 @@ struct LogInView: View {
                 HStack {
                     Image(systemName: "envelope.fill")
                         .foregroundColor(AppColors.mediumGrey)
-                        .padding(2)
+                        .padding(10)
                     TextField("Email", text: $email)
                         .padding()
                 }
@@ -44,6 +44,7 @@ struct LogInView: View {
                 HStack {
                     Image(systemName: "lock.fill")
                         .foregroundColor(AppColors.mediumGrey)
+                        .padding(10)
                     SecureField("Password", text: $password)
                         .padding()
                 }
@@ -103,6 +104,7 @@ struct LogInView: View {
             HStack {
                 Text("Don’t have an account?")
                     .foregroundColor(.gray)
+                    .padding(.horizontal)
                 Button(action: {
                     // action to move to sigIn page
                 }) {

@@ -12,12 +12,15 @@ struct ProfileView: View {
         VStack(spacing: 20) {
             // Primera Sección: Información del usuario
             HStack{
-                Image(systemName: "person.circle")
-                    .font(.system(size: 60))
-                    .padding()
+                Image("juanita_profile")
+                    .resizable()
+                    .aspectRatio(contentMode: .fit)
+                    .frame(width: 100, height: 90)
+                    .cornerRadius(30)
+                    .padding(.leading)
                 VStack{
                     HStack{
-                        Text("Samantha Smith")
+                        Text("Juanita Carrascal")
                             .font(.title2)
                             .bold()
                         Spacer()
@@ -38,7 +41,7 @@ struct ProfileView: View {
                         Spacer()
                     }
                     HStack{
-                        Text("samantha.smith@email.com")
+                        Text("j.carrasca@gmail.com")
                             .font(.footnote)
                         Spacer()
                     }
@@ -57,7 +60,7 @@ struct ProfileView: View {
             
             Spacer()
         }
-        .background(Color(UIColor.systemBackground))
+        .background(AppColors.white)
         .padding(.top, 40)
     }
 }

@@ -13,11 +13,13 @@ struct IconTextView: View {
     
     var body: some View {
         VStack{
-            Image(systemName: image)
-                .font(.system(size: 40))
+            Image(image)
+                .resizable()
+                .aspectRatio(contentMode: .fit)
                 .frame(width: 60, height: 60)
                 .background(Color.gray.opacity(0.2))
                 .clipShape(Circle())
+                .overlay(Circle().stroke(Color.gray, lineWidth: 2))
             Text(title)
                 .font(.footnote)
                 .foregroundColor(.gray)
@@ -26,5 +28,5 @@ struct IconTextView: View {
 }
 
 #Preview {
-    IconTextView(image: "lock", title: "New password")
+    IconTextView(image: "barber_service", title: "barber")
 }

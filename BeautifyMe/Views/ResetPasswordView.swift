@@ -31,9 +31,9 @@ struct ResetPasswordView: View {
             // Input for email
             VStack(alignment: .leading) {
                 HStack {
-                    Image(systemName: "lock")
+                    Image(systemName: "lock.fill")
                         .foregroundColor(AppColors.mediumGrey)
-                        .padding(2)
+                        .padding(10)
                     TextField("New password", text: $email)
                         .padding()
                 }
@@ -45,7 +45,7 @@ struct ResetPasswordView: View {
                 HStack {
                     Image(systemName: "lock.fill")
                         .foregroundColor(AppColors.mediumGrey)
-                        .padding(2)
+                        .padding(10)
                     TextField("Confirm new password", text: $email)
                         .padding()
                 }

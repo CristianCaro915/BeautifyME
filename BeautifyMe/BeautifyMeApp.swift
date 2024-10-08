@@ -18,7 +18,7 @@ struct BeautifyMeApp: App {
     
     var body: some Scene {
         WindowGroup {
-            MapView()
+            Tabvar()
                 .environmentObject(locationViewModel)
         }
     }

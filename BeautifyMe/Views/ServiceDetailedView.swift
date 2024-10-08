@@ -12,7 +12,7 @@ struct ServiceDetailedView: View {
     @State private var selectedTime = "10:00 AM"
     @State private var notes = ""
     let textImages6: [String:String] =
-    ["lock":"password","pencil":"password","rectangle":"password","pencil.tip":"password","lasso":"helloword","trash":"trashy"]
+    ["pedro_profile":"Pedro","mariana_profile":"Mariana G.","maria_jose_profile":"Maria Jose","mariana_paz":"Mariana Paz","tomas_montaña":"Tomas M."]
     
     var body: some View{
             VStack(spacing: 20) {
@@ -49,7 +49,7 @@ struct ServiceDetailedView: View {
                         
                         ScrollView(.horizontal, showsIndicators: false) {
                             HStack(spacing: 16) {
-                                ForEach(["9", "10", "11", "12", "13"], id: \.self) { day in
+                                ForEach(["8", "9", "10", "11", "12"], id: \.self) { day in
                                     DayPickerView(day: day, isSelected: day == selectedDate)
                                         .onTapGesture {
                                             selectedDate = day
@@ -104,8 +104,12 @@ struct ServiceDetailedView: View {
                         Text("Total (1 Service)")
                             .font(.headline)
                         Spacer()
-                        Text("$40 $10")
+                        Text("$40")
                             .font(.headline)
+                            .foregroundColor(AppColors.darkBlue)
+                        Text("$50")
+                            .font(.headline)
+                            .strikethrough(true, color: .red)
                             .foregroundColor(AppColors.darkBlue)
                     }
                     .padding(.horizontal)

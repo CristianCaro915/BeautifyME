@@ -33,7 +33,7 @@ struct SignInView: View {
                 HStack {
                     Image(systemName: "person.fill")
                         .foregroundColor(AppColors.mediumGrey)
-                        .padding(2)
+                        .padding(10)
                     TextField("Name", text: $email)
                         .padding()
                 }
@@ -45,7 +45,7 @@ struct SignInView: View {
                 HStack {
                     Image(systemName: "envelope.fill")
                         .foregroundColor(AppColors.mediumGrey)
-                        .padding(2)
+                        .padding(10)
                     TextField("Email adress", text: $email)
                         .padding()
                 }
@@ -58,7 +58,7 @@ struct SignInView: View {
                 HStack {
                     Image(systemName: "phone.fill")
                         .foregroundColor(AppColors.mediumGrey)
-                        .padding(2)
+                        .padding(10)
                     TextField("Phone Number", text: $email)
                         .padding()
                 }
@@ -71,12 +71,12 @@ struct SignInView: View {
                 HStack {
                     Image(systemName: "lock.fill")
                         .foregroundColor(AppColors.mediumGrey)
+                        .padding(10)
                     SecureField("Password", text: $password)
                         .padding()
                 }
                 .overlay(RoundedRectangle(cornerRadius: 10).stroke(AppColors.mediumGrey, lineWidth: 1))
             }
-            
             // "Forgot Password?"
             VStack {
                 Text("By signing in you agree to our")
@@ -91,7 +91,7 @@ struct SignInView: View {
                         .font(.footnote)
                 }
             }
-            .padding(.top, 10)
+            .padding(.horizontal, 60)
             
             // "Sign In" Button
             Button(action: {
@@ -145,7 +145,7 @@ struct SignInView: View {
                         .fontWeight(.bold)
                 }
             }
-            .padding(.top, 10)
+            .padding(.horizontal,30)
             
             Spacer()
         }

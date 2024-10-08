@@ -19,9 +19,10 @@ struct ServiceCardView: View {
     var body: some View {
         HStack {
             // Imagen de la izquierda
-            Image(systemName: imageName)
+            Image(imageName)
                 .resizable()
-                .frame(width: 80, height: 80)
+                .aspectRatio(contentMode: .fit)
+                .frame(width: 80, height: 100)
                 .cornerRadius(10)
             
             // Información del servicio
@@ -76,5 +77,5 @@ struct ServiceCardView: View {
 }
 
 #Preview {
-    ServiceCardView(imageName: "person.2", title: "Bob/ Lob Cut", price: "$55", duration: "1.5 hours", discount: "-20%", description: "Lob haircut is a women's hairstyle.", iconButton: "plus.circle")
+    ServiceCardView(imageName: "peinados1", title: "Bob/ Lob Cut", price: "$55", duration: "1.5 hours", discount: "-20%", description: "Lob haircut is a women's hairstyle.", iconButton: "plus.circle")
 }

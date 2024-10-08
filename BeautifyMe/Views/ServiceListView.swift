@@ -8,8 +8,8 @@
 import SwiftUI
 
 struct ServiceListView: View {
-    let textImages6: [String:String] =
-    ["lock":"password","pencil":"password","rectangle":"password","pencil.tip":"password","lasso":"helloword","trash":"trashy"]
+    let services: [String:String] =
+    ["barber_service":"barber","hair_cut_woman_service":"hair cut","manicure_service":"manicure","spa_service":"spa","pedicire_logo":"pedicure"]
     
     var body: some View {
             VStack(spacing: 20) {
@@ -18,8 +18,8 @@ struct ServiceListView: View {
                     
                     HStack(spacing: 16) {
                         // services
-                        ForEach(Array(textImages6.keys), id: \.self) { key in
-                            if let value = textImages6[key] {
+                        ForEach(Array(services.keys), id: \.self) { key in
+                            if let value = services[key] {
                                 IconTextView(image: key, title: value)
                             }
                         }
@@ -30,13 +30,13 @@ struct ServiceListView: View {
                 // Sección de cards
                 ScrollView {
                     VStack(spacing: 16) {
-                        ServiceCardView(imageName: "person", title: "Woman Blunt Cut", price: "$50", duration: "2 hours", discount: "-20%", description: "A blunt cut bob is a shorter hairstyle.", iconButton: "plus.circle")
+                        ServiceCardView(imageName: "peinados1", title: "Woman Blunt Cut", price: "$50", duration: "2 hours", discount: "-20%", description: "A blunt cut bob is a shorter hairstyle.", iconButton: "plus.circle")
                         
-                        ServiceCardView(imageName: "person.2", title: "Bob/ Lob Cut", price: "$55", duration: "1.5 hours", discount: "-20%", description: "Lob haircut is a women's hairstyle.", iconButton: "plus.circle")
+                        ServiceCardView(imageName: "peinados2", title: "Bob/ Lob Cut", price: "$55", duration: "1.5 hours", discount: "-20%", description: "Lob haircut is a women's hairstyle.", iconButton: "plus.circle")
                         
-                        ServiceCardView(imageName: "person.3", title: "Medium Length Layer Cut", price: "$80", duration: "1 hour", discount: "", description: "Layered hair is a hairstyle that gives the illusion.", iconButton: "plus.circle")
+                        ServiceCardView(imageName: "peinados3", title: "Medium Length Layer Cut", price: "$80", duration: "1 hour", discount: "", description: "Layered hair is a hairstyle that gives the illusion.", iconButton: "plus.circle")
                         
-                        ServiceCardView(imageName: "person.fill", title: "V-Shaped Cut", price: "$90", duration: "2.5 hours", discount: "-5%", description: "There are a lot of variations between v-shaped.", iconButton: "plus.circle")
+                        ServiceCardView(imageName: "peinados4", title: "V-Shaped Cut", price: "$90", duration: "2.5 hours", discount: "-5%", description: "There are a lot of variations between v-shaped.", iconButton: "plus.circle")
                     }
                     .padding(.horizontal)
                     
@@ -50,8 +50,9 @@ struct ServiceListView: View {
                             Text("$40")
                                 .font(.headline)
                                 .foregroundColor(AppColors.darkBlue)
-                            Text("$10")
+                            Text("$50")
                                 .font(.headline)
+                                .strikethrough(true, color: .red)
                                 .foregroundColor(AppColors.darkBlue)
                         }
                         .padding(.horizontal)

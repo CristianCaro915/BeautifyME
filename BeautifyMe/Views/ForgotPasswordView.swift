@@ -32,9 +32,9 @@ struct ForgotPasswordView: View {
             // Input for email
             VStack(alignment: .leading) {
                 HStack {
-                    Image(systemName: "lock.fill")
+                    Image(systemName: "envelope.fill")
                         .foregroundColor(AppColors.mediumGrey)
-                        .padding(2)
+                        .padding(10)
                     TextField("Email adress", text: $email)
                         .padding()
                 }

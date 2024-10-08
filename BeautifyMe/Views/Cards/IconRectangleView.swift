@@ -11,8 +11,9 @@ struct IconRectangleView: View {
     let image: String
     
     var body: some View {
-        Image(systemName: image)
+        Image(image)
             .resizable()
+            .aspectRatio(contentMode: .fit)
             .frame(width: 200, height: 120)
             .cornerRadius(10)
             .overlay(Rectangle().stroke(Color.gray, lineWidth: 2))
@@ -20,5 +21,5 @@ struct IconRectangleView: View {
 }
 
 #Preview {
-    IconRectangleView(image: "lock")
+    IconRectangleView(image: "salon_belleza1")
 }

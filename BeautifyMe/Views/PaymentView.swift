@@ -14,7 +14,7 @@ struct PaymentView: View {
     @State private var isShowingNewView = false
     
     let textImages6: [String:String] =
-    ["lock":"password","pencil":"password","rectangle":"password","pencil.tip":"password","lasso":"helloword","trash":"trashy"]
+    ["apple_pay_icon":"Apple pay","cash_icon":"Cash","debit:credit_icon":"Debit/Credit card"]
     
     private let paymentOptions = [
         "PayPal",
@@ -26,14 +26,13 @@ struct PaymentView: View {
     var body: some View {
         VStack(spacing: 8){
             //TITLE
+            
             HStack {
-                Text("Choose your payment method")
+                Text("Payment Methods")
+                    .font(.title3)
                     .fontWeight(.bold)
-                Button{
-                    //action here API
-                } label: {
-                    Image(systemName: "arrow.clockwise")
-                }
+                    .padding(20)
+                Spacer()
             }
             //LIST
             ForEach(Array(textImages6.keys), id: \.self) { key in
@@ -43,14 +42,18 @@ struct PaymentView: View {
             }
             // extra
             HStack(spacing: 8){
+                Spacer()
                 Image(systemName: "plus.app")
                     .foregroundColor(.green)
                     .padding(2)
                 Text("Add new payment method")
                     .foregroundColor(.black)
+                    .padding()
                 Spacer()
             }
             .padding(.leading, 20)
+            
+            Spacer()
             
             // button
             // Botón de acción (icono)
@@ -65,7 +68,9 @@ struct PaymentView: View {
                     .background(AppColors.darkBlue)
                     .cornerRadius(20)
             }
+            .padding()
         }
+        
         //ends vstack
     }
 }
