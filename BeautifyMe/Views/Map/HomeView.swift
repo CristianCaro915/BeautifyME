@@ -8,6 +8,8 @@
 import SwiftUI
 
 struct HomeView: View {
+    
+    
     let salons = ["chickens_beauty_logo", "hair&flair"]
     let businesses = ["salon_belleza1", "salon_belleza2", "salon_belleza3","spa_center1","spa_center2"]
     let someBusinesses = ["salon_belleza3","spa_center1","spa_center2"]

@@ -8,6 +8,7 @@
 import SwiftUI
 
 struct BusinessDetailedView: View {  
+    
     let textImages6: [String:String] =
     ["pedro_profile":"Pedro","mariana_profile":"Mariana G.","maria_jose_profile":"Maria Jose","mariana_paz":"Mariana Paz","tomas_montaña":"Tomas M."]
     let haircuts = ["peinados1", "peinados2", "peinados3","peinados4"]
@@ -193,8 +194,6 @@ struct BusinessDetailedView: View {
                     .background(Color.white)
                     .cornerRadius(12)
                     .shadow(color: Color.black.opacity(0.1), radius: 5, x: 0, y: 2)
-                    
-                    
                     
                 }
                 .padding()

@@ -7,6 +7,15 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		86C3FAE72CC2C75B0053760A /* Business.swift in Sources */ = {isa = PBXBuildFile; fileRef = 86C3FAE62CC2C75B0053760A /* Business.swift */; };
+		86C3FAE92CC2C7E00053760A /* Comment.swift in Sources */ = {isa = PBXBuildFile; fileRef = 86C3FAE82CC2C7E00053760A /* Comment.swift */; };
+		86C3FAEB2CC2C8030053760A /* Employee.swift in Sources */ = {isa = PBXBuildFile; fileRef = 86C3FAEA2CC2C8030053760A /* Employee.swift */; };
+		86C3FAED2CC2C85A0053760A /* Service.swift in Sources */ = {isa = PBXBuildFile; fileRef = 86C3FAEC2CC2C85A0053760A /* Service.swift */; };
+		86C3FAEF2CC2C8830053760A /* Invoice.swift in Sources */ = {isa = PBXBuildFile; fileRef = 86C3FAEE2CC2C8830053760A /* Invoice.swift */; };
+		86C3FAF12CC2C8AF0053760A /* Reservation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 86C3FAF02CC2C8AF0053760A /* Reservation.swift */; };
+		86C3FAF72CC2F6E00053760A /* ExampleVM.swift in Sources */ = {isa = PBXBuildFile; fileRef = 86C3FAF62CC2F6E00053760A /* ExampleVM.swift */; };
+		86C3FAF92CC301E00053760A /* ErrorManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 86C3FAF82CC301E00053760A /* ErrorManager.swift */; };
+		86C3FAFB2CC378180053760A /* viewwww.swift in Sources */ = {isa = PBXBuildFile; fileRef = 86C3FAFA2CC378180053760A /* viewwww.swift */; };
 		86CE7ACC2CB1CED500C5F207 /* LogInView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 86CE7ACB2CB1CED500C5F207 /* LogInView.swift */; };
 		86CE7ACF2CB1D1BD00C5F207 /* AppColors.swift in Sources */ = {isa = PBXBuildFile; fileRef = 86CE7ACE2CB1D1BD00C5F207 /* AppColors.swift */; };
 		86CE7AD12CB235DC00C5F207 /* SignInView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 86CE7AD02CB235DC00C5F207 /* SignInView.swift */; };
@@ -67,6 +76,15 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		86C3FAE62CC2C75B0053760A /* Business.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Business.swift; sourceTree = "<group>"; };
+		86C3FAE82CC2C7E00053760A /* Comment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Comment.swift; sourceTree = "<group>"; };
+		86C3FAEA2CC2C8030053760A /* Employee.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Employee.swift; sourceTree = "<group>"; };
+		86C3FAEC2CC2C85A0053760A /* Service.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Service.swift; sourceTree = "<group>"; };
+		86C3FAEE2CC2C8830053760A /* Invoice.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Invoice.swift; sourceTree = "<group>"; };
+		86C3FAF02CC2C8AF0053760A /* Reservation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Reservation.swift; sourceTree = "<group>"; };
+		86C3FAF62CC2F6E00053760A /* ExampleVM.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExampleVM.swift; sourceTree = "<group>"; };
+		86C3FAF82CC301E00053760A /* ErrorManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ErrorManager.swift; sourceTree = "<group>"; };
+		86C3FAFA2CC378180053760A /* viewwww.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = viewwww.swift; sourceTree = "<group>"; };
 		86CE7ACB2CB1CED500C5F207 /* LogInView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LogInView.swift; sourceTree = "<group>"; };
 		86CE7ACE2CB1D1BD00C5F207 /* AppColors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppColors.swift; sourceTree = "<group>"; };
 		86CE7AD02CB235DC00C5F207 /* SignInView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignInView.swift; sourceTree = "<group>"; };
@@ -139,23 +157,48 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		86CE7AC82CB1CEAD00C5F207 /* Views */ = {
+		86C3FAF22CC2C8E90053760A /* Registration */ = {
 			isa = PBXGroup;
 			children = (
-				86F362BA2CB2F8FE00E6C2BA /* Cards */,
 				86CE7AD02CB235DC00C5F207 /* SignInView.swift */,
 				86CE7ACB2CB1CED500C5F207 /* LogInView.swift */,
 				86CE7AD32CB23A9100C5F207 /* ForgotPasswordView.swift */,
 				86CE7AD52CB23AA300C5F207 /* ResetPasswordView.swift */,
+			);
+			path = Registration;
+			sourceTree = "<group>";
+		};
+		86C3FAF32CC2C91A0053760A /* Profile */ = {
+			isa = PBXGroup;
+			children = (
+				86CE7AE32CB24DDB00C5F207 /* ProfileView.swift */,
+				86CE7AE52CB24F8100C5F207 /* FavouritesView.swift */,
+			);
+			path = Profile;
+			sourceTree = "<group>";
+		};
+		86C3FAF42CC2C9230053760A /* Map */ = {
+			isa = PBXGroup;
+			children = (
 				86CE7AD72CB23CB600C5F207 /* HomeView.swift */,
 				86CE7ADB2CB2486400C5F207 /* ServiceListView.swift */,
 				86CE7ADD2CB2492500C5F207 /* ServiceDetailedView.swift */,
 				86CE7ADF2CB24A7400C5F207 /* PaymentView.swift */,
-				86CE7AE32CB24DDB00C5F207 /* ProfileView.swift */,
-				86CE7AE52CB24F8100C5F207 /* FavouritesView.swift */,
 				86E953C42CB4D52500DDE635 /* MapView.swift */,
 				86E953C32CB4D52500DDE635 /* LocationSearchView.swift */,
 				86E953D22CB4F86C00DDE635 /* BusinessDetailedView.swift */,
+			);
+			path = Map;
+			sourceTree = "<group>";
+		};
+		86CE7AC82CB1CEAD00C5F207 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				86C3FAF42CC2C9230053760A /* Map */,
+				86C3FAF32CC2C91A0053760A /* Profile */,
+				86C3FAF22CC2C8E90053760A /* Registration */,
+				86F362BA2CB2F8FE00E6C2BA /* Cards */,
+				86C3FAFA2CC378180053760A /* viewwww.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -164,6 +207,7 @@
 			isa = PBXGroup;
 			children = (
 				86E953BD2CB4D4D500DDE635 /* LocationSearchViewModel.swift */,
+				86C3FAF62CC2F6E00053760A /* ExampleVM.swift */,
 			);
 			path = ViewModels;
 			sourceTree = "<group>";
@@ -174,6 +218,12 @@
 				86E953BF2CB4D4F700DDE635 /* Location.swift */,
 				86CE7AE12CB24B6900C5F207 /* Payment.swift */,
 				86E953D62CB4FF6500DDE635 /* Review.swift */,
+				86C3FAE62CC2C75B0053760A /* Business.swift */,
+				86C3FAE82CC2C7E00053760A /* Comment.swift */,
+				86C3FAEA2CC2C8030053760A /* Employee.swift */,
+				86C3FAEC2CC2C85A0053760A /* Service.swift */,
+				86C3FAEE2CC2C8830053760A /* Invoice.swift */,
+				86C3FAF02CC2C8AF0053760A /* Reservation.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -188,6 +238,7 @@
 				86CE7AD92CB243A700C5F207 /* Tabvar.swift */,
 				86F362C52CB3687C00E6C2BA /* MapRepresentable.swift */,
 				86F362C72CB368F100E6C2BA /* AppState.swift */,
+				86C3FAF82CC301E00053760A /* ErrorManager.swift */,
 			);
 			path = Utilities;
 			sourceTree = "<group>";
@@ -407,12 +458,16 @@
 				86F362C62CB3687C00E6C2BA /* MapRepresentable.swift in Sources */,
 				86CE7AE02CB24A7400C5F207 /* PaymentView.swift in Sources */,
 				86E953CC2CB4D54A00DDE635 /* SearchBar.swift in Sources */,
+				86C3FAF92CC301E00053760A /* ErrorManager.swift in Sources */,
+				86C3FAF72CC2F6E00053760A /* ExampleVM.swift in Sources */,
+				86C3FAEB2CC2C8030053760A /* Employee.swift in Sources */,
 				86CE7ACC2CB1CED500C5F207 /* LogInView.swift in Sources */,
 				86E953C52CB4D52500DDE635 /* LocationSearchView.swift in Sources */,
 				86E953C02CB4D4F700DDE635 /* Location.swift in Sources */,
 				86CE7ACF2CB1D1BD00C5F207 /* AppColors.swift in Sources */,
 				86E79A172C8FD75A0011EBE0 /* ContentView.swift in Sources */,
 				86CE7AD62CB23AA300C5F207 /* ResetPasswordView.swift in Sources */,
+				86C3FAED2CC2C85A0053760A /* Service.swift in Sources */,
 				86E953D72CB4FF6500DDE635 /* Review.swift in Sources */,
 				86F362B92CB2F88500E6C2BA /* IconTextView.swift in Sources */,
 				86CE7ADE2CB2492500C5F207 /* ServiceDetailedView.swift in Sources */,
@@ -420,6 +475,7 @@
 				86F362C22CB3051100E6C2BA /* ProfileCardView.swift in Sources */,
 				86CE7AE22CB24B6900C5F207 /* Payment.swift in Sources */,
 				86CE7AD82CB23CB600C5F207 /* HomeView.swift in Sources */,
+				86C3FAE92CC2C7E00053760A /* Comment.swift in Sources */,
 				86E953D92CB5031600DDE635 /* BusinessSelectedCard.swift in Sources */,
 				86E953CA2CB4D54300DDE635 /* OptionsButton.swift in Sources */,
 				86F362C02CB2FF7800E6C2BA /* ServiceCardView.swift in Sources */,
@@ -429,10 +485,14 @@
 				86E953D52CB4FEA600DDE635 /* ReviewCard.swift in Sources */,
 				86E953D32CB4F86C00DDE635 /* BusinessDetailedView.swift in Sources */,
 				86F362C82CB368F100E6C2BA /* AppState.swift in Sources */,
+				86C3FAF12CC2C8AF0053760A /* Reservation.swift in Sources */,
 				86CE7ADA2CB243A700C5F207 /* Tabvar.swift in Sources */,
 				86CE7AE42CB24DDB00C5F207 /* ProfileView.swift in Sources */,
 				86E953C82CB4D53E00DDE635 /* LocationService.swift in Sources */,
 				86F362BE2CB2F98000E6C2BA /* IconRectangleView.swift in Sources */,
+				86C3FAE72CC2C75B0053760A /* Business.swift in Sources */,
+				86C3FAFB2CC378180053760A /* viewwww.swift in Sources */,
+				86C3FAEF2CC2C8830053760A /* Invoice.swift in Sources */,
 				86CE7AE62CB24F8100C5F207 /* FavouritesView.swift in Sources */,
 				86CE7AD12CB235DC00C5F207 /* SignInView.swift in Sources */,
 			);

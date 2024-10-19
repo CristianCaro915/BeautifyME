@@ -70,7 +70,7 @@ struct ServiceCardView: View {
             }
         }
         .padding()
-        .background(Color(UIColor.systemGray6))
+        .background(AppColors.white)
         .cornerRadius(10)
         .shadow(radius: 2)
     }

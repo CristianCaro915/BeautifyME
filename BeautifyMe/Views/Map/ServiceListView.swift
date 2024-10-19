@@ -29,7 +29,7 @@ struct ServiceListView: View {
                 
                 // Sección de cards
                 ScrollView {
-                    VStack(spacing: 16) {
+                    VStack() {
                         ServiceCardView(imageName: "peinados1", title: "Woman Blunt Cut", price: "$50", duration: "2 hours", discount: "-20%", description: "A blunt cut bob is a shorter hairstyle.", iconButton: "plus.circle")
                         
                         ServiceCardView(imageName: "peinados2", title: "Bob/ Lob Cut", price: "$55", duration: "1.5 hours", discount: "-20%", description: "Lob haircut is a women's hairstyle.", iconButton: "plus.circle")
