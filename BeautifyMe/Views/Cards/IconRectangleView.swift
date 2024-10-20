@@ -11,15 +11,20 @@ struct IconRectangleView: View {
     let image: String
     
     var body: some View {
-        Image(image)
-            .resizable()
-            .aspectRatio(contentMode: .fit)
-            .frame(width: 200, height: 120)
-            .cornerRadius(10)
-            .overlay(Rectangle().stroke(Color.gray, lineWidth: 2))
+        if let iconURL = URL(string: "http://localhost:1337"+image) {
+            AsyncImage(url: iconURL) { image in
+                image.resizable()
+                    .frame(width: 200, height: 120)
+                    .aspectRatio(contentMode: .fit)
+                    .cornerRadius(10)
+                    .overlay(Rectangle().stroke(Color.gray, lineWidth: 2))
+            } placeholder: {
+                ProgressView()
+            }
+        }
     }
 }
 
 #Preview {
-    IconRectangleView(image: "salon_belleza1")
+    IconRectangleView(image: "/uploads/spa_center1_a90222483a.jpeg")
 }

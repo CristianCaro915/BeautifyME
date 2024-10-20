@@ -10,8 +10,8 @@ import SwiftUI
 enum Tab: Hashable {
     case home
     case services
-    case activity
-    case account
+    case calendar
+    case profile
 }
 
 struct Tabvar: View {
@@ -48,14 +48,14 @@ struct Tabvar: View {
                 Image(systemName: "calendar")
                 Text("Calendar")
             }
-            .tag(Tab.activity)
+            .tag(Tab.calendar)
             
             ProfileView()
             .tabItem {
                 Image(systemName: "person.fill")
                 Text("Profile")
             }
-            .tag(Tab.account)
+            .tag(Tab.profile)
         }
         .accentColor(AppColors.darkBlue)
         

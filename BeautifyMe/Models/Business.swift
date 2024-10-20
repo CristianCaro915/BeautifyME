@@ -7,11 +7,12 @@
 
 import Foundation
 
-struct Business: Hashable, Decodable{
+struct Business: Hashable, Decodable, Identifiable{
+    let id: Int
     let name: String
     let category: String
     let description: String
-    let images: [URL]
+    let images: [String]
     let latitude: String
     let longitude: String
 }

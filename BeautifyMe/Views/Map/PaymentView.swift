@@ -70,7 +70,7 @@ struct PaymentView: View {
             }
             .padding()
         }
-        
+        .background(Color(.white).ignoresSafeArea())
         //ends vstack
     }
 }

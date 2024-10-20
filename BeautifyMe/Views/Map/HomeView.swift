@@ -8,15 +8,10 @@
 import SwiftUI
 
 struct HomeView: View {
-    
+    @StateObject private var viewModel = ExampleVM()
+    @EnvironmentObject var sessionManager: SessionManager
     
     let salons = ["chickens_beauty_logo", "hair&flair"]
-    let businesses = ["salon_belleza1", "salon_belleza2", "salon_belleza3","spa_center1","spa_center2"]
-    let someBusinesses = ["salon_belleza3","spa_center1","spa_center2"]
-    let desired: [String:String] =
-    ["hair_cut_woman_service":"hair cut","manicure_service":"manicure","spa_service":"spa","pedicire_logo":"pedicure"]
-    let services: [String:String] =
-    ["barber_service":"barber","hair_cut_woman_service":"hair cut","hair_polish_service":"hair polish","manicure_service":"manicure","spa_service":"spa","pedicire_logo":"pedicure"]
     
     var body: some View {
         ScrollView{
@@ -24,7 +19,7 @@ struct HomeView: View {
                 // Header with user name
                 HStack {
                     VStack(alignment: .leading, spacing: 5) {
-                        Text("Hello, Samantha")
+                        Text(sessionManager.user?.username ?? "User")
                             .font(.title)
                             .fontWeight(.bold)
                         Text("Find the service you want, and treat yourself")
@@ -52,10 +47,13 @@ struct HomeView: View {
                     ScrollView(.horizontal, showsIndicators: false) {
                         HStack(spacing: 20) {
                             // services listed
-                            ForEach(Array(services.keys), id: \.self) { key in
-                                if let value = services[key] {
-                                    IconTextView(image: key, title: value)
-                                }
+                            ForEach(viewModel.services, id: \.self) { service in
+                                IconTextView(imageURL: service.icon, title: service.name)
+                                    .onTapGesture {
+                                        // Almacena el negocio seleccionado
+                                        viewModel.selectedService = service
+                                        print("Negocio seleccionado: \(service.name)")
+                                    }
                             }
                         }
                         .padding(.horizontal)
@@ -95,8 +93,13 @@ struct HomeView: View {
                     ScrollView(.horizontal, showsIndicators: false) {
                         HStack(spacing: 16) {
                             // featured businesses
-                            ForEach(businesses, id: \.self) { image in
-                                IconRectangleView(image: image)
+                            ForEach(viewModel.businesses, id: \.self) { business in
+                                IconRectangleView(image: business.images[0])
+                                    .onTapGesture {
+                                        // Almacena el negocio seleccionado
+                                        viewModel.selectedBusiness = business
+                                        print("Negocio seleccionado: \(business.name)")
+                                    }
                             }
                         }
                         .padding(.horizontal)
@@ -115,10 +118,13 @@ struct HomeView: View {
                     ScrollView(.horizontal, showsIndicators: false) {
                         HStack(spacing: 20) {
                             // services
-                            ForEach(Array(desired.keys), id: \.self) { key in
-                                if let value = desired[key] {
-                                    IconTextView(image: key, title: value)
-                                }
+                            ForEach(viewModel.services, id: \.self) { service in
+                                IconTextView(imageURL: service.icon, title: service.name)
+                                    .onTapGesture {
+                                        // Almacena el negocio seleccionado
+                                        viewModel.selectedService = service
+                                        print("Negocio seleccionado: \(service.name)")
+                                    }
                             }
                         }
                         .padding(.horizontal)
@@ -140,8 +146,13 @@ struct HomeView: View {
                     ScrollView(.horizontal, showsIndicators: false) {
                         HStack(spacing: 16) {
                             // salons
-                            ForEach(someBusinesses, id: \.self) { image in
-                                IconRectangleView(image: image)
+                            ForEach(viewModel.businesses, id: \.self) { business in
+                                IconRectangleView(image: business.images[0])
+                                    .onTapGesture {
+                                        // Almacena el negocio seleccionado
+                                        viewModel.selectedBusiness = business
+                                        print("Negocio seleccionado: \(business.name)")
+                                    }
                             }
                         }
                         .padding(.horizontal)
@@ -150,8 +161,9 @@ struct HomeView: View {
                 Spacer()
             }
             .padding(.top, 20)
-            .background(Color(UIColor.systemBackground))
+            .background(Color(.white).ignoresSafeArea())
         }
+        .background(Color(.white).ignoresSafeArea())
     }
 }
 

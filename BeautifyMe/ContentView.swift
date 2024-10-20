@@ -8,17 +8,24 @@
 import SwiftUI
 
 struct ContentView: View {
+    @EnvironmentObject var sessionManager: SessionManager
+    
+    
     var body: some View {
         VStack {
-            Image(systemName: "globe")
-                .imageScale(.large)
-                .foregroundStyle(.tint)
-            Text("Hello, world!")
+            if sessionManager.isAuthenticated {
+                Tabvar() // Vista que se muestra si el usuario está autenticado
+            } else {
+                LogInView() // Vista de login si el usuario no está autenticado
+            }
         }
-        .padding()
+        .animation(.easeInOut, value: sessionManager.isAuthenticated)
+        .transition(.slide)
     }
 }
 
+/*
 #Preview {
     ContentView()
 }
+ */

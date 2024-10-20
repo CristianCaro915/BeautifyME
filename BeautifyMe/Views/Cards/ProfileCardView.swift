@@ -8,6 +8,8 @@
 import SwiftUI
 
 struct ProfileCardView: View {
+    @EnvironmentObject var sessionManager: SessionManager
+    
     var iconName: String
     var title: String
     var subtitle: String
@@ -31,7 +33,13 @@ struct ProfileCardView: View {
             Spacer()
             
             Button(action: {
-                // Acción para día siguiente
+                //Change for enum with case values for every opening
+                if title == "LogOut"{
+                    print(sessionManager.isAuthenticated)
+                    print("MUST LOG OUT")
+                    sessionManager.logoutUser()
+                    print(sessionManager.isAuthenticated)
+                }
             }) {
                 Image(systemName: "chevron.right")
                     .foregroundColor(AppColors.darkBlue)

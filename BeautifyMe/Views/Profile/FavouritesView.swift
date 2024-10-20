@@ -69,7 +69,7 @@ struct BusinessCardView: View {
             }
         }
         .padding()
-        .background(AppColors.darkWhite)
+        .background(Color(.white).ignoresSafeArea())
         .cornerRadius(10)
         .shadow(radius: 2)
     }

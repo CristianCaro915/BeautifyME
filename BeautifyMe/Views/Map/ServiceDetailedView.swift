@@ -8,6 +8,7 @@
 import SwiftUI
 
 struct ServiceDetailedView: View {
+    @StateObject private var viewModel = ExampleVM()
     @State private var selectedDate = "10"
     @State private var selectedTime = "10:00 AM"
     @State private var notes = ""
@@ -24,10 +25,8 @@ struct ServiceDetailedView: View {
                     ScrollView(.horizontal, showsIndicators: false) {
                         HStack(spacing: 16) {
                             // professionals
-                            ForEach(Array(textImages6.keys), id: \.self) { key in
-                                if let value = textImages6[key] {
-                                    IconTextView(image: key, title: value)
-                                }
+                            ForEach(viewModel.services, id: \.self) { service in
+                                IconTextView(imageURL: service.icon, title: service.name)
                             }
                         }
                         .padding(.horizontal)
@@ -130,7 +129,7 @@ struct ServiceDetailedView: View {
                 .padding(.bottom, 20)
             }
             .padding(.leading)
-            .background(Color(UIColor.systemBackground))
+            .background(Color(.white).ignoresSafeArea())
         }
 }
 

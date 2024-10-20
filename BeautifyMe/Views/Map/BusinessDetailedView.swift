@@ -8,6 +8,7 @@
 import SwiftUI
 
 struct BusinessDetailedView: View {  
+    @StateObject private var viewModel = ExampleVM()
     
     let textImages6: [String:String] =
     ["pedro_profile":"Pedro","mariana_profile":"Mariana G.","maria_jose_profile":"Maria Jose","mariana_paz":"Mariana Paz","tomas_montaña":"Tomas M."]
@@ -110,9 +111,9 @@ struct BusinessDetailedView: View {
                         .padding()
                     ScrollView {
                         VStack(spacing: 16) {
-                            ServiceCardView(imageName: "peinados1", title: "Woman Blunt Cut", price: "$50", duration: "2 hours", discount: "-20%", description: "A blunt cut bob is a shorter hairstyle.", iconButton: "plus.circle")
-                            
-                            ServiceCardView(imageName: "peinados2", title: "Bob/ Lob Cut", price: "$55", duration: "1.5 hours", discount: "-20%", description: "Lob haircut is a women's hairstyle.", iconButton: "plus.circle")
+                            ForEach(viewModel.services, id: \.self) { service in
+                                ServiceCardView(imageName: service.icon, title: service.name, price: service.price, duration: "2 hours", discount: "-20%", description: service.description, iconButton: "plus.circle")
+                            }
                             
                             
                         }
@@ -158,10 +159,8 @@ struct BusinessDetailedView: View {
                     ScrollView(.horizontal, showsIndicators: false) {
                         HStack(spacing: 16) {
                             // professionals
-                            ForEach(Array(textImages6.keys), id: \.self) { key in
-                                if let value = textImages6[key] {
-                                    IconTextView(image: key, title: value)
-                                }
+                            ForEach(viewModel.services, id: \.self) { service in
+                                IconTextView(imageURL: service.icon, title: service.name)
                             }
                         }
                         .padding(.horizontal)
@@ -181,8 +180,6 @@ struct BusinessDetailedView: View {
                     .padding()
                     
                     VStack(alignment: .leading, spacing: 16) {
-                        
-                        
                         ForEach(reviews) { review in
                             ReviewCard(review: review)
                             if review.id != reviews.last?.id {
@@ -199,6 +196,7 @@ struct BusinessDetailedView: View {
                 .padding()
             }
         }
+        .background(Color(.white).ignoresSafeArea())
         .edgesIgnoringSafeArea(.top)
     }
 }

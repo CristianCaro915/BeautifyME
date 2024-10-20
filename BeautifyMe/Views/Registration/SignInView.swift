@@ -36,6 +36,8 @@ struct SignInView: View {
                         .padding(10)
                     TextField("Name", text: $email)
                         .padding()
+                        .background(Color.white)
+                        .foregroundColor(.black)
                 }
                 .overlay(RoundedRectangle(cornerRadius: 10).stroke(AppColors.mediumGrey, lineWidth: 1))
             }
@@ -48,6 +50,8 @@ struct SignInView: View {
                         .padding(10)
                     TextField("Email adress", text: $email)
                         .padding()
+                        .background(Color.white) 
+                        .foregroundColor(.black)
                 }
                 .overlay(RoundedRectangle(cornerRadius: 10).stroke(AppColors.mediumGrey, lineWidth: 1))
             }

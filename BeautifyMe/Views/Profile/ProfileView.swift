@@ -8,19 +8,28 @@
 import SwiftUI
 
 struct ProfileView: View {
+    @EnvironmentObject var sessionManager: SessionManager
+    
+    
     var body: some View {
         VStack(spacing: 20) {
             // Primera Sección: Información del usuario
             HStack{
-                Image("juanita_profile")
-                    .resizable()
-                    .aspectRatio(contentMode: .fit)
-                    .frame(width: 100, height: 90)
-                    .cornerRadius(30)
-                    .padding(.leading)
+                if let iconURL = URL(string: "http://localhost:1337"+sessionManager.user!.imageURL) {
+                    AsyncImage(url: iconURL) { image in
+                        image.resizable()
+                            .aspectRatio(contentMode: .fit)
+                            .frame(width: 100, height: 90)
+                            .cornerRadius(30)
+                            .padding(.leading)
+                    } placeholder: {
+                        ProgressView()
+                    }
+                }
+                
                 VStack{
                     HStack{
-                        Text("Juanita Carrascal")
+                        Text(sessionManager.user?.username ?? "User")
                             .font(.title2)
                             .bold()
                         Spacer()
@@ -41,7 +50,7 @@ struct ProfileView: View {
                         Spacer()
                     }
                     HStack{
-                        Text("j.carrasca@gmail.com")
+                        Text(sessionManager.user?.email ?? "none@none.com")
                             .font(.footnote)
                         Spacer()
                     }
@@ -60,7 +69,7 @@ struct ProfileView: View {
             
             Spacer()
         }
-        .background(AppColors.white)
+        .background(Color(.white).ignoresSafeArea())
         .padding(.top, 40)
     }
 }

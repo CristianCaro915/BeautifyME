@@ -10,7 +10,7 @@ import SwiftUI
 struct ServiceCardView: View {
     var imageName: String
     var title: String
-    var price: String
+    var price: Int
     var duration: String
     var discount: String
     var description: String
@@ -19,11 +19,16 @@ struct ServiceCardView: View {
     var body: some View {
         HStack {
             // Imagen de la izquierda
-            Image(imageName)
-                .resizable()
-                .aspectRatio(contentMode: .fit)
-                .frame(width: 80, height: 100)
-                .cornerRadius(10)
+            if let iconURL = URL(string: "http://localhost:1337"+imageName) {
+                AsyncImage(url: iconURL) { image in
+                    image.resizable()
+                        .aspectRatio(contentMode: .fit)
+                        .frame(width: 80, height: 100)
+                        .cornerRadius(10)
+                } placeholder: {
+                    ProgressView()
+                }
+            }
             
             // Información del servicio
             VStack(alignment: .leading, spacing: 5) {
@@ -40,7 +45,7 @@ struct ServiceCardView: View {
                     }
                 }
                 HStack{
-                    Text(price)
+                    Text("$\(price)")
                         .font(.subheadline)
                         .foregroundColor(AppColors.darkBlue)
                     Text("-")
@@ -77,5 +82,5 @@ struct ServiceCardView: View {
 }
 
 #Preview {
-    ServiceCardView(imageName: "peinados1", title: "Bob/ Lob Cut", price: "$55", duration: "1.5 hours", discount: "-20%", description: "Lob haircut is a women's hairstyle.", iconButton: "plus.circle")
+    ServiceCardView(imageName: "/uploads/barber_service_6c2bcb6a56.jpeg", title: "Bob/ Lob Cut", price: 2000, duration: "1.5 hours", discount: "-20%", description: "Lob haircut is a women's hairstyle.", iconButton: "plus.circle")
 }
