@@ -8,6 +8,8 @@
 import SwiftUI
 
 struct HomeView: View {
+    @State private var navigateBusinessDetail = false
+    @State private var navigateServiceSearch = false
     @StateObject private var viewModel = ExampleVM()
     @EnvironmentObject var sessionManager: SessionManager
     
@@ -51,8 +53,8 @@ struct HomeView: View {
                                 IconTextView(imageURL: service.icon, title: service.name)
                                     .onTapGesture {
                                         // Almacena el negocio seleccionado
-                                        viewModel.selectedService = service
-                                        print("Negocio seleccionado: \(service.name)")
+                                        sessionManager.serviceSelected = service
+                                        print("Servicio seleccionado: \(service.name)")
                                     }
                             }
                         }
@@ -70,8 +72,13 @@ struct HomeView: View {
                     ScrollView(.horizontal, showsIndicators: false) {
                         HStack(spacing: 16) {
                             // businesses
-                            ForEach(salons, id: \.self) { image in
-                                IconAloneView(image: image)
+                            ForEach(viewModel.businesses, id: \.self) { business in
+                                IconAloneView(image: business.logo)
+                                    .onTapGesture {
+                                        // Almacena el negocio seleccionado
+                                        sessionManager.businessSelected = business
+                                        print("Servicio seleccionado: \(business.name)")
+                                    }
                             }
                         }
                         .padding(.horizontal)
@@ -97,8 +104,9 @@ struct HomeView: View {
                                 IconRectangleView(image: business.images[0])
                                     .onTapGesture {
                                         // Almacena el negocio seleccionado
-                                        viewModel.selectedBusiness = business
+                                        sessionManager.businessSelected = business
                                         print("Negocio seleccionado: \(business.name)")
+                                        navigateBusinessDetail = true
                                     }
                             }
                         }
@@ -122,8 +130,9 @@ struct HomeView: View {
                                 IconTextView(imageURL: service.icon, title: service.name)
                                     .onTapGesture {
                                         // Almacena el negocio seleccionado
-                                        viewModel.selectedService = service
-                                        print("Negocio seleccionado: \(service.name)")
+                                        sessionManager.serviceSelected = service
+                                        print("Servicio seleccionado: \(service.name)")
+                                        navigateServiceSearch = true
                                     }
                             }
                         }
@@ -150,7 +159,7 @@ struct HomeView: View {
                                 IconRectangleView(image: business.images[0])
                                     .onTapGesture {
                                         // Almacena el negocio seleccionado
-                                        viewModel.selectedBusiness = business
+                                        sessionManager.businessSelected = business
                                         print("Negocio seleccionado: \(business.name)")
                                     }
                             }
@@ -164,9 +173,13 @@ struct HomeView: View {
             .background(Color(.white).ignoresSafeArea())
         }
         .background(Color(.white).ignoresSafeArea())
+        .fullScreenCover(isPresented: $navigateBusinessDetail) {
+            BusinessDetailedView() // This presents the BusinessDetailedView component in full-screen mode
+        }
     }
 }
-
-#Preview {
-    HomeView()
-}
+/*
+ #Preview {
+ HomeView()
+ }
+ */

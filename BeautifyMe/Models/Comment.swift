@@ -7,6 +7,9 @@
 
 import Foundation
 struct Comment{
+    let id: Int
     let description: String
     let rating: Int64
+    let commenterName: String
+    let commenterImage: String
 }

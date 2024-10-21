@@ -12,6 +12,8 @@ class SessionManager: ObservableObject {
     @Published var userMail: String?
     @Published var userID: Int?
     @Published var users: [User] = []
+    @Published var businessSelected: Business?
+    @Published var serviceSelected: Service?
     
     static let shared = SessionManager()
     
@@ -64,6 +66,7 @@ class SessionManager: ObservableObject {
                                 self?.userID = userID // Guarda el ID del usuario
                                 //print("ID del usuario encontrado: \(userID)")
                                 self?.fetchUsers()
+                                //print("Fetching users....")
                             }
                             return
                         }
@@ -77,7 +80,7 @@ class SessionManager: ObservableObject {
     }
     
     func fetchUsers() {
-            let urlString = "http://localhost:1337/api/users?populate[profile_photo][fields]=url&fields[0]=id&fields[1]=username&fields[2]=email&populate[role][fields]=name"
+            let urlString = "http://localhost:1337/api/users?populate[profile_photo][fields]=url&fields[0]=id&fields[1]=username&fields[2]=email&fields[3]=phone&populate[role][fields]=name"
             guard let url = URL(string: urlString) else {
                 print("URL no válida.")
                 return
@@ -106,6 +109,7 @@ class SessionManager: ObservableObject {
                                 guard let id = dict["id"] as? Int,
                                       let username = dict["username"] as? String,
                                       let email = dict["email"] as? String,
+                                      let phone = dict["phone"] as? String,
                                       let roleDict = dict["role"] as? [String: Any],
                                       let roleName = roleDict["name"] as? String,
                                       let profilePhoto = dict["profile_photo"] as? [String: Any],
@@ -113,9 +117,12 @@ class SessionManager: ObservableObject {
                                     return nil
                                 }
                                 // Crear el objeto User
-                                return User(id: id, username: username, email: email, role: roleName, imageURL: imageUrl)
+                                return User(id: id, username: username, email: email, phone: phone, role: roleName, imageURL: imageUrl)
                             }
                             self?.searchUser()
+                            
+                            //print("USERS PRINT")
+                            //print(self?.users)
                         }
                     }
                     

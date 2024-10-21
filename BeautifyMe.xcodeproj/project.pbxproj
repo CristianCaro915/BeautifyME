@@ -15,7 +15,11 @@
 		86C3FAF12CC2C8AF0053760A /* Reservation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 86C3FAF02CC2C8AF0053760A /* Reservation.swift */; };
 		86C3FAF72CC2F6E00053760A /* ExampleVM.swift in Sources */ = {isa = PBXBuildFile; fileRef = 86C3FAF62CC2F6E00053760A /* ExampleVM.swift */; };
 		86C3FAF92CC301E00053760A /* ErrorManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 86C3FAF82CC301E00053760A /* ErrorManager.swift */; };
-		86C3FAFB2CC378180053760A /* viewwww.swift in Sources */ = {isa = PBXBuildFile; fileRef = 86C3FAFA2CC378180053760A /* viewwww.swift */; };
+		86CE5B4D2CC5709D00EE0D7A /* SignInViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 86CE5B4C2CC5709D00EE0D7A /* SignInViewModel.swift */; };
+		86CE5B502CC570C300EE0D7A /* LogInViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 86CE5B4E2CC570C300EE0D7A /* LogInViewModel.swift */; };
+		86CE5B512CC570C300EE0D7A /* BusinessDetailViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 86CE5B4F2CC570C300EE0D7A /* BusinessDetailViewModel.swift */; };
+		86CE5B532CC570CC00EE0D7A /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = 86CE5B522CC570CC00EE0D7A /* User.swift */; };
+		86CE5B552CC570D300EE0D7A /* SessionManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 86CE5B542CC570D300EE0D7A /* SessionManager.swift */; };
 		86CE7ACC2CB1CED500C5F207 /* LogInView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 86CE7ACB2CB1CED500C5F207 /* LogInView.swift */; };
 		86CE7ACF2CB1D1BD00C5F207 /* AppColors.swift in Sources */ = {isa = PBXBuildFile; fileRef = 86CE7ACE2CB1D1BD00C5F207 /* AppColors.swift */; };
 		86CE7AD12CB235DC00C5F207 /* SignInView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 86CE7AD02CB235DC00C5F207 /* SignInView.swift */; };
@@ -84,7 +88,11 @@
 		86C3FAF02CC2C8AF0053760A /* Reservation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Reservation.swift; sourceTree = "<group>"; };
 		86C3FAF62CC2F6E00053760A /* ExampleVM.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExampleVM.swift; sourceTree = "<group>"; };
 		86C3FAF82CC301E00053760A /* ErrorManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ErrorManager.swift; sourceTree = "<group>"; };
-		86C3FAFA2CC378180053760A /* viewwww.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = viewwww.swift; sourceTree = "<group>"; };
+		86CE5B4C2CC5709D00EE0D7A /* SignInViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SignInViewModel.swift; sourceTree = "<group>"; };
+		86CE5B4E2CC570C300EE0D7A /* LogInViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LogInViewModel.swift; sourceTree = "<group>"; };
+		86CE5B4F2CC570C300EE0D7A /* BusinessDetailViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BusinessDetailViewModel.swift; sourceTree = "<group>"; };
+		86CE5B522CC570CC00EE0D7A /* User.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
+		86CE5B542CC570D300EE0D7A /* SessionManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SessionManager.swift; sourceTree = "<group>"; };
 		86CE7ACB2CB1CED500C5F207 /* LogInView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LogInView.swift; sourceTree = "<group>"; };
 		86CE7ACE2CB1D1BD00C5F207 /* AppColors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppColors.swift; sourceTree = "<group>"; };
 		86CE7AD02CB235DC00C5F207 /* SignInView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignInView.swift; sourceTree = "<group>"; };
@@ -198,7 +206,6 @@
 				86C3FAF32CC2C91A0053760A /* Profile */,
 				86C3FAF22CC2C8E90053760A /* Registration */,
 				86F362BA2CB2F8FE00E6C2BA /* Cards */,
-				86C3FAFA2CC378180053760A /* viewwww.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -206,7 +213,10 @@
 		86CE7AC92CB1CEB500C5F207 /* ViewModels */ = {
 			isa = PBXGroup;
 			children = (
+				86CE5B4F2CC570C300EE0D7A /* BusinessDetailViewModel.swift */,
+				86CE5B4E2CC570C300EE0D7A /* LogInViewModel.swift */,
 				86E953BD2CB4D4D500DDE635 /* LocationSearchViewModel.swift */,
+				86CE5B4C2CC5709D00EE0D7A /* SignInViewModel.swift */,
 				86C3FAF62CC2F6E00053760A /* ExampleVM.swift */,
 			);
 			path = ViewModels;
@@ -215,6 +225,7 @@
 		86CE7ACA2CB1CEBE00C5F207 /* Models */ = {
 			isa = PBXGroup;
 			children = (
+				86CE5B522CC570CC00EE0D7A /* User.swift */,
 				86E953BF2CB4D4F700DDE635 /* Location.swift */,
 				86CE7AE12CB24B6900C5F207 /* Payment.swift */,
 				86E953D62CB4FF6500DDE635 /* Review.swift */,
@@ -239,6 +250,7 @@
 				86F362C52CB3687C00E6C2BA /* MapRepresentable.swift */,
 				86F362C72CB368F100E6C2BA /* AppState.swift */,
 				86C3FAF82CC301E00053760A /* ErrorManager.swift */,
+				86CE5B542CC570D300EE0D7A /* SessionManager.swift */,
 			);
 			path = Utilities;
 			sourceTree = "<group>";
@@ -453,6 +465,7 @@
 			files = (
 				86F362C42CB3176600E6C2BA /* PaymentCardView.swift in Sources */,
 				86CE7ADC2CB2486400C5F207 /* ServiceListView.swift in Sources */,
+				86CE5B532CC570CC00EE0D7A /* User.swift in Sources */,
 				86F362BC2CB2F93600E6C2BA /* IconAloneView.swift in Sources */,
 				86E953BE2CB4D4D500DDE635 /* LocationSearchViewModel.swift in Sources */,
 				86F362C62CB3687C00E6C2BA /* MapRepresentable.swift in Sources */,
@@ -464,7 +477,9 @@
 				86CE7ACC2CB1CED500C5F207 /* LogInView.swift in Sources */,
 				86E953C52CB4D52500DDE635 /* LocationSearchView.swift in Sources */,
 				86E953C02CB4D4F700DDE635 /* Location.swift in Sources */,
+				86CE5B552CC570D300EE0D7A /* SessionManager.swift in Sources */,
 				86CE7ACF2CB1D1BD00C5F207 /* AppColors.swift in Sources */,
+				86CE5B4D2CC5709D00EE0D7A /* SignInViewModel.swift in Sources */,
 				86E79A172C8FD75A0011EBE0 /* ContentView.swift in Sources */,
 				86CE7AD62CB23AA300C5F207 /* ResetPasswordView.swift in Sources */,
 				86C3FAED2CC2C85A0053760A /* Service.swift in Sources */,
@@ -481,6 +496,7 @@
 				86F362C02CB2FF7800E6C2BA /* ServiceCardView.swift in Sources */,
 				86E953C22CB4D50100DDE635 /* LocationCell.swift in Sources */,
 				86CE7AD42CB23A9100C5F207 /* ForgotPasswordView.swift in Sources */,
+				86CE5B502CC570C300EE0D7A /* LogInViewModel.swift in Sources */,
 				86E953C62CB4D52500DDE635 /* MapView.swift in Sources */,
 				86E953D52CB4FEA600DDE635 /* ReviewCard.swift in Sources */,
 				86E953D32CB4F86C00DDE635 /* BusinessDetailedView.swift in Sources */,
@@ -491,8 +507,8 @@
 				86E953C82CB4D53E00DDE635 /* LocationService.swift in Sources */,
 				86F362BE2CB2F98000E6C2BA /* IconRectangleView.swift in Sources */,
 				86C3FAE72CC2C75B0053760A /* Business.swift in Sources */,
-				86C3FAFB2CC378180053760A /* viewwww.swift in Sources */,
 				86C3FAEF2CC2C8830053760A /* Invoice.swift in Sources */,
+				86CE5B512CC570C300EE0D7A /* BusinessDetailViewModel.swift in Sources */,
 				86CE7AE62CB24F8100C5F207 /* FavouritesView.swift in Sources */,
 				86CE7AD12CB235DC00C5F207 /* SignInView.swift in Sources */,
 			);

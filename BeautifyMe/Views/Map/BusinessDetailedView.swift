@@ -9,6 +9,8 @@ import SwiftUI
 
 struct BusinessDetailedView: View {  
     @StateObject private var viewModel = ExampleVM()
+    @StateObject private var viewModel2 = BusinessDetailViewModel()
+    @EnvironmentObject var sessionManager: SessionManager
     
     let textImages6: [String:String] =
     ["pedro_profile":"Pedro","mariana_profile":"Mariana G.","maria_jose_profile":"Maria Jose","mariana_paz":"Mariana Paz","tomas_montaña":"Tomas M."]
@@ -198,9 +200,20 @@ struct BusinessDetailedView: View {
         }
         .background(Color(.white).ignoresSafeArea())
         .edgesIgnoringSafeArea(.top)
+        .onAppear{
+            viewModel2.updateCurrentBusiness(from: sessionManager)
+            viewModel2.fetchIdsFromAPI()
+            viewModel2.fetchServices()
+            viewModel2.fetchComments()
+            viewModel2.fetchEmployees()
+            //viewModel2.selectBusinessRelations()
+            
+            
+        }
     }
 }
-
+/*
 #Preview {
     BusinessDetailedView()
 }
+*/

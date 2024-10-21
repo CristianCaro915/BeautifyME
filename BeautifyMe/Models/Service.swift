@@ -11,5 +11,6 @@ struct Service: Decodable, Identifiable, Hashable{
     let name: String
     let description: String
     let price: Int
+    let category: String
     let icon: String
 }

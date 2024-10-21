@@ -6,11 +6,13 @@
 //
 
 import Foundation
+
 struct Employee{
+    let id: Int
     let name: String
     let gender: String
     let mail: String
     let phone: String
-    let earnings: Int64
-    let photo: URL
+    let earnings: Int
+    let photo: String
 }

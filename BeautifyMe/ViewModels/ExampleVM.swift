@@ -9,8 +9,6 @@ import Foundation
 
 @MainActor
 class ExampleVM: ObservableObject {
-    @Published var selectedBusiness: Business?
-    @Published var selectedService: Service?
     @Published var services: [Service] = []
     @Published var businesses: [Business] = []
     
@@ -20,7 +18,7 @@ class ExampleVM: ObservableObject {
         }
     
     func fetchServices() {
-        let endpoint = "http://localhost:1337/api/services?populate[icon][fields]=url&fields[0]=name&fields[1]=description&fields[2]=price"
+        let endpoint = "http://localhost:1337/api/services?populate[icon][fields]=url&fields[0]=name&fields[1]=description&fields[2]=price&fields[3]=category"
 
         guard let url = URL(string: endpoint) else {
             print(ErrorManager.invalidURL)
@@ -58,6 +56,7 @@ class ExampleVM: ObservableObject {
                         name: serviceData.attributes.name,
                         description: serviceData.attributes.description,
                         price: serviceData.attributes.price,
+                        category: serviceData.attributes.category,
                         icon: serviceData.attributes.icon.data.attributes.url
                     )
                 }
@@ -73,7 +72,7 @@ class ExampleVM: ObservableObject {
     }
     
     func fetchBusinesses() {
-        let endpoint = "http://localhost:1337/api/businesses?populate=images&fields[0]=name&fields[1]=category&fields[2]=description&fields[3]=latitude&fields[4]=longitude"
+        let endpoint = "http://localhost:1337/api/businesses?populate[images][fields]=url&populate[gallery][fields]=url&populate[logo][fields]=url&fields[0]=name&fields[1]=category&fields[2]=description&fields[3]=latitude&fields[4]=longitude"
 
         guard let url = URL(string: endpoint) else {
             print(ErrorManager.invalidURL)
@@ -108,15 +107,21 @@ class ExampleVM: ObservableObject {
                     let imageUrls = businessData.attributes.images.data.map { imageData in
                         imageData.attributes.url
                     }
+                    let galletyUrls = businessData.attributes.gallery.data.map{ imageData in
+                        imageData.attributes.url
+                    }
+                    let logoUrl = businessData.attributes.logo.data.attributes.url
                     
                     return Business(
                         id: businessData.id,
                         name: businessData.attributes.name,
                         category: businessData.attributes.category,
                         description: businessData.attributes.description,
-                        images: imageUrls, 
+                        images: imageUrls,
                         latitude: businessData.attributes.latitude,
-                        longitude: businessData.attributes.longitude
+                        longitude: businessData.attributes.longitude,
+                        gallery: galletyUrls,
+                        logo: logoUrl
                     )
                 }
                 
@@ -144,6 +149,7 @@ struct ServiceAttributes: Decodable {
     let name: String
     let description: String
     let price: Int
+    let category: String
     let icon: IconData
 }
 struct IconData: Decodable {
@@ -172,6 +178,8 @@ struct BusinessAtributes: Decodable{
     let category: String
     let description: String
     let images: ImagesData
+    let gallery: GalletyData
+    let logo: LogoData
     let latitude: String
     let longitude: String
 }
@@ -187,4 +195,12 @@ struct ImageData: Decodable{
 
 struct ImageAtributes: Decodable{
     let url: String
+}
+
+struct GalletyData:Decodable{
+    let data: [ImageData]
+}
+
+struct LogoData: Decodable{
+    let data: ImageData
 }

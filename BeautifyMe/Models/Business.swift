@@ -15,4 +15,6 @@ struct Business: Hashable, Decodable, Identifiable{
     let images: [String]
     let latitude: String
     let longitude: String
+    let gallery: [String]
+    let logo: String
 }
