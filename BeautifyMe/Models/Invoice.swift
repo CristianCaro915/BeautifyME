@@ -7,6 +7,7 @@
 
 import Foundation
 struct Invoice{
+    let reservationId: Int // extra attribute to fetch easier
     let paymentDate: Date
-    let totalValue: Int64
+    let totalValue: Int
 }
