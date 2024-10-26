@@ -6,10 +6,10 @@
 //
 
 import Foundation
-struct Comment{
+struct Comment: Hashable, Decodable, Identifiable{
     let id: Int
     let description: String
-    let rating: Int64
+    let rating: Int
     let commenterName: String
     let commenterImage: String
 }

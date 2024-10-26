@@ -14,7 +14,8 @@ struct IconRectangleView: View {
         if let iconURL = URL(string: "http://localhost:1337"+image) {
             AsyncImage(url: iconURL) { image in
                 image.resizable()
-                    .frame(width: 200, height: 120)
+                    .resizable()
+                    .frame(width: 200, height: 140)
                     .aspectRatio(contentMode: .fit)
                     .cornerRadius(10)
                     .overlay(Rectangle().stroke(Color.gray, lineWidth: 2))

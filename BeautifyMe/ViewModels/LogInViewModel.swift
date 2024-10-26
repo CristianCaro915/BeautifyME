@@ -39,6 +39,9 @@ class LogInViewModel: ObservableObject{
         }
     
     private func authenticateUser(identifier: String, password: String, completion: @escaping (Result<String, Error>) -> Void) {
+        // Realizar testing sobre los parámetros de la view
+        
+        
         // Define el endpoint de autenticación de Strapi
         guard let url = URL(string: "http://localhost:1337/api/auth/local") else {
             completion(.failure(NSError(domain: "Invalid URL", code: 400, userInfo: nil)))

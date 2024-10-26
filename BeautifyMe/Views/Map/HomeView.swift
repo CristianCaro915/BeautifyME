@@ -10,10 +10,9 @@ import SwiftUI
 struct HomeView: View {
     @State private var navigateBusinessDetail = false
     @State private var navigateServiceSearch = false
-    @StateObject private var viewModel = ExampleVM()
-    @EnvironmentObject var sessionManager: SessionManager
     
-    let salons = ["chickens_beauty_logo", "hair&flair"]
+    @EnvironmentObject var dataViewModel: DataViewModel
+    @EnvironmentObject var sessionManager: SessionManager
     
     var body: some View {
         ScrollView{
@@ -49,7 +48,7 @@ struct HomeView: View {
                     ScrollView(.horizontal, showsIndicators: false) {
                         HStack(spacing: 20) {
                             // services listed
-                            ForEach(viewModel.services, id: \.self) { service in
+                            ForEach(dataViewModel.services, id: \.self) { service in
                                 IconTextView(imageURL: service.icon, title: service.name)
                                     .onTapGesture {
                                         // Almacena el negocio seleccionado
@@ -72,7 +71,7 @@ struct HomeView: View {
                     ScrollView(.horizontal, showsIndicators: false) {
                         HStack(spacing: 16) {
                             // businesses
-                            ForEach(viewModel.businesses, id: \.self) { business in
+                            ForEach(dataViewModel.businesses, id: \.self) { business in
                                 IconAloneView(image: business.logo)
                                     .onTapGesture {
                                         // Almacena el negocio seleccionado
@@ -100,7 +99,7 @@ struct HomeView: View {
                     ScrollView(.horizontal, showsIndicators: false) {
                         HStack(spacing: 16) {
                             // featured businesses
-                            ForEach(viewModel.businesses, id: \.self) { business in
+                            ForEach(dataViewModel.businesses, id: \.self) { business in
                                 IconRectangleView(image: business.images[0])
                                     .onTapGesture {
                                         // Almacena el negocio seleccionado
@@ -126,7 +125,7 @@ struct HomeView: View {
                     ScrollView(.horizontal, showsIndicators: false) {
                         HStack(spacing: 20) {
                             // services
-                            ForEach(viewModel.services, id: \.self) { service in
+                            ForEach(dataViewModel.services, id: \.self) { service in
                                 IconTextView(imageURL: service.icon, title: service.name)
                                     .onTapGesture {
                                         // Almacena el negocio seleccionado
@@ -155,7 +154,7 @@ struct HomeView: View {
                     ScrollView(.horizontal, showsIndicators: false) {
                         HStack(spacing: 16) {
                             // salons
-                            ForEach(viewModel.businesses, id: \.self) { business in
+                            ForEach(dataViewModel.businesses, id: \.self) { business in
                                 IconRectangleView(image: business.images[0])
                                     .onTapGesture {
                                         // Almacena el negocio seleccionado

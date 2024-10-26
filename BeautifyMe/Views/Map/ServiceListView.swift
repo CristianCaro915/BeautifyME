@@ -8,10 +8,7 @@
 import SwiftUI
 
 struct ServiceListView: View {
-    @StateObject private var viewModel = ExampleVM()
-    
-    let services: [String:String] =
-    ["barber_service":"barber","hair_cut_woman_service":"hair cut","manicure_service":"manicure","spa_service":"spa","pedicire_logo":"pedicure"]
+    @EnvironmentObject var dataViewModel: DataViewModel
     
     var body: some View {
             VStack(spacing: 20) {
@@ -19,7 +16,7 @@ struct ServiceListView: View {
                 ScrollView(.horizontal, showsIndicators: false) {
                     HStack(spacing: 16) {
                         // services
-                        ForEach(viewModel.services, id: \.self) { service in
+                        ForEach(dataViewModel.services, id: \.self) { service in
                             IconTextView(imageURL: service.icon, title: service.name)
                         }
                     }
@@ -29,7 +26,7 @@ struct ServiceListView: View {
                 // Sección de cards
                 ScrollView {
                     VStack() {
-                        ForEach(viewModel.services, id: \.self) { service in
+                        ForEach(dataViewModel.services, id: \.self) { service in
                             ServiceCardView(imageName: service.icon, title: service.name, price: service.price, duration: "2 hours", discount: "-20%", description: service.description, iconButton: "plus.circle")
                         }
                     }

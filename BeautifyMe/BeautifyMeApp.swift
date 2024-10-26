@@ -15,12 +15,14 @@ struct BeautifyMeApp: App {
     
     @StateObject var locationViewModel: LocationSearchViewModel
     @StateObject var sessionManager = SessionManager.shared
+    @StateObject var dataViewModel = DataViewModel.shared
     
     var body: some Scene {
         WindowGroup {
             ContentView()
                 .environmentObject(locationViewModel)
                 .environmentObject(sessionManager)
+                .environmentObject(dataViewModel)
         }
     }
 }

@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct Employee{
+struct Employee: Hashable, Identifiable, Decodable{
     let id: Int
     let name: String
     let gender: String
