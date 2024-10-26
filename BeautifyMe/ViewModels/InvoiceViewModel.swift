@@ -33,7 +33,7 @@ class InvoiceViewModel: ObservableObject{
         
     }
     
-    func createInvoice(business: Business){
+    func createInvoice(){
         
     }
     func deleteInvoice(id: Int){

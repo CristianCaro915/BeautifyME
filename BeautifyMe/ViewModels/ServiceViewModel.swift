@@ -34,7 +34,7 @@ class ServiceViewModel: ObservableObject{
         
     }
     
-    func createService(business: Business){
+    func createService(){
         
     }
     func deleteService(id: Int){

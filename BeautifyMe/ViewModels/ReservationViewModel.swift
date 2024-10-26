@@ -33,7 +33,7 @@ class ReservationViewModel: ObservableObject{
         
     }
     
-    func createReservation(business: Business){
+    func createReservation(){
         
     }
     func deleteReservation(id: Int){

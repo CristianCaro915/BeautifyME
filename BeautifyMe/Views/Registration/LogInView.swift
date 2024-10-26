@@ -8,6 +8,8 @@ import SwiftUI
 
 struct LogInView: View {
     @StateObject private var viewModel = LogInViewModel()
+    @StateObject private var commentViewModel = CommentViewModel()
+    @State private var feedbackMessage: String = ""
     @EnvironmentObject var sessionManager: SessionManager
     
     var body: some View {
@@ -114,6 +116,19 @@ struct LogInView: View {
                 // Button "Sign In with Google"
                 Button(action: {
                     // action for google Sign In
+                    print("comment se va a borrar")
+                    let newComment = Comment(id: 6, description: "building my comment", rating: 1, commenterName: "", commenterImage: "")
+                    commentViewModel.createComment(comment: newComment,businessId: 1) { result in
+                        DispatchQueue.main.async {
+                            switch result {
+                            case .success(let createdComment):
+                                feedbackMessage = "Comentario creado con éxito: \(createdComment.description)"
+                            case .failure(let error):
+                                feedbackMessage = "Error: \(error.localizedDescription)"
+                            }
+                        }
+                    }
+                    print("comment se fue borrado")
                 }) {
                     HStack {
                         Image(systemName: "globe") // change to google symbol
