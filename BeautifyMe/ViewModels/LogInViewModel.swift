@@ -42,31 +42,30 @@ class LogInViewModel: ObservableObject{
         // Realizar testing sobre los parámetros de la view
         
         
-        // Define el endpoint de autenticación de Strapi
+        // Endpoint
         guard let url = URL(string: "http://localhost:1337/api/auth/local") else {
             completion(.failure(NSError(domain: "Invalid URL", code: 400, userInfo: nil)))
             return
         }
         
-        // Configura el cuerpo de la solicitud con las credenciales del usuario
+        // Body of the request
         let parameters: [String: Any] = [
             "identifier": identifier,
             "password": password
         ]
         
-        // Serializa el cuerpo a JSON
+        // Serialization into JSON
         guard let httpBody = try? JSONSerialization.data(withJSONObject: parameters, options: []) else {
             completion(.failure(NSError(domain: "Invalid JSON", code: 400, userInfo: nil)))
             return
         }
         
-        // Configura la solicitud HTTP
+        // query HTTP
         var request = URLRequest(url: url)
         request.httpMethod = "POST"
         request.setValue("application/json", forHTTPHeaderField: "Content-Type")
         request.httpBody = httpBody
         
-        // Realiza la solicitud
         URLSession.shared.dataTask(with: request) { data, response, error in
             if let error = error {
                 completion(.failure(error))
@@ -81,7 +80,7 @@ class LogInViewModel: ObservableObject{
             }
             
             do {
-                // Decodifica la respuesta JSON para obtener el token
+                // Decode JSON to get token
                 if let json = try JSONSerialization.jsonObject(with: data, options: []) as? [String: Any],
                    let jwt = json["jwt"] as? String {
                     completion(.success(jwt))

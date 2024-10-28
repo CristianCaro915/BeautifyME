@@ -8,10 +8,8 @@
 import SwiftUI
 
 struct SignInView: View {
-    @State private var name = ""
-    @State private var email = ""
-    @State private var phone = ""
-    @State private var password = ""
+    @StateObject var viewModel = SignInViewModel()
+    @StateObject var verificationViewModel = VerificationViewModel()
     
     var body: some View {
         VStack(alignment: .leading, spacing: 16) {
@@ -34,7 +32,7 @@ struct SignInView: View {
                     Image(systemName: "person.fill")
                         .foregroundColor(AppColors.mediumGrey)
                         .padding(10)
-                    TextField("Name", text: $email)
+                    TextField("Name", text: $viewModel.name)
                         .padding()
                         .background(Color.white)
                         .foregroundColor(.black)
@@ -48,7 +46,7 @@ struct SignInView: View {
                     Image(systemName: "envelope.fill")
                         .foregroundColor(AppColors.mediumGrey)
                         .padding(10)
-                    TextField("Email adress", text: $email)
+                    TextField("Email adress", text: $viewModel.email)
                         .padding()
                         .background(Color.white) 
                         .foregroundColor(.black)
@@ -63,7 +61,7 @@ struct SignInView: View {
                     Image(systemName: "phone.fill")
                         .foregroundColor(AppColors.mediumGrey)
                         .padding(10)
-                    TextField("Phone Number", text: $email)
+                    TextField("Phone Number", text: $viewModel.phone)
                         .padding()
                 }
                 .overlay(RoundedRectangle(cornerRadius: 10).stroke(AppColors.mediumGrey, lineWidth: 1))
@@ -76,7 +74,7 @@ struct SignInView: View {
                     Image(systemName: "lock.fill")
                         .foregroundColor(AppColors.mediumGrey)
                         .padding(10)
-                    SecureField("Password", text: $password)
+                    SecureField("Password", text: $viewModel.password)
                         .padding()
                 }
                 .overlay(RoundedRectangle(cornerRadius: 10).stroke(AppColors.mediumGrey, lineWidth: 1))
@@ -100,6 +98,9 @@ struct SignInView: View {
             // "Sign In" Button
             Button(action: {
                 // Login action, call API
+                verificationViewModel.validateEmail(viewModel.email)
+                verificationViewModel.validatePassword(viewModel.password)
+                verificationViewModel.validatePhoneNumber(viewModel.phone)
             }) {
                 Text("Join Now")
                     .fontWeight(.bold)

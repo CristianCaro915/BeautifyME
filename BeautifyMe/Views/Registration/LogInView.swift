@@ -8,6 +8,7 @@ import SwiftUI
 
 struct LogInView: View {
     @StateObject private var viewModel = LogInViewModel()
+    @StateObject private var verificationnViewModel = VerificationViewModel()
     @StateObject private var commentViewModel = CommentViewModel()
     @State private var feedbackMessage: String = ""
     @EnvironmentObject var sessionManager: SessionManager
@@ -82,8 +83,12 @@ struct LogInView: View {
                 // "Sign In" Button
                 Button(action: {
                     // Login action, call API
+                    verificationnViewModel.validateEmail(viewModel.email)
+                    verificationnViewModel.validatePassword(viewModel.password)
+                    
                     viewModel.authenticateUser()
                     sessionManager.isAuthenticated = true
+
                 }) {
                     Text("Log In")
                         .fontWeight(.bold)
@@ -116,6 +121,9 @@ struct LogInView: View {
                 // Button "Sign In with Google"
                 Button(action: {
                     // action for google Sign In
+                    
+                    
+                    // TRYING SOMETHING HERE
                     print("comment se va a borrar")
                     let newComment = Comment(id: 6, description: "building my comment", rating: 1, commenterName: "", commenterImage: "")
                     commentViewModel.createComment(comment: newComment,businessId: 1) { result in

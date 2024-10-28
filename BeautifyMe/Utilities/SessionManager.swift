@@ -9,6 +9,7 @@ import SwiftUI
 class SessionManager: ObservableObject {
     @Published var isAuthenticated: Bool = false
     @Published var user: User?
+    @Published var auxUser: User = User(id: 99, username: "Error", email: "", phone: "", role: "", imageURL: "")
     @Published var userMail: String?
     @Published var userID: Int?
     @Published var users: [User] = []
@@ -119,7 +120,7 @@ class SessionManager: ObservableObject {
                                 // Crear el objeto User
                                 return User(id: id, username: username, email: email, phone: phone, role: roleName, imageURL: imageUrl)
                             }
-                            self?.searchUser()
+                            self?.searchUserById()
                             
                             //print("USERS PRINT")
                             //print(self?.users)
@@ -133,13 +134,27 @@ class SessionManager: ObservableObject {
             }.resume()
         }
     
-    func searchUser(){
+    func searchUserById(){
         for user in self.users {
             if user.id == self.userID {
                 self.user = user
-                //print("User hallado")
-                //print(self.user)
-                break // Sale del bucle una vez que se encuentra el usuario
+                break
+            }
+        }
+    }
+    func searchUserByMail(_ userEmail: String){
+        for user in self.users {
+            if user.email ==  userEmail{
+                self.auxUser = user
+                break
+            }
+        }
+    }
+    func searchUserByPhoneNumber(_ userPhoneNumber: String){
+        for user in self.users {
+            if user.phone == userPhoneNumber {
+                self.auxUser = user
+                break
             }
         }
     }

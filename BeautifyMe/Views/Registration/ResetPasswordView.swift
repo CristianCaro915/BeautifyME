@@ -8,6 +8,8 @@
 import SwiftUI
 
 struct ResetPasswordView: View {
+    @StateObject var viewModel = ResetPasswordViewModel()
+    @StateObject var verificationViewModel = VerificationViewModel()
     @State private var email = ""
     @State private var password = ""
     
@@ -34,7 +36,7 @@ struct ResetPasswordView: View {
                     Image(systemName: "lock.fill")
                         .foregroundColor(AppColors.mediumGrey)
                         .padding(10)
-                    TextField("New password", text: $email)
+                    TextField("New password", text: $viewModel.newPassword)
                         .padding()
                 }
                 .overlay(RoundedRectangle(cornerRadius: 10).stroke(AppColors.mediumGrey, lineWidth: 1))
@@ -46,7 +48,7 @@ struct ResetPasswordView: View {
                     Image(systemName: "lock.fill")
                         .foregroundColor(AppColors.mediumGrey)
                         .padding(10)
-                    TextField("Confirm new password", text: $email)
+                    TextField("Confirm new password", text: $viewModel.confirmPassword)
                         .padding()
                 }
                 .overlay(RoundedRectangle(cornerRadius: 10).stroke(AppColors.mediumGrey, lineWidth: 1))
@@ -56,6 +58,9 @@ struct ResetPasswordView: View {
             // "New password" Button
             Button(action: {
                 // new password action, call API
+                verificationViewModel.validatePassword(viewModel.newPassword)
+                verificationViewModel.validatePassword(viewModel.confirmPassword)
+                viewModel.validateNewPassword()
             }) {
                 Text("Confirm New Password")
                     .fontWeight(.bold)

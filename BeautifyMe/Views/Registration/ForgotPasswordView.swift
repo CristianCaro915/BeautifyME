@@ -8,8 +8,8 @@
 import SwiftUI
 
 struct ForgotPasswordView: View {
-    @State private var email = ""
-    @State private var password = ""
+    @StateObject private var verificationViewModel = VerificationViewModel()
+    @StateObject private var viewModel = ForgotPasswordViewModel()
     @State private var mail: Bool = true
     
     var body: some View {
@@ -38,13 +38,14 @@ struct ForgotPasswordView: View {
                             Image(systemName: "envelope.fill")
                                 .foregroundColor(AppColors.mediumGrey)
                                 .padding(10)
-                            TextField("Email Address", text: $email)
+                            TextField("Email Address", text: $viewModel.email)
                                 .padding()
+                            
                         } else{
                             Image(systemName: "phone.fill")
                                 .foregroundColor(AppColors.mediumGrey)
                                 .padding(10)
-                            TextField("Phone Number", text: $email)
+                            TextField("Phone Number", text: $viewModel.phoneNumber)
                                 .padding()
                         }
                         
@@ -76,13 +77,24 @@ struct ForgotPasswordView: View {
                 Spacer()
                 // "Send code button
                 NavigationLink(destination: ResetPasswordView()){
-                    Text("Send Code")
-                        .fontWeight(.bold)
-                        .foregroundColor(.white)
-                        .frame(maxWidth: .infinity)
-                        .padding()
-                        .background(AppColors.darkBlue)
-                        .cornerRadius(20)
+                    Button(action: {
+                        // new password action, call API
+                        if mail{
+                            verificationViewModel.validateEmail(viewModel.email)
+                        } else{
+                            verificationViewModel.validatePhoneNumber(viewModel.phoneNumber)
+                        }
+                        
+                    }) {
+                        Text("Send Code")
+                            .fontWeight(.bold)
+                            .foregroundColor(.white)
+                            .frame(maxWidth: .infinity)
+                            .padding()
+                            .background(AppColors.darkBlue)
+                            .cornerRadius(20)
+                    }
+                    
                 }
                 Spacer()
                 Spacer()
