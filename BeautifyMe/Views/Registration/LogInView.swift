@@ -13,6 +13,8 @@ struct LogInView: View {
     @StateObject private var commentViewModel = CommentViewModel()
     @State private var feedbackMessage: String = ""
     @EnvironmentObject var sessionManager: SessionManager
+    @Binding var isOnLoginScreen: Bool
+    @State var showAlert = false
     
     var body: some View {
         NavigationStack{
@@ -116,8 +118,12 @@ struct LogInView: View {
                 // "Sign In" Button
                 Button(action: {
                     // Login action, call API
-                    viewModel.authenticateUser()
-                    sessionManager.isAuthenticated = true
+                    if verificationViewModel.logInHasAnyError{
+                        showAlert = true
+                    } else{
+                        viewModel.authenticateUser()
+                    }
+                    
 
                 }) {
                     Text("Log In")
@@ -177,11 +183,15 @@ struct LogInView: View {
                     Text("Don’t have an account?")
                         .foregroundColor(.gray)
                         .padding(.horizontal)
-                    NavigationLink(destination: SignInView()){
+                    Button(action: {
+                        // action to move to SinIn page
+                        isOnLoginScreen = false
+                    }) {
                         Text("Join Now")
                             .foregroundColor(AppColors.darkBlue)
                             .fontWeight(.bold)
                     }
+                    
                 }
                 .padding(.top, 10)
                 
@@ -189,12 +199,19 @@ struct LogInView: View {
             }
             .padding(.horizontal, 32)
             .background(Color(.white).ignoresSafeArea())
+            .alert("The fields do not have the correct values", isPresented: $showAlert) {
+                        Button("OK", role: .cancel) { }
+                    } message: {
+                        Text("Please put the correct values.")
+                    }
         }
         
     }
     
 }
 
-#Preview {
-    LogInView()
+/*
+Preview {
+ LogInView()
 }
+ */

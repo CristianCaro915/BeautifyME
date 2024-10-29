@@ -11,6 +11,7 @@ struct ForgotPasswordView: View {
     @StateObject private var verificationViewModel = VerificationViewModel()
     @StateObject private var viewModel = ForgotPasswordViewModel()
     @State private var mail: Bool = true
+    @State var showAlert = false
     
     var body: some View {
         NavigationStack{
@@ -40,6 +41,8 @@ struct ForgotPasswordView: View {
                                 .padding(10)
                             TextField("Email Address", text: $viewModel.email)
                                 .padding()
+                                .keyboardType(.emailAddress)
+                                .autocapitalization(.none)
                                 .onChange(of: viewModel.email) { _ in
                                     verificationViewModel.validateEmail(viewModel.email)
                                 }
@@ -109,8 +112,17 @@ struct ForgotPasswordView: View {
                 Spacer()
                 // "Send code button
                 Button(action: {
-                    print("Submit")
-                    viewModel.shouldNavigate = true
+                    if mail{
+                        verificationViewModel.validateEmail(viewModel.email)
+                    } else{
+                        verificationViewModel.validatePhoneNumber(viewModel.phoneNumber)
+                    }
+                    if verificationViewModel.forgetPasswordHasAnyError{
+                        showAlert = true
+                    } else{
+                        viewModel.shouldNavigate = true
+                    }
+                    
                 }) {
                     Text("Send Code")
                         .fontWeight(.bold)
@@ -132,6 +144,11 @@ struct ForgotPasswordView: View {
         .navigationDestination(isPresented: $viewModel.shouldNavigate) {
             ResetPasswordView()
         }
+        .alert("The fields do not have the correct values", isPresented: $showAlert) {
+                    Button("OK", role: .cancel) { }
+                } message: {
+                    Text("Please put the correct values.")
+                }
     }
 }
 

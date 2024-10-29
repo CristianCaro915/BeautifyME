@@ -10,6 +10,8 @@ import SwiftUI
 struct SignInView: View {
     @StateObject var viewModel = SignInViewModel()
     @StateObject var verificationViewModel = VerificationViewModel()
+    @State var showAlert = false
+    @Binding var isOnLoginScreen: Bool
     
     var body: some View {
         VStack(alignment: .leading, spacing: 16) {
@@ -166,7 +168,9 @@ struct SignInView: View {
             // "Sign In" Button
             Button(action: {
                 // Sign in action, call API
-                
+                if verificationViewModel.singInHasAnyError{
+                    showAlert = true
+                }
             }) {
                 Text("Join Now")
                     .fontWeight(.bold)
@@ -208,11 +212,14 @@ struct SignInView: View {
             HStack {
                 Text("Already have an account?")
                     .foregroundColor(.gray)
+                    .font(.footnote)
                 Button(action: {
                     // action to move to LogIn page
+                    isOnLoginScreen = true
                 }) {
-                    Text("Go back to Log In")
+                    Text("Log In")
                         .foregroundColor(AppColors.darkBlue)
+                        .font(.footnote)
                         .fontWeight(.bold)
                 }
             }
@@ -222,10 +229,16 @@ struct SignInView: View {
         }
         .padding(.horizontal, 32)
         .background(Color(.white).ignoresSafeArea())
-        
+        .alert("The fields do not have the correct values", isPresented: $showAlert) {
+                    Button("OK", role: .cancel) { }
+                } message: {
+                    Text("Please put the correct values.")
+                }
     }
 }
 
+/*
 #Preview {
     SignInView()
 }
+ */

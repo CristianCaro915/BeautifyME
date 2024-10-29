@@ -20,6 +20,20 @@ class VerificationViewModel: ObservableObject{
     @Published var nameErrorMessage: String = ""
     @Published var samePasswordErrorMessage: String = ""
     
+    var logInHasAnyError: Bool {
+            return emailError || passwordError
+    }
+    var singInHasAnyError: Bool {
+            return emailError || passwordError || phoneError || nameError
+    }
+    var forgetPasswordHasAnyError: Bool {
+            return emailError || phoneError
+    }
+    var resetPasswordHasAnyError: Bool {
+            return samePasswordError || passwordError
+    }
+    
+    
     // Restrict input fields
     let allowedCharacters = CharacterSet.alphanumerics.union(CharacterSet(charactersIn: "_-.@"))
     let restrictedWords = ["select", "insert", "update", "delete", "drop", "alter", "from", "where", "join"]
@@ -33,7 +47,7 @@ class VerificationViewModel: ObservableObject{
     
     func validateEmail(_ email: String){
         self.emailError = false
-        if email == ""{
+        if email == "" || email.isEmpty{
             self.mailErrorMessage = "Email cannot be empty"
             self.emailError = true
         }
@@ -60,7 +74,7 @@ class VerificationViewModel: ObservableObject{
     
     func validatePassword(_ password: String){
         self.passwordError = false
-        if password == ""{
+        if password == "" || password.isEmpty{
             self.passwordErrorMessage = "Password cannot be empty"
             self.passwordError = true
         }
@@ -87,7 +101,7 @@ class VerificationViewModel: ObservableObject{
     
     func validatePhoneNumber(_ phoneNumber: String){
         self.phoneError = false
-        if phoneNumber == ""{
+        if phoneNumber == "" || phoneNumber.isEmpty{
             self.phoneErrorMessage = "Phone Number cannot be empty"
             self.phoneError = true
         }
@@ -106,6 +120,10 @@ class VerificationViewModel: ObservableObject{
     
     func validateNewPassword(newPassword: String, confirmPassword: String){
         self.samePasswordError = false
+        if confirmPassword == "" || confirmPassword.isEmpty{
+            self.samePasswordErrorMessage = "The password confirmation cannot be empty"
+            self.samePasswordError = true
+        }
         if newPassword != confirmPassword{
             self.samePasswordErrorMessage = "The passwords are not the same"
             self.samePasswordError = true
@@ -113,7 +131,7 @@ class VerificationViewModel: ObservableObject{
     }
     func validateName(_ name: String) {
         self.nameError = false
-        if name == "" {
+        if name == "" || name.isEmpty{
             self.nameErrorMessage = "Username cannot be blank"
             self.nameError = true
         } else if name.count < 3 {

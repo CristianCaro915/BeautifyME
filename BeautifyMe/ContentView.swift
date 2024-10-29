@@ -9,15 +9,24 @@ import SwiftUI
 
 struct ContentView: View {
     @EnvironmentObject var sessionManager: SessionManager
-    
+    @State private var isOnLoginScreen = true
     
     var body: some View {
         VStack {
+            /*
             if sessionManager.isAuthenticated {
-                Tabvar() // Vista que se muestra si el usuario está autenticado
+                Tabvar() // Auth
             } else {
-                LogInView() // Vista de login si el usuario no está autenticado
+                if isOnLoginScreen{
+                    LogInView(isOnLoginScreen: $isOnLoginScreen) // No auth, login
+                }
+                else{
+                    SignInView(isOnLoginScreen: $isOnLoginScreen) // No auth, signin
+                }
+                
             }
+             */
+            Tabvar()
         }
         .animation(.easeInOut, value: sessionManager.isAuthenticated)
         .transition(.slide)

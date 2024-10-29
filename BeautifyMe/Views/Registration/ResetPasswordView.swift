@@ -12,6 +12,7 @@ struct ResetPasswordView: View {
     @StateObject var verificationViewModel = VerificationViewModel()
     @State private var email = ""
     @State private var password = ""
+    @State var showAlert = false
     
     var body: some View {
         VStack(alignment: .leading, spacing: 16) {
@@ -90,6 +91,11 @@ struct ResetPasswordView: View {
             // "New password" Button
             Button(action: {
                 // new password action, call API
+                if verificationViewModel.resetPasswordHasAnyError{
+                    showAlert = true
+                } else{
+                    print("Send API request for new password")
+                }
                 
                 
                 
@@ -109,6 +115,11 @@ struct ResetPasswordView: View {
         }
         .padding(.horizontal, 32)
         .background(Color(.white).ignoresSafeArea())
+        .alert("The fields do not have the correct values", isPresented: $showAlert) {
+                    Button("OK", role: .cancel) { }
+                } message: {
+                    Text("Please put the correct values.")
+                }
         Spacer()
     }
 }

@@ -13,7 +13,7 @@ class ForgotPasswordViewModel: ObservableObject{
     private var dataViewModel: DataViewModel
     private var cancellables = Set<AnyCancellable>()
     
-    @Published var email: String = ""
+    @Published var email: String =  ""
     @Published var phoneNumber: String = ""
     @Published var users: [User] = []
     @Published var emailExists: Bool = false

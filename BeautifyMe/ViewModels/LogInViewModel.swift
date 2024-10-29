@@ -19,7 +19,7 @@ class LogInViewModel: ObservableObject{
     }
     
     func authenticateUser() {
-            authenticateUser(identifier: email, password: password) { [weak self] result in
+        authenticateUser(identifier: email, password: password) { [weak self] result in
                 DispatchQueue.main.async {
                     switch result {
                     case .success(let jwtToken):
@@ -28,6 +28,7 @@ class LogInViewModel: ObservableObject{
                         self?.sessionManager.loginUser()
                         self?.sessionManager.userMail = self?.email
                         self?.sessionManager.fetchUserIDByEmail()
+                        self?.sessionManager.isAuthenticated = true
                         
                     case .failure(let error):
                         self?.errorMessage = error.localizedDescription
