@@ -40,6 +40,22 @@ struct ForgotPasswordView: View {
                                 .padding(10)
                             TextField("Email Address", text: $viewModel.email)
                                 .padding()
+                                .onChange(of: viewModel.email) { _ in
+                                    verificationViewModel.validateEmail(viewModel.email)
+                                }
+                                .overlay(
+                                    VStack{
+                                        Spacer().frame(height: 70)
+                                        Group {
+                                            if verificationViewModel.emailError{
+                                                Text(verificationViewModel.mailErrorMessage)
+                                                    .foregroundColor(.red)
+                                                    .font(.footnote)
+                                            }
+                                        }
+                                    }
+                                    
+                                )
                             
                         } else{
                             Image(systemName: "phone.fill")
@@ -47,6 +63,22 @@ struct ForgotPasswordView: View {
                                 .padding(10)
                             TextField("Phone Number", text: $viewModel.phoneNumber)
                                 .padding()
+                                .onChange(of: viewModel.phoneNumber) { _ in
+                                    verificationViewModel.validatePhoneNumber(viewModel.phoneNumber)
+                                }
+                                .overlay(
+                                    VStack{
+                                        Spacer().frame(height: 70)
+                                        Group {
+                                            if verificationViewModel.phoneError{
+                                                Text(verificationViewModel.phoneErrorMessage)
+                                                    .foregroundColor(.red)
+                                                    .font(.footnote)
+                                            }
+                                        }
+                                    }
+                                    
+                                )
                         }
                         
                     }
@@ -76,25 +108,17 @@ struct ForgotPasswordView: View {
                 }
                 Spacer()
                 // "Send code button
-                NavigationLink(destination: ResetPasswordView()){
-                    Button(action: {
-                        // new password action, call API
-                        if mail{
-                            verificationViewModel.validateEmail(viewModel.email)
-                        } else{
-                            verificationViewModel.validatePhoneNumber(viewModel.phoneNumber)
-                        }
-                        
-                    }) {
-                        Text("Send Code")
-                            .fontWeight(.bold)
-                            .foregroundColor(.white)
-                            .frame(maxWidth: .infinity)
-                            .padding()
-                            .background(AppColors.darkBlue)
-                            .cornerRadius(20)
-                    }
-                    
+                Button(action: {
+                    print("Submit")
+                    viewModel.shouldNavigate = true
+                }) {
+                    Text("Send Code")
+                        .fontWeight(.bold)
+                        .foregroundColor(AppColors.white)
+                        .frame(maxWidth: .infinity)
+                        .padding()
+                        .background(AppColors.darkBlue)
+                        .cornerRadius(20)
                 }
                 Spacer()
                 Spacer()
@@ -105,6 +129,9 @@ struct ForgotPasswordView: View {
             Spacer()
         }
         .background(Color(.white).ignoresSafeArea())
+        .navigationDestination(isPresented: $viewModel.shouldNavigate) {
+            ResetPasswordView()
+        }
     }
 }
 

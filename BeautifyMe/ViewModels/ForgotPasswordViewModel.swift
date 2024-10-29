@@ -9,6 +9,7 @@ import Foundation
 import Combine
 
 class ForgotPasswordViewModel: ObservableObject{
+    @Published var shouldNavigate: Bool = false
     private var dataViewModel: DataViewModel
     private var cancellables = Set<AnyCancellable>()
     

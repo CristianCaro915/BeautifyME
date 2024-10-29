@@ -36,6 +36,22 @@ struct SignInView: View {
                         .padding()
                         .background(Color.white)
                         .foregroundColor(.black)
+                        .onChange(of: viewModel.name) { _ in
+                            verificationViewModel.validateName(viewModel.name)
+                        }
+                        .overlay(
+                            VStack{
+                                Spacer().frame(height: 70)
+                                Group {
+                                    if verificationViewModel.nameError{
+                                        Text(verificationViewModel.nameErrorMessage)
+                                            .foregroundColor(.red)
+                                            .font(.footnote)
+                                    }
+                                }
+                            }
+                            
+                        )
                 }
                 .overlay(RoundedRectangle(cornerRadius: 10).stroke(AppColors.mediumGrey, lineWidth: 1))
             }
@@ -47,9 +63,27 @@ struct SignInView: View {
                         .foregroundColor(AppColors.mediumGrey)
                         .padding(10)
                     TextField("Email adress", text: $viewModel.email)
+                        .keyboardType(.emailAddress)
+                        .autocapitalization(.none)
                         .padding()
-                        .background(Color.white) 
+                        .background(AppColors.white) 
                         .foregroundColor(.black)
+                        .onChange(of: viewModel.email) { _ in
+                            verificationViewModel.validateEmail(viewModel.email)
+                        }
+                        .overlay(
+                            VStack{
+                                Spacer().frame(height: 70)
+                                Group {
+                                    if verificationViewModel.emailError{
+                                        Text(verificationViewModel.mailErrorMessage)
+                                            .foregroundColor(.red)
+                                            .font(.footnote)
+                                    }
+                                }
+                            }
+                            
+                        )
                 }
                 .overlay(RoundedRectangle(cornerRadius: 10).stroke(AppColors.mediumGrey, lineWidth: 1))
             }
@@ -63,6 +97,23 @@ struct SignInView: View {
                         .padding(10)
                     TextField("Phone Number", text: $viewModel.phone)
                         .padding()
+                        .onChange(of: viewModel.phone) { _ in
+                            verificationViewModel.validatePhoneNumber(viewModel.phone)
+                        }
+                        .overlay(
+                            VStack{
+                                Spacer().frame(height: 70)
+                                Group {
+                                    if verificationViewModel.phoneError{
+                                        Text(verificationViewModel.phoneErrorMessage)
+                                            .foregroundColor(.red)
+                                            .font(.footnote)
+                                    }
+                                }
+                            }
+                            
+                        )
+
                 }
                 .overlay(RoundedRectangle(cornerRadius: 10).stroke(AppColors.mediumGrey, lineWidth: 1))
             }
@@ -76,6 +127,23 @@ struct SignInView: View {
                         .padding(10)
                     SecureField("Password", text: $viewModel.password)
                         .padding()
+                        .onChange(of: viewModel.password) { _ in
+                            verificationViewModel.validatePassword(viewModel.password)
+                        }
+                        .overlay(
+                            VStack{
+                                Spacer().frame(height: 70)
+                                Group {
+                                    if verificationViewModel.passwordError{
+                                        Text(verificationViewModel.passwordErrorMessage)
+                                            .foregroundColor(.red)
+                                            .font(.footnote)
+                                    }
+                                }
+                            }
+                            
+                        )
+
                 }
                 .overlay(RoundedRectangle(cornerRadius: 10).stroke(AppColors.mediumGrey, lineWidth: 1))
             }
@@ -97,10 +165,8 @@ struct SignInView: View {
             
             // "Sign In" Button
             Button(action: {
-                // Login action, call API
-                verificationViewModel.validateEmail(viewModel.email)
-                verificationViewModel.validatePassword(viewModel.password)
-                verificationViewModel.validatePhoneNumber(viewModel.phone)
+                // Sign in action, call API
+                
             }) {
                 Text("Join Now")
                     .fontWeight(.bold)
@@ -143,9 +209,9 @@ struct SignInView: View {
                 Text("Already have an account?")
                     .foregroundColor(.gray)
                 Button(action: {
-                    // action to move to sigIn page
+                    // action to move to LogIn page
                 }) {
-                    Text("Log In")
+                    Text("Go back to Log In")
                         .foregroundColor(AppColors.darkBlue)
                         .fontWeight(.bold)
                 }
@@ -156,6 +222,7 @@ struct SignInView: View {
         }
         .padding(.horizontal, 32)
         .background(Color(.white).ignoresSafeArea())
+        
     }
 }
 

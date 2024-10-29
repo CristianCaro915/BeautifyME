@@ -5,10 +5,11 @@
 //  Created by Cristian Caro on 5/10/24.
 //
 import SwiftUI
+import Foundation
 
 struct LogInView: View {
     @StateObject private var viewModel = LogInViewModel()
-    @StateObject private var verificationnViewModel = VerificationViewModel()
+    @StateObject private var verificationViewModel = VerificationViewModel()
     @StateObject private var commentViewModel = CommentViewModel()
     @State private var feedbackMessage: String = ""
     @EnvironmentObject var sessionManager: SessionManager
@@ -43,10 +44,26 @@ struct LogInView: View {
                             .autocapitalization(.none)
                             .background(Color.white)
                             .foregroundColor(.black)
+                            .onChange(of: viewModel.email) { _ in
+                                verificationViewModel.validateEmail(viewModel.email)
+                            }
+                            .overlay(
+                                VStack{
+                                    Spacer().frame(height: 70)
+                                    Group {
+                                        if verificationViewModel.emailError{
+                                            Text(verificationViewModel.mailErrorMessage)
+                                                .foregroundColor(.red)
+                                                .font(.footnote)
+                                        }
+                                    }
+                                }
+                                
+                            )
                     }
                     .overlay(RoundedRectangle(cornerRadius: 10).stroke(AppColors.mediumGrey, lineWidth: 1))
                 }
-                
+                //Spacer().frame(height: 8)
                 // Input for password
                 VStack(alignment: .leading) {
                     HStack {
@@ -57,10 +74,26 @@ struct LogInView: View {
                             .padding()
                             .background(Color.white)
                             .foregroundColor(.black)
+                            .onChange(of: viewModel.password) { _ in
+                                verificationViewModel.validatePassword(viewModel.password)
+                            }
+                            .overlay(
+                                VStack{
+                                    Spacer().frame(height: 70)
+                                    Group {
+                                        if verificationViewModel.passwordError{
+                                            Text(verificationViewModel.passwordErrorMessage)
+                                                .foregroundColor(.red)
+                                                .font(.footnote)
+                                        }
+                                    }
+                                }
+                                
+                            )
                     }
                     .overlay(RoundedRectangle(cornerRadius: 10).stroke(AppColors.mediumGrey, lineWidth: 1))
                 }
-                
+                Spacer().frame(height: 3)
                 // "Forgot Password?"
                 NavigationLink(destination: ForgotPasswordView()){
                     HStack {
@@ -83,9 +116,6 @@ struct LogInView: View {
                 // "Sign In" Button
                 Button(action: {
                     // Login action, call API
-                    verificationnViewModel.validateEmail(viewModel.email)
-                    verificationnViewModel.validatePassword(viewModel.password)
-                    
                     viewModel.authenticateUser()
                     sessionManager.isAuthenticated = true
 
@@ -97,12 +127,6 @@ struct LogInView: View {
                         .padding()
                         .background(AppColors.darkBlue)
                         .cornerRadius(20)
-                }
-                // validation post logging
-                if viewModel.isAuthenticated {
-                    Text("Logged in successfully!")
-                        .foregroundColor(.green)
-                        .padding()
                 }
                 
                 // Separador
@@ -166,7 +190,9 @@ struct LogInView: View {
             .padding(.horizontal, 32)
             .background(Color(.white).ignoresSafeArea())
         }
+        
     }
+    
 }
 
 #Preview {

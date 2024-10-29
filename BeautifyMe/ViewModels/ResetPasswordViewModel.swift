@@ -31,11 +31,6 @@ class ResetPasswordViewModel: ObservableObject{
             .store(in: &cancellables)
     }
     
-    func validateNewPassword(){
-        if self.newPassword != self.confirmPassword{
-            self.similarityPasswordError = true
-        }
-    }
     func updateUser(){
         // PUT query
     }

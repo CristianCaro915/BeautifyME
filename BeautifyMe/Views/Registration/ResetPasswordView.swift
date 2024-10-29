@@ -36,8 +36,24 @@ struct ResetPasswordView: View {
                     Image(systemName: "lock.fill")
                         .foregroundColor(AppColors.mediumGrey)
                         .padding(10)
-                    TextField("New password", text: $viewModel.newPassword)
+                    SecureField("New password", text: $viewModel.newPassword)
                         .padding()
+                        .onChange(of: viewModel.newPassword) { _ in
+                            verificationViewModel.validatePassword(viewModel.newPassword)
+                        }
+                        .overlay(
+                            VStack{
+                                Spacer().frame(height: 70)
+                                Group {
+                                    if verificationViewModel.passwordError{
+                                        Text(verificationViewModel.passwordErrorMessage)
+                                            .foregroundColor(.red)
+                                            .font(.footnote)
+                                    }
+                                }
+                            }
+                            
+                        )
                 }
                 .overlay(RoundedRectangle(cornerRadius: 10).stroke(AppColors.mediumGrey, lineWidth: 1))
             }
@@ -48,8 +64,24 @@ struct ResetPasswordView: View {
                     Image(systemName: "lock.fill")
                         .foregroundColor(AppColors.mediumGrey)
                         .padding(10)
-                    TextField("Confirm new password", text: $viewModel.confirmPassword)
+                    SecureField("Confirm new password", text: $viewModel.confirmPassword)
                         .padding()
+                        .onChange(of: viewModel.confirmPassword) { _ in
+                            verificationViewModel.validateNewPassword(newPassword: viewModel.newPassword, confirmPassword: viewModel.confirmPassword)
+                        }
+                        .overlay(
+                            VStack{
+                                Spacer().frame(height: 70)
+                                Group {
+                                    if verificationViewModel.samePasswordError{
+                                        Text(verificationViewModel.samePasswordErrorMessage)
+                                            .foregroundColor(.red)
+                                            .font(.footnote)
+                                    }
+                                }
+                            }
+                            
+                        )
                 }
                 .overlay(RoundedRectangle(cornerRadius: 10).stroke(AppColors.mediumGrey, lineWidth: 1))
             }
@@ -58,9 +90,9 @@ struct ResetPasswordView: View {
             // "New password" Button
             Button(action: {
                 // new password action, call API
-                verificationViewModel.validatePassword(viewModel.newPassword)
-                verificationViewModel.validatePassword(viewModel.confirmPassword)
-                viewModel.validateNewPassword()
+                
+                
+                
             }) {
                 Text("Confirm New Password")
                     .fontWeight(.bold)
@@ -77,7 +109,6 @@ struct ResetPasswordView: View {
         }
         .padding(.horizontal, 32)
         .background(Color(.white).ignoresSafeArea())
-        
         Spacer()
     }
 }
