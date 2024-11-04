@@ -13,7 +13,7 @@ struct ContentView: View {
     
     var body: some View {
         VStack {
-            /*
+            
             if sessionManager.isAuthenticated {
                 Tabvar() // Auth
             } else {
@@ -25,8 +25,6 @@ struct ContentView: View {
                 }
                 
             }
-             */
-            Tabvar()
         }
         .animation(.easeInOut, value: sessionManager.isAuthenticated)
         .transition(.slide)

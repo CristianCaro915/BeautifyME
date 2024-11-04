@@ -6,6 +6,7 @@
 //
 import SwiftUI
 import Foundation
+import Combine
 
 struct LogInView: View {
     @StateObject private var viewModel = LogInViewModel()
@@ -15,6 +16,9 @@ struct LogInView: View {
     @EnvironmentObject var sessionManager: SessionManager
     @Binding var isOnLoginScreen: Bool
     @State var showAlert = false
+    
+    // DELETE THIS AFTER TESTING
+    @State private var cancellables = Set<AnyCancellable>()
     
     var body: some View {
         NavigationStack{
@@ -154,7 +158,32 @@ struct LogInView: View {
                     
                     
                     // TRYING SOMETHING HERE
+                    
                     print("comment se va a borrar")
+                     /*  ADD RELATIONS TO THE INSTANCE OF A CLASS
+                    let commentId = 15  // ID del comentario (por ejemplo)
+                    let userId = 5    // ID del usuario (por ejemplo)
+                    let businessId = 1 // ID business
+                    
+                    cancellable = commentViewModel.addCommentRelations(commentId: commentId, userId: userId, businessId: businessId)
+                        .sink(receiveCompletion: { completion in
+                            switch completion {
+                            case .failure(let error):
+                                print(error.localizedDescription)
+                                print("Failed")
+                            case .finished:
+                                break
+                            }
+                        }, receiveValue: { success in
+                            print("Success")
+                        })
+                      */
+                    
+                    
+                    //commentViewModel.deleteComment(commentId: 10)
+                    
+                    
+                    /* CREATE COMMENT
                     let newComment = Comment(id: 6, description: "building my comment", rating: 1, commenterName: "", commenterImage: "")
                     commentViewModel.createComment(comment: newComment,businessId: 1) { result in
                         DispatchQueue.main.async {
@@ -166,6 +195,30 @@ struct LogInView: View {
                             }
                         }
                     }
+                     */
+                    
+                    
+                    /* UPDATE THE INSTANCE OF A CLASS
+                    commentViewModel.updateComment(commentId: 15, newDescription: "Comentario actualizado", newRanking: 4)
+                        .sink(receiveCompletion: { completion in
+                            switch completion {
+                            case .finished:
+                                print("Comentario actualizado con éxito.")
+                            case .failure(let error):
+                                print("Error al actualizar el comentario: \(error)")
+                            }
+                        }, receiveValue: {
+                            // No se espera valor de retorno
+                        })
+                        .store(in: &cancellables)
+                     */
+                    
+                     /* UPDATE RELATIONS
+                    commentViewModel.updateCommentRelations(commentId: 15, userId: 5, businessId: 1)
+                     */
+                    
+                    
+                    
                     print("comment se fue borrado")
                 }) {
                     HStack {
