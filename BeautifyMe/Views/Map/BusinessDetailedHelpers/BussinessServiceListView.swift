@@ -16,7 +16,9 @@ struct BusinessServiceListView: View {
                 .font(.title2)
                 .fontWeight(.semibold)
                 .padding()
-            
+                .accessibilityLabel(Text("Section Title"))
+                .accessibilityValue(Text("Our Services"))
+
             ForEach(services, id: \.self) { service in
                 ServiceCardView(
                     imageName: service.icon,
@@ -27,8 +29,12 @@ struct BusinessServiceListView: View {
                     description: service.description,
                     iconButton: "plus.circle"
                 )
+                .accessibilityElement(children: .combine) // Combina los elementos de la tarjeta para la accesibilidad
+                .accessibilityLabel(Text("Service: \(service.name)"))
+                .accessibilityValue(Text("Price: \(service.price), Duration: 2 hours, Discount: -20%. Description: \(service.description)"))
             }
         }
+
     }
 }
 

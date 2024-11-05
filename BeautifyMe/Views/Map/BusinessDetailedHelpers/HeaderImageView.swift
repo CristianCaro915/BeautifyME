@@ -14,13 +14,21 @@ struct HeaderImageView: View {
         ZStack(alignment: .topLeading) {
             if let iconURL = URL(string: "http://localhost:1337" + (imageURL ?? "")) {
                 AsyncImage(url: iconURL) { image in
-                    image.resizable()
+                    image
+                        .resizable()
                         .aspectRatio(contentMode: .fit)
+                        .accessibilityElement()
+                        .accessibilityLabel(Text("Business Image"))
+                        .accessibilityValue(Text("Main business image"))
                 } placeholder: {
                     ProgressView()
+                        .accessibilityElement()
+                        .accessibilityLabel(Text("Loading Image"))
+                        .accessibilityValue(Text("Loading business image"))
                 }
             }
         }
+
     }
 }
 

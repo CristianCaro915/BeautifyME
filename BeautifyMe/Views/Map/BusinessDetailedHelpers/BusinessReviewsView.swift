@@ -16,11 +16,16 @@ struct BusinessReviewsView: View {
                 Text("Reviews")
                     .font(.title2)
                     .fontWeight(.bold)
+                    .accessibilityLabel(Text("Section Title"))
+                    .accessibilityValue(Text("Reviews"))
+
                 Spacer()
+
                 Button("View all") {
                     // Acción
                 }
                 .foregroundColor(AppColors.darkBlue)
+                .accessibilityLabel(Text("View all reviews"))
             }
             .padding()
             
@@ -31,8 +36,12 @@ struct BusinessReviewsView: View {
                     userName: review.commenterName,
                     rating: review.rating
                 )
+                .accessibilityElement(children: .combine) // Combina elementos de la tarjeta para accesibilidad
+                .accessibilityLabel(Text("Review by \(review.commenterName)"))
+                .accessibilityValue(Text("Rating: \(review.rating, specifier: "%.1f") stars. Comment: \(review.description)"))
             }
         }
+
     }
 }
 

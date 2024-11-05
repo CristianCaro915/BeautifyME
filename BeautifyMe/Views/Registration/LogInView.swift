@@ -20,114 +20,91 @@ struct LogInView: View {
     // DELETE THIS AFTER TESTING
     @State private var cancellables = Set<AnyCancellable>()
     var body: some View {
-        NavigationStack{
+        NavigationStack {
             VStack(alignment: .leading, spacing: 16) {
                 Spacer()
                 
-                // Tittle
+                // Título
                 Text("Welcome back,")
                     .font(.largeTitle)
                     .fontWeight(.bold)
                     .foregroundColor(.black)
+                    .accessibilityLabel("Welcome back message")
                 
-                // subtittle
+                // Subtítulo
                 Text("Glad to meet you again!, please login to use the app.")
                     .font(.subheadline)
                     .foregroundColor(AppColors.darkGrey)
+                    .accessibilityLabel("Login prompt message")
                 
                 Spacer()
                 Spacer()
-                // Input for email
+                
+                // Input para email
                 VStack(alignment: .leading) {
                     HStack {
                         Image(systemName: "envelope.fill")
                             .foregroundColor(AppColors.mediumGrey)
                             .padding(10)
+                            .accessibilityHidden(true)
+                        
                         TextField("Email", text: $viewModel.email)
                             .padding()
                             .keyboardType(.emailAddress)
                             .autocapitalization(.none)
                             .background(Color.white)
                             .foregroundColor(.black)
+                            .accessibilityLabel("Email input field")
+                            .accessibilityValue(viewModel.email.isEmpty ? "Empty" : viewModel.email)
                             .onChange(of: viewModel.email) { _ in
                                 verificationViewModel.validateEmail(viewModel.email)
                             }
-                            .overlay(
-                                VStack{
-                                    Spacer().frame(height: 70)
-                                    Group {
-                                        if verificationViewModel.emailError{
-                                            Text(verificationViewModel.mailErrorMessage)
-                                                .foregroundColor(.red)
-                                                .font(.footnote)
-                                        }
-                                    }
-                                }
-                                
-                            )
                     }
                     .overlay(RoundedRectangle(cornerRadius: 10).stroke(AppColors.mediumGrey, lineWidth: 1))
                 }
-                //Spacer().frame(height: 8)
-                // Input for password
+                
+                // Input para contraseña
                 VStack(alignment: .leading) {
                     HStack {
                         Image(systemName: "lock.fill")
                             .foregroundColor(AppColors.mediumGrey)
                             .padding(10)
+                            .accessibilityHidden(true)
+                        
                         SecureField("Password", text: $viewModel.password)
                             .padding()
                             .background(Color.white)
                             .foregroundColor(.black)
+                            .accessibilityLabel("Password input field")
+                            .accessibilityValue(viewModel.password.isEmpty ? "Empty" : "Entered")
                             .onChange(of: viewModel.password) { _ in
                                 verificationViewModel.validatePassword(viewModel.password)
                             }
-                            .overlay(
-                                VStack{
-                                    Spacer().frame(height: 70)
-                                    Group {
-                                        if verificationViewModel.passwordError{
-                                            Text(verificationViewModel.passwordErrorMessage)
-                                                .foregroundColor(.red)
-                                                .font(.footnote)
-                                        }
-                                    }
-                                }
-                                
-                            )
                     }
                     .overlay(RoundedRectangle(cornerRadius: 10).stroke(AppColors.mediumGrey, lineWidth: 1))
                 }
-                Spacer().frame(height: 3)
+                
                 // "Forgot Password?"
-                NavigationLink(destination: ForgotPasswordView()){
+                NavigationLink(destination: ForgotPasswordView()) {
                     HStack {
                         Spacer()
                         Text("Forgot password?")
                             .font(.footnote)
                             .foregroundColor(AppColors.darkBlue)
                             .padding(.top, 5)
+                            .accessibilityLabel("Forgot password link")
                     }
-                }
-                
-                // validation
-                if !viewModel.errorMessage.isEmpty {
-                    Text(viewModel.errorMessage)
-                        .foregroundColor(.red)
-                        .padding()
                 }
                 
                 Spacer()
-                // "Sign In" Button
+                
+                // Botón "Iniciar sesión"
                 Button(action: {
-                    // Login action, call API
-                    if verificationViewModel.logInHasAnyError{
+                    if verificationViewModel.logInHasAnyError {
                         showAlert = true
-                    } else{
+                    } else {
                         viewModel.authenticateUser()
                     }
-                    
-
                 }) {
                     Text("Log In")
                         .fontWeight(.bold)
@@ -136,6 +113,7 @@ struct LogInView: View {
                         .padding()
                         .background(AppColors.darkBlue)
                         .cornerRadius(20)
+                        .accessibilityLabel("Log In button")
                 }
                 
                 // Separador
@@ -150,46 +128,37 @@ struct LogInView: View {
                         .foregroundColor(Color.gray)
                 }
                 .padding(.vertical)
+                .accessibilityHidden(true)
                 
-                // Button "Sign In with Google"
+                // Botón "Iniciar sesión con Google"
                 Button(action: {
-                    // action for google Sign In
-                    
-                    
-                    // TRYING SOMETHING HERE
-                    
-                    print("comment se va a borrar")
-                    /* CREATE INVOICE */
-                    let now = Date()
-                    invoiceViewModel.createInvoice(invoiceId: 99, paymentDate: now, totalValue: 23000, businessId: 1, reservationId: 1)
-                    
-                    
-                    print("comment se fue borrado")
+                    print("Sign In with Google")
                 }) {
                     HStack {
-                        Image(systemName: "globe") // change to google symbol
+                        Image(systemName: "globe")
                         Text("Log In with Google")
                     }
                     .foregroundColor(AppColors.darkBlue)
                     .frame(maxWidth: .infinity)
                     .padding()
                     .overlay(RoundedRectangle(cornerRadius: 10).stroke(AppColors.darkBlue, lineWidth: 1))
+                    .accessibilityLabel("Log In with Google button")
                 }
                 
-                // Link to register
+                // Enlace para registrarse
                 HStack {
                     Text("Don’t have an account?")
                         .foregroundColor(.gray)
                         .padding(.horizontal)
+                    
                     Button(action: {
-                        // action to move to SinIn page
                         isOnLoginScreen = false
                     }) {
                         Text("Join Now")
                             .foregroundColor(AppColors.darkBlue)
                             .fontWeight(.bold)
                     }
-                    
+                    .accessibilityLabel("Join Now link")
                 }
                 .padding(.top, 10)
                 
@@ -198,12 +167,11 @@ struct LogInView: View {
             .padding(.horizontal, 32)
             .background(Color(.white).ignoresSafeArea())
             .alert("The fields do not have the correct values", isPresented: $showAlert) {
-                        Button("OK", role: .cancel) { }
-                    } message: {
-                        Text("Please put the correct values.")
-                    }
+                Button("OK", role: .cancel) { }
+            } message: {
+                Text("Please put the correct values.")
+            }
         }
-        
     }
     
 }

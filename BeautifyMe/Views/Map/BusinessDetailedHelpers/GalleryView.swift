@@ -16,11 +16,16 @@ struct GalleryView: View {
                 .font(.title2)
                 .fontWeight(.semibold)
                 .padding()
-            
+                .accessibilityLabel(Text("Section Title"))
+                .accessibilityValue(Text("Gallery"))
+
             ScrollView(.horizontal, showsIndicators: false) {
                 HStack(spacing: 16) {
                     ForEach(images, id: \.self) { image in
                         IconRectangleView(image: image)
+                            .accessibilityElement()
+                            .accessibilityLabel(Text("Gallery Image"))
+                            .accessibilityValue(Text("Image \(images.firstIndex(of: image) ?? 0 + 1) of \(images.count)"))
                     }
                 }
                 .padding(.horizontal)

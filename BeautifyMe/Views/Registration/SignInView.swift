@@ -17,158 +17,166 @@ struct SignInView: View {
         VStack(alignment: .leading, spacing: 16) {
             Spacer()
             
-            // Tittle
+            // Título
             Text("Create an account,")
                 .font(.largeTitle)
                 .fontWeight(.bold)
                 .foregroundColor(.black)
-            
-            // subtittle
-            Text("Please type full information bellow and we can create your account.")
+                .accessibilityLabel("Create an account title")
+
+            // Subtítulo
+            Text("Please type full information below and we can create your account.")
                 .font(.subheadline)
                 .foregroundColor(AppColors.darkGrey)
-            
-            // Input for name
+                .accessibilityLabel("Subtitle: Please type full information below and we can create your account.")
+
+            // Input para nombre
             VStack(alignment: .leading) {
                 HStack {
                     Image(systemName: "person.fill")
                         .foregroundColor(AppColors.mediumGrey)
                         .padding(10)
+                        .accessibilityLabel("Icon for name input")
                     TextField("Name", text: $viewModel.name)
                         .padding()
                         .background(Color.white)
                         .foregroundColor(.black)
+                        .accessibilityLabel("Name input field")
+                        .accessibilityValue(viewModel.name.isEmpty ? "Empty" : viewModel.name)
                         .onChange(of: viewModel.name) { _ in
                             verificationViewModel.validateName(viewModel.name)
                         }
                         .overlay(
-                            VStack{
+                            VStack {
                                 Spacer().frame(height: 70)
                                 Group {
-                                    if verificationViewModel.nameError{
+                                    if verificationViewModel.nameError {
                                         Text(verificationViewModel.nameErrorMessage)
                                             .foregroundColor(.red)
                                             .font(.footnote)
                                     }
                                 }
                             }
-                            
                         )
                 }
                 .overlay(RoundedRectangle(cornerRadius: 10).stroke(AppColors.mediumGrey, lineWidth: 1))
             }
             
-            // Input for email
+            // Input para correo electrónico
             VStack(alignment: .leading) {
                 HStack {
                     Image(systemName: "envelope.fill")
                         .foregroundColor(AppColors.mediumGrey)
                         .padding(10)
-                    TextField("Email adress", text: $viewModel.email)
+                        .accessibilityLabel("Icon for email input")
+                    TextField("Email address", text: $viewModel.email)
                         .keyboardType(.emailAddress)
                         .autocapitalization(.none)
                         .padding()
-                        .background(AppColors.white) 
+                        .background(AppColors.white)
                         .foregroundColor(.black)
+                        .accessibilityLabel("Email input field")
+                        .accessibilityValue(viewModel.email.isEmpty ? "Empty" : viewModel.email)
                         .onChange(of: viewModel.email) { _ in
                             verificationViewModel.validateEmail(viewModel.email)
                         }
                         .overlay(
-                            VStack{
+                            VStack {
                                 Spacer().frame(height: 70)
                                 Group {
-                                    if verificationViewModel.emailError{
+                                    if verificationViewModel.emailError {
                                         Text(verificationViewModel.mailErrorMessage)
                                             .foregroundColor(.red)
                                             .font(.footnote)
                                     }
                                 }
                             }
-                            
                         )
                 }
                 .overlay(RoundedRectangle(cornerRadius: 10).stroke(AppColors.mediumGrey, lineWidth: 1))
             }
-            
-            
-            // Input for mobile number
+
+            // Input para número de móvil
             VStack(alignment: .leading) {
                 HStack {
                     Image(systemName: "phone.fill")
                         .foregroundColor(AppColors.mediumGrey)
                         .padding(10)
+                        .accessibilityLabel("Icon for phone number input")
                     TextField("Phone Number", text: $viewModel.phone)
                         .padding()
+                        .accessibilityLabel("Phone number input field")
+                        .accessibilityValue(viewModel.phone.isEmpty ? "Empty" : viewModel.phone)
                         .onChange(of: viewModel.phone) { _ in
                             verificationViewModel.validatePhoneNumber(viewModel.phone)
                         }
                         .overlay(
-                            VStack{
+                            VStack {
                                 Spacer().frame(height: 70)
                                 Group {
-                                    if verificationViewModel.phoneError{
+                                    if verificationViewModel.phoneError {
                                         Text(verificationViewModel.phoneErrorMessage)
                                             .foregroundColor(.red)
                                             .font(.footnote)
                                     }
                                 }
                             }
-                            
                         )
-
                 }
                 .overlay(RoundedRectangle(cornerRadius: 10).stroke(AppColors.mediumGrey, lineWidth: 1))
             }
-            
-            
-            // Input for password
+
+            // Input para contraseña
             VStack(alignment: .leading) {
                 HStack {
                     Image(systemName: "lock.fill")
                         .foregroundColor(AppColors.mediumGrey)
                         .padding(10)
+                        .accessibilityLabel("Icon for password input")
                     SecureField("Password", text: $viewModel.password)
                         .padding()
+                        .accessibilityLabel("Password input field")
                         .onChange(of: viewModel.password) { _ in
                             verificationViewModel.validatePassword(viewModel.password)
                         }
                         .overlay(
-                            VStack{
+                            VStack {
                                 Spacer().frame(height: 70)
                                 Group {
-                                    if verificationViewModel.passwordError{
+                                    if verificationViewModel.passwordError {
                                         Text(verificationViewModel.passwordErrorMessage)
                                             .foregroundColor(.red)
                                             .font(.footnote)
                                     }
                                 }
                             }
-                            
                         )
-
                 }
                 .overlay(RoundedRectangle(cornerRadius: 10).stroke(AppColors.mediumGrey, lineWidth: 1))
             }
+
             // "Forgot Password?"
             VStack {
                 Text("By signing in you agree to our")
                     .foregroundColor(.gray)
                     .font(.footnote)
+                    .accessibilityLabel("Agreement notice")
                 Button(action: {
-                    // action to move to sigIn page
+                    // acción para mover a la página de inicio de sesión
                 }) {
                     Text("Term of use and privacy notice")
                         .foregroundColor(AppColors.darkBlue)
                         .fontWeight(.bold)
                         .font(.footnote)
+                        .accessibilityLabel("Terms of use and privacy notice link")
                 }
             }
             .padding(.horizontal, 60)
-            
-            // "Sign In" Button
+
+            // Botón "Sign In"
             Button(action: {
-                // Sign in action, call API
-                if verificationViewModel.singInHasAnyError{
+                // Acción de inicio de sesión, llamar API
+                if verificationViewModel.singInHasAnyError {
                     showAlert = true
                 }
             }) {
@@ -179,6 +187,7 @@ struct SignInView: View {
                     .padding()
                     .background(AppColors.darkBlue)
                     .cornerRadius(20)
+                    .accessibilityLabel("Join Now button")
             }
             
             // Separador
@@ -193,47 +202,50 @@ struct SignInView: View {
                     .foregroundColor(Color.gray)
             }
             .padding(.vertical)
-            
-            // Button "Sign In with Google"
+
+            // Botón "Sign In with Google"
             Button(action: {
-                // action for google Sign In
+                // acción para inicio de sesión con Google
             }) {
                 HStack {
-                    Image(systemName: "globe") // change to google symbol
+                    Image(systemName: "globe") // cambiar al símbolo de Google
                     Text("Join with Google")
                 }
                 .foregroundColor(AppColors.darkBlue)
                 .frame(maxWidth: .infinity)
                 .padding()
                 .overlay(RoundedRectangle(cornerRadius: 10).stroke(AppColors.darkBlue, lineWidth: 1))
+                .accessibilityLabel("Join with Google button")
             }
-            
-            // Link to register
+
+            // Enlace para registrarse
             HStack {
                 Text("Already have an account?")
                     .foregroundColor(.gray)
                     .font(.footnote)
+                    .accessibilityLabel("Already have an account text")
                 Button(action: {
-                    // action to move to LogIn page
+                    // acción para mover a la página de inicio de sesión
                     isOnLoginScreen = true
                 }) {
                     Text("Log In")
                         .foregroundColor(AppColors.darkBlue)
                         .font(.footnote)
                         .fontWeight(.bold)
+                        .accessibilityLabel("Log In button")
                 }
             }
-            .padding(.horizontal,30)
-            
+            .padding(.horizontal, 30)
+
             Spacer()
         }
         .padding(.horizontal, 32)
         .background(Color(.white).ignoresSafeArea())
         .alert("The fields do not have the correct values", isPresented: $showAlert) {
-                    Button("OK", role: .cancel) { }
-                } message: {
-                    Text("Please put the correct values.")
-                }
+            Button("OK", role: .cancel) { }
+        } message: {
+            Text("Please put the correct values.")
+        }
     }
 }
 

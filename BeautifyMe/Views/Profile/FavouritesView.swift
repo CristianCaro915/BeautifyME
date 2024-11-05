@@ -9,21 +9,26 @@ import SwiftUI
 
 struct FavouritesView: View {
     var body: some View {
-            NavigationView {
-                VStack {
-                    ScrollView {
-                        VStack(spacing: 16) {
-                            // Lista de Cards
-                            ForEach(0..<5) { _ in
-                                BusinessCardView()
-                            }
+        NavigationView {
+            VStack {
+                ScrollView {
+                    VStack(spacing: 16) {
+                        // Lista de Cards
+                        ForEach(0..<5) { index in
+                            BusinessCardView()
+                                .accessibilityElement(children: .contain)
+                                .accessibilityLabel("Business Card \(index + 1)")
+                                .accessibilityHint("Displays details about a favorite business")
                         }
-                        .padding()
                     }
+                    .padding()
                 }
-                .navigationTitle("Favorite Businesses")
             }
+            .navigationTitle("Favorite Businesses")
+            .accessibilityLabel("Favorite Businesses")
+            .accessibilityHint("List of your favorite businesses")
         }
+    }
 }
 
 struct BusinessCardView: View {
@@ -34,10 +39,14 @@ struct BusinessCardView: View {
                 VStack(alignment: .leading) {
                     Text("Business Name")
                         .font(.headline)
+                        .accessibilityLabel("Business Name")
+                        .accessibilityValue("Business Name Placeholder")
                     
                     Text("Location")
                         .font(.subheadline)
                         .foregroundColor(.gray)
+                        .accessibilityLabel("Location")
+                        .accessibilityValue("Location Placeholder")
                 }
                 
                 Spacer()
@@ -45,12 +54,16 @@ struct BusinessCardView: View {
                 // Ícono de corazón
                 Image(systemName: "heart.fill")
                     .foregroundColor(AppColors.orange)
+                    .accessibilityLabel("Favorite Icon")
+                    .accessibilityHint("Indicates this is a favorite business")
             }
             
             // Descripción del negocio
             Text("This is a short description of the business, offering services that you love.")
                 .font(.body)
                 .foregroundColor(.gray)
+                .accessibilityLabel("Description")
+                .accessibilityValue("Short description of the business")
             
             // Botón de reorder booking
             HStack {
@@ -66,6 +79,8 @@ struct BusinessCardView: View {
                         .cornerRadius(10)
                         .overlay(RoundedRectangle(cornerRadius: 10).stroke(AppColors.darkBlue, lineWidth: 1))
                 }
+                .accessibilityLabel("Reorder Booking Button")
+                .accessibilityHint("Tap to reorder booking")
             }
         }
         .padding()
@@ -74,6 +89,7 @@ struct BusinessCardView: View {
         .shadow(radius: 2)
     }
 }
+
 
 #Preview {
     FavouritesView()

@@ -15,7 +15,7 @@ struct HomeView: View {
     @EnvironmentObject var sessionManager: SessionManager
     
     var body: some View {
-        ScrollView{
+        ScrollView {
             VStack(alignment: .leading, spacing: 20) {
                 // Header with user name
                 HStack {
@@ -23,9 +23,14 @@ struct HomeView: View {
                         Text(sessionManager.user?.username ?? "User")
                             .font(.title)
                             .fontWeight(.bold)
+                            .accessibilityLabel(Text("Username"))
+                            .accessibilityValue(Text(sessionManager.user?.username ?? "User"))
+                        
                         Text("Find the service you want, and treat yourself")
                             .font(.subheadline)
                             .foregroundColor(.gray)
+                            .accessibilityLabel(Text("User description"))
+                            .accessibilityValue(Text("Find the service you want, and treat yourself"))
                     }
                     Spacer()
                     // Icon to search (button)
@@ -35,14 +40,17 @@ struct HomeView: View {
                         .padding(5)
                         .background(AppColors.darkBlue)
                         .cornerRadius(20)
+                        .accessibilityLabel(Text("Search"))
+                        .accessibilityValue(Text("Tap to search for services"))
                 }
                 .padding(.horizontal)
                 
-                // Section 1: ¿what do you want to do?
+                // Section 1: What do you want to do?
                 VStack(alignment: .leading, spacing: 16) {
                     Text("What do you want to do?")
                         .font(.headline)
                         .padding(.horizontal)
+                        .accessibilityLabel(Text("What do you want to do section"))
                     
                     // Services
                     ScrollView(.horizontal, showsIndicators: false) {
@@ -50,8 +58,10 @@ struct HomeView: View {
                             // services listed
                             ForEach(dataViewModel.services, id: \.self) { service in
                                 IconTextView(imageURL: service.icon, title: service.name)
+                                    .accessibilityLabel(Text(service.name))
+                                    .accessibilityValue(Text("Service available"))
                                     .onTapGesture {
-                                        // Almacena el negocio seleccionado
+                                        // Store the selected service
                                         sessionManager.serviceSelected = service
                                         print("Servicio seleccionado: \(service.name)")
                                     }
@@ -63,9 +73,10 @@ struct HomeView: View {
                 
                 // Section 2: Businesses you follow
                 VStack(alignment: .leading, spacing: 16) {
-                    Text("Salon you follow")
+                    Text("Businesses you follow")
                         .font(.headline)
                         .padding(.horizontal)
+                        .accessibilityLabel(Text("Businesses you follow section"))
                     
                     // Scroll of businesses
                     ScrollView(.horizontal, showsIndicators: false) {
@@ -73,8 +84,10 @@ struct HomeView: View {
                             // businesses
                             ForEach(dataViewModel.businesses, id: \.self) { business in
                                 IconAloneView(image: business.logo)
+                                    .accessibilityLabel(Text(business.name))
+                                    .accessibilityValue(Text("Followed business"))
                                     .onTapGesture {
-                                        // Almacena el negocio seleccionado
+                                        // Store the selected business
                                         sessionManager.businessSelected = business
                                         print("Servicio seleccionado: \(business.name)")
                                     }
@@ -83,15 +96,18 @@ struct HomeView: View {
                         .padding(.horizontal)
                     }
                 }
-                // Sección 3: Salones destacados
+                
+                // Section 3: Featured Salons
                 VStack(alignment: .leading, spacing: 16) {
                     HStack {
-                        Text("Featured Salon")
+                        Text("Featured Salons")
                             .font(.headline)
+                            .accessibilityLabel(Text("Featured Salons section"))
                         Spacer()
                         Text("View all")
                             .font(.footnote)
                             .foregroundColor(AppColors.darkBlue)
+                            .accessibilityLabel(Text("View all featured salons"))
                     }
                     .padding(.horizontal)
                     
@@ -101,8 +117,10 @@ struct HomeView: View {
                             // featured businesses
                             ForEach(dataViewModel.businesses, id: \.self) { business in
                                 IconRectangleView(image: business.images[0])
+                                    .accessibilityLabel(Text(business.name))
+                                    .accessibilityValue(Text("Featured business"))
                                     .onTapGesture {
-                                        // Almacena el negocio seleccionado
+                                        // Store the selected business
                                         sessionManager.businessSelected = business
                                         print("Negocio seleccionado: \(business.name)")
                                         navigateBusinessDetail = true
@@ -112,23 +130,27 @@ struct HomeView: View {
                         .padding(.horizontal)
                     }
                 }
-                // Section 4: most search interest
+                
+                // Section 4: Most searched interests
                 VStack(alignment: .leading, spacing: 16) {
                     HStack {
-                        Text("Most search interests")
+                        Text("Most searched interests")
                             .font(.headline)
+                            .accessibilityLabel(Text("Most searched interests section"))
                         Spacer()
                     }
                     .padding(.horizontal)
                     
-                    // Imágenes destacadas
+                    // Highlighted images
                     ScrollView(.horizontal, showsIndicators: false) {
                         HStack(spacing: 20) {
                             // services
                             ForEach(dataViewModel.services, id: \.self) { service in
                                 IconTextView(imageURL: service.icon, title: service.name)
+                                    .accessibilityLabel(Text(service.name))
+                                    .accessibilityValue(Text("Service available"))
                                     .onTapGesture {
-                                        // Almacena el negocio seleccionado
+                                        // Store the selected service
                                         sessionManager.serviceSelected = service
                                         print("Servicio seleccionado: \(service.name)")
                                         navigateServiceSearch = true
@@ -138,26 +160,31 @@ struct HomeView: View {
                         .padding(.horizontal)
                     }
                 }
-                // Section 5
+                
+                // Section 5: Nearby Offers
                 VStack(alignment: .leading, spacing: 16) {
                     HStack {
                         Text("Nearby Offers")
                             .font(.headline)
+                            .accessibilityLabel(Text("Nearby Offers section"))
                         Spacer()
                         Text("View all")
                             .font(.footnote)
                             .foregroundColor(AppColors.darkBlue)
+                            .accessibilityLabel(Text("View all nearby offers"))
                     }
                     .padding(.horizontal)
                     
-                    // Imágenes destacadas
+                    // Highlighted images
                     ScrollView(.horizontal, showsIndicators: false) {
                         HStack(spacing: 16) {
                             // salons
                             ForEach(dataViewModel.businesses, id: \.self) { business in
                                 IconRectangleView(image: business.images[0])
+                                    .accessibilityLabel(Text(business.name))
+                                    .accessibilityValue(Text("Nearby offer"))
                                     .onTapGesture {
-                                        // Almacena el negocio seleccionado
+                                        // Store the selected business
                                         sessionManager.businessSelected = business
                                         print("Negocio seleccionado: \(business.name)")
                                     }
@@ -173,8 +200,9 @@ struct HomeView: View {
         }
         .background(Color(.white).ignoresSafeArea())
         .fullScreenCover(isPresented: $navigateBusinessDetail) {
-            BusinessDetailedView() // This presents the BusinessDetailedView component in full-screen mode
+            BusinessDetailedView() // Present the BusinessDetailedView component in full-screen mode
         }
+
     }
 }
 /*
