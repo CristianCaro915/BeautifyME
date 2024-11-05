@@ -27,7 +27,6 @@ class CommentViewModel: ObservableObject{
         self.dataViewModel.$comments
             .sink { [weak self] comments in
                 self?.comments = comments
-                print(self?.comments)
             }
             .store(in: &cancellables)
         
@@ -54,7 +53,7 @@ class CommentViewModel: ObservableObject{
         return rta
     }
     
-    func createComment(comment: Comment, businessId: Int, completion: @escaping (Result<Comment, Error>) -> Void) {
+    func createComment(comment: Comment,businessId: Int, userId: Int, completion: @escaping (Result<Comment, Error>) -> Void) {
         //print("comment being cooked")
         guard let url = URL(string: "http://localhost:1337/api/comments") else { return }
         
@@ -67,13 +66,13 @@ class CommentViewModel: ObservableObject{
                 "description": comment.description,
                 "ranking": comment.rating,
                 "user": [
-                    "data": [
-                        "id": self.user?.id
+                    "connect": [
+                        ["id": userId]
                     ]
                 ],
                 "business": [
-                    "data": [
-                        "id": businessId
+                    "connect":[
+                        ["id": businessId]
                     ]
                 ]
             ]
@@ -198,7 +197,10 @@ class CommentViewModel: ObservableObject{
             .store(in: &cancellables)
     }
     
-    func updateComment(commentId: Int, newDescription: String?, newRanking: Int?) -> AnyPublisher<Void, Error> {
+    func updateComment(commentId: Int,
+        newDescription: String? = nil,
+        newRanking: Int? = nil)
+    -> AnyPublisher<Void, Error> {
         // Endpoint
         guard let url = URL(string: "http://localhost:1337/api/comments/\(commentId)") else {
             return Fail(error: URLError(.badURL)).eraseToAnyPublisher()
@@ -235,57 +237,113 @@ class CommentViewModel: ObservableObject{
     }
     
     func updateCommentRelations(commentId: Int, userId: Int, businessId: Int) {
-            let body: [String: Any] = [
-                "data": [
-                    "user": [
-                        "set": [
-                            ["id": userId]
-                        ]
-                    ],
-                    "business": [
-                        "set": [
-                            ["id": businessId]
-                        ]
+        let body: [String: Any] = [
+            "data": [
+                "user": [
+                    "set": [
+                        ["id": userId]
+                    ]
+                ],
+                "business": [
+                    "set": [
+                        ["id": businessId]
                     ]
                 ]
             ]
-            
-            guard let jsonData = try? JSONSerialization.data(withJSONObject: body, options: []) else {
-                print("Error al serializar el cuerpo en JSON")
-                return
-            }
-
-            guard let url = URL(string: "http://localhost:1337/api/comments/\(commentId)") else {
-                print("URL inválida")
-                return
-            }
-
-            var request = URLRequest(url: url)
-            request.httpMethod = "PUT"
-            request.setValue("application/json", forHTTPHeaderField: "Content-Type")
-            request.httpBody = jsonData
-
-            URLSession.shared.dataTaskPublisher(for: request)
-                .tryMap { response -> Data in
-                    // Verificar el código de estado HTTP
-                    guard let httpResponse = response.response as? HTTPURLResponse,
-                          (200...299).contains(httpResponse.statusCode) else {
-                        throw URLError(.badServerResponse) // Error for weird error like 500
-                    }
-                    return response.data
-                }
-                .sink(receiveCompletion: { completion in
-                    switch completion {
-                    case .finished:
-                        print("Relaciones actualizadas con éxito.")
-                    case .failure(let error):
-                        print("Error al actualizar las relaciones: \(error.localizedDescription)")
-                    }
-                }, receiveValue: { data in
-                    // Show server response to updated instance
-                    print("Respuesta recibida: \(String(data: data, encoding: .utf8) ?? "No se recibió respuesta")")
-                })
-                .store(in: &cancellables)
+        ]
+        
+        guard let jsonData = try? JSONSerialization.data(withJSONObject: body, options: []) else {
+            print("Error al serializar el cuerpo en JSON")
+            return
         }
+        
+        guard let url = URL(string: "http://localhost:1337/api/comments/\(commentId)") else {
+            print("URL inválida")
+            return
+        }
+        
+        var request = URLRequest(url: url)
+        request.httpMethod = "PUT"
+        request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+        request.httpBody = jsonData
+        
+        URLSession.shared.dataTaskPublisher(for: request)
+            .tryMap { response -> Data in
+                // Verificar el código de estado HTTP
+                guard let httpResponse = response.response as? HTTPURLResponse,
+                      (200...299).contains(httpResponse.statusCode) else {
+                    throw URLError(.badServerResponse) // Error for weird error like 500
+                }
+                return response.data
+            }
+            .sink(receiveCompletion: { completion in
+                switch completion {
+                case .finished:
+                    print("Relaciones actualizadas con éxito.")
+                case .failure(let error):
+                    print("Error al actualizar las relaciones: \(error.localizedDescription)")
+                }
+            }, receiveValue: { data in
+                // Show server response to updated instance
+                print("Respuesta recibida: \(String(data: data, encoding: .utf8) ?? "No se recibió respuesta")")
+            })
+            .store(in: &cancellables)
+    }
     
 }
+/*  ADD RELATIONS TO THE INSTANCE OF A CLASS
+let commentId = 15  // ID del comentario (por ejemplo)
+let userId = 5    // ID del usuario (por ejemplo)
+let businessId = 1 // ID business
+
+cancellable = commentViewModel.addCommentRelations(commentId: commentId, userId: userId, businessId: businessId)
+   .sink(receiveCompletion: { completion in
+       switch completion {
+       case .failure(let error):
+           print(error.localizedDescription)
+           print("Failed")
+       case .finished:
+           break
+       }
+   }, receiveValue: { success in
+       print("Success")
+   })
+ */
+
+
+//commentViewModel.deleteComment(commentId: 10)
+
+
+/* CREATE COMMENT
+let newComment = Comment(id: 7, description: "building my comment", rating: 1, commenterName: "", commenterImage: "")
+commentViewModel.createComment(comment: newComment, businessId: 1, userId: 5) { result in
+   DispatchQueue.main.async {
+       switch result {
+       case .success(let createdComment):
+           feedbackMessage = "Comentario creado con éxito: \(createdComment.description)"
+       case .failure(let error):
+           feedbackMessage = "Error: \(error.localizedDescription)"
+       }
+   }
+}
+*/
+
+
+/* UPDATE THE INSTANCE OF A CLASS
+commentViewModel.updateComment(commentId: 15, newDescription: "Comentario actualizado", newRanking: 4)
+   .sink(receiveCompletion: { completion in
+       switch completion {
+       case .finished:
+           print("Comentario actualizado con éxito.")
+       case .failure(let error):
+           print("Error al actualizar el comentario: \(error)")
+       }
+   }, receiveValue: {
+       // No se espera valor de retorno
+   })
+   .store(in: &cancellables)
+*/
+
+/* UPDATE RELATIONS
+commentViewModel.updateCommentRelations(commentId: 15, userId: 5, businessId: 1)
+*/

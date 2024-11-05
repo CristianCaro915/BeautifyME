@@ -6,7 +6,8 @@
 //
 
 import Foundation
-struct Invoice{
+struct Invoice: Decodable, Identifiable, Hashable{
+    let id: Int
     let reservationId: Int // extra attribute to fetch easier
     let paymentDate: Date
     let totalValue: Int

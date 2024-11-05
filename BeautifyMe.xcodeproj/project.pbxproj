@@ -73,7 +73,6 @@
 		86E953CC2CB4D54A00DDE635 /* SearchBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 86E953CB2CB4D54A00DDE635 /* SearchBar.swift */; };
 		86E953D32CB4F86C00DDE635 /* BusinessDetailedView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 86E953D22CB4F86C00DDE635 /* BusinessDetailedView.swift */; };
 		86E953D52CB4FEA600DDE635 /* ReviewCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 86E953D42CB4FEA600DDE635 /* ReviewCard.swift */; };
-		86E953D72CB4FF6500DDE635 /* Review.swift in Sources */ = {isa = PBXBuildFile; fileRef = 86E953D62CB4FF6500DDE635 /* Review.swift */; };
 		86E953D92CB5031600DDE635 /* BusinessSelectedCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 86E953D82CB5031600DDE635 /* BusinessSelectedCard.swift */; };
 		86F362B92CB2F88500E6C2BA /* IconTextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 86F362B82CB2F88500E6C2BA /* IconTextView.swift */; };
 		86F362BC2CB2F93600E6C2BA /* IconAloneView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 86F362BB2CB2F93600E6C2BA /* IconAloneView.swift */; };
@@ -174,7 +173,6 @@
 		86E953CD2CB4D5C100DDE635 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		86E953D22CB4F86C00DDE635 /* BusinessDetailedView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BusinessDetailedView.swift; sourceTree = "<group>"; };
 		86E953D42CB4FEA600DDE635 /* ReviewCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReviewCard.swift; sourceTree = "<group>"; };
-		86E953D62CB4FF6500DDE635 /* Review.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Review.swift; sourceTree = "<group>"; };
 		86E953D82CB5031600DDE635 /* BusinessSelectedCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BusinessSelectedCard.swift; sourceTree = "<group>"; };
 		86F362B82CB2F88500E6C2BA /* IconTextView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IconTextView.swift; sourceTree = "<group>"; };
 		86F362BB2CB2F93600E6C2BA /* IconAloneView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IconAloneView.swift; sourceTree = "<group>"; };
@@ -333,7 +331,6 @@
 				86CE5B522CC570CC00EE0D7A /* User.swift */,
 				86E953BF2CB4D4F700DDE635 /* Location.swift */,
 				86CE7AE12CB24B6900C5F207 /* Payment.swift */,
-				86E953D62CB4FF6500DDE635 /* Review.swift */,
 				86C3FAE62CC2C75B0053760A /* Business.swift */,
 				86C3FAE82CC2C7E00053760A /* Comment.swift */,
 				86C3FAEA2CC2C8030053760A /* Employee.swift */,
@@ -602,7 +599,6 @@
 				86E79A172C8FD75A0011EBE0 /* ContentView.swift in Sources */,
 				86CE7AD62CB23AA300C5F207 /* ResetPasswordView.swift in Sources */,
 				86C3FAED2CC2C85A0053760A /* Service.swift in Sources */,
-				86E953D72CB4FF6500DDE635 /* Review.swift in Sources */,
 				86F362B92CB2F88500E6C2BA /* IconTextView.swift in Sources */,
 				86CE7ADE2CB2492500C5F207 /* ServiceDetailedView.swift in Sources */,
 				86E79A152C8FD75A0011EBE0 /* BeautifyMeApp.swift in Sources */,
