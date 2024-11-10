@@ -345,11 +345,134 @@ class DataViewModel:ObservableObject{
     }
     
     func fetchInvoices(){
+        //print("Fetching invoices")
+        guard let url = URL(string: "http://localhost:1337/api/invoices?populate[business][fields]=id&populate[reservation][fields]=id&fields[0]=paymentDate&fields[1]=totalValue") else {
+            print("URL no válida")
+            return
+        }
         
+        // Configuración del DateFormatter para la conversión de fechas
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "yyyy-MM-dd"
+        
+        URLSession.shared.dataTaskPublisher(for: url)
+            .tryMap { (data, response) -> [[String: Any]] in
+                guard let httpResponse = response as? HTTPURLResponse, httpResponse.statusCode == 200 else {
+                    throw URLError(.badServerResponse)
+                }
+                
+                // Parseo del JSON usando JSONSerialization
+                let jsonObject = try JSONSerialization.jsonObject(with: data, options: [])
+                guard let jsonDict = jsonObject as? [String: Any],
+                      let dataArray = jsonDict["data"] as? [[String: Any]] else {
+                    throw URLError(.cannotParseResponse)
+                }
+                return dataArray
+            }
+            .map { dataArray -> [Invoice] in
+                dataArray.compactMap { invoiceDict -> Invoice? in
+                    guard let id = invoiceDict["id"] as? Int,
+                          let attributes = invoiceDict["attributes"] as? [String: Any],
+                          let paymentDateString = attributes["paymentDate"] as? String,
+                          let paymentDate = dateFormatter.date(from: paymentDateString),
+                          let totalValue = attributes["totalValue"] as? Int,
+                          
+                          let business = attributes["business"] as? [String: Any],
+                          let businessData = business["data"] as? [String: Any],
+                          let businessId = businessData["id"] as? Int,
+                          let reservation = attributes["reservation"] as? [String: Any],
+                          let reservationData = reservation["data"]as? [String: Any],
+                          let reservationId = reservationData["id"] as? Int else {
+                        return nil
+                    }
+                    
+                    return Invoice(
+                        id: id,
+                        paymentDate: paymentDate,
+                        totalValue: totalValue,
+                        reservationId: reservationId,
+                        businessId: businessId
+                    )
+                }
+            }
+            .receive(on: DispatchQueue.main)
+            .sink(receiveCompletion: { completion in
+                if case .failure(let error) = completion {
+                    print("Error al obtener invoices: \(error)")
+                }
+            }, receiveValue: { [weak self] invoices in
+                self?.invoices = invoices
+                //print("DATA VIEW MODEL INVOICES")
+                //print(self!.invoices)
+            })
+            .store(in: &cancellables)
     }
     
     func fetchReservations(){
+        print("Fetching reservations")
+        guard let url = URL(string: "http://localhost:1337/api/reservations?fields[0]=title&fields[1]=startDate&fields[2]=endDate&fields[3]=observation&fields[4]=isActive") else {
+            print("URL no válida")
+            return
+        }
         
+        // Configuración del DateFormatter para la conversión de fechas
+        let isoDateFormatter = ISO8601DateFormatter()
+        isoDateFormatter.formatOptions = [.withInternetDateTime, .withFractionalSeconds]
+        
+        URLSession.shared.dataTaskPublisher(for: url)
+            .tryMap { (data, response) -> [[String: Any]] in
+                guard let httpResponse = response as? HTTPURLResponse, httpResponse.statusCode == 200 else {
+                    throw URLError(.badServerResponse)
+                }
+                
+                // Parseo del JSON usando JSONSerialization
+                let jsonObject = try JSONSerialization.jsonObject(with: data, options: [])
+                guard let jsonDict = jsonObject as? [String: Any],
+                      let dataArray = jsonDict["data"] as? [[String: Any]] else {
+                    throw URLError(.cannotParseResponse)
+                }
+                return dataArray
+            }
+            .map { dataArray -> [Reservation] in
+                dataArray.compactMap { reservationDict -> Reservation? in
+                    guard let id = reservationDict["id"] as? Int,
+                          let attributes = reservationDict["attributes"] as? [String: Any],
+                          let title = attributes["title"] as? String,
+                          let startDateString = attributes["startDate"] as? String,
+                          let startDate = isoDateFormatter.date(from: startDateString),
+                          let endDateString = attributes["endDate"] as? String,
+                          let endDate = isoDateFormatter.date(from: endDateString),
+                          let observation = attributes["observation"] as? String,
+                          let isActive = attributes["isActive"] as? Bool else {
+                        return nil
+                    }
+                    
+                    // AJUSTAR EL FORMATTER PARA EVITAR UTC TIME.
+                    // Restar 5 horas a startDate y endDate
+                    let adjustedStartDate = startDate.addingTimeInterval(-5 * 3600)
+                    let adjustedEndDate = endDate.addingTimeInterval(-5 * 3600)
+                    
+                    return Reservation(
+                        id: id,
+                        title: title,
+                        observation: observation,
+                        startDate: adjustedStartDate,
+                        endDate: adjustedEndDate,
+                        isActive: isActive
+                    )
+                }
+            }
+            .receive(on: DispatchQueue.main)
+            .sink(receiveCompletion: { completion in
+                if case .failure(let error) = completion {
+                    print("Error al obtener reservations: \(error)")
+                }
+            }, receiveValue: { [weak self] reservations in
+                self?.reservations = reservations
+                print("DATA VIEW MODEL RESERVATIONS")
+                print(self!.reservations)
+            })
+            .store(in: &cancellables)
     }
 }
 

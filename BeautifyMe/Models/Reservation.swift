@@ -12,4 +12,5 @@ struct Reservation: Decodable, Identifiable, Hashable{
     let observation: String
     let startDate: Date
     let endDate: Date
+    let isActive: Bool
 }

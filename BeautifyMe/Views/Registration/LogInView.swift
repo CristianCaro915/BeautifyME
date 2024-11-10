@@ -11,7 +11,7 @@ import Combine
 struct LogInView: View {
     @StateObject private var viewModel = LogInViewModel()
     @StateObject private var verificationViewModel = VerificationViewModel()
-    @StateObject private var invoiceViewModel = InvoiceViewModel()
+    @StateObject private var reservationViewModel = ReservationViewModel()
     @State private var feedbackMessage: String = ""
     @EnvironmentObject var sessionManager: SessionManager
     @Binding var isOnLoginScreen: Bool
@@ -132,7 +132,8 @@ struct LogInView: View {
                 
                 // Botón "Iniciar sesión con Google"
                 Button(action: {
-                    print("Sign In with Google")
+                    //print("Sign In with Google")
+                    
                 }) {
                     HStack {
                         Image(systemName: "globe")

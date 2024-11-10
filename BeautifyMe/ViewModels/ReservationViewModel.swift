@@ -9,6 +9,13 @@ import Foundation
 import Combine
 
 class ReservationViewModel: ObservableObject{
+    // VARIABLES FOR TESTING
+    @Published var endDate: Date = Date()
+    @Published var endDateString: String = ""
+    @Published var startDate: Date = Date()
+    @Published var startDateString: String = ""
+    
+    
     private var sessionManager: SessionManager
     private var dataViewModel: DataViewModel
     private var cancellables = Set<AnyCancellable>()
@@ -30,9 +37,22 @@ class ReservationViewModel: ObservableObject{
             }
             .store(in: &cancellables)
     }
+    
+    func updateReservationDates(){
+        let isoFormatter = ISO8601DateFormatter()
+        isoFormatter.formatOptions = [.withInternetDateTime, .withFractionalSeconds]
+        self.startDateString = isoFormatter.string(from: self.startDate)
+        self.endDateString = isoFormatter.string(from: self.endDate)
+        
+        print("START DATE : \(self.startDate)")
+        print("START DATE STRING: \(self.startDateString)")
+        print("END DATE : \(self.endDate)")
+        print("END DATE STRING: \(self.endDateString)")
+    }
+    
     func getReservation(id: Int)-> Reservation{
         let now = Date()
-        var rta = Reservation(id: 99, title: "error", observation: "error", startDate: now, endDate: now)
+        var rta = Reservation(id: 99, title: "error", observation: "error", startDate: now, endDate: now, isActive: true)
         // check id existance
         if !self.reservations.contains(where: { $0.id == id }){
             print("The reservation with the given id was not found")
@@ -48,7 +68,7 @@ class ReservationViewModel: ObservableObject{
         return rta
     }
     
-    func createReservation(reservationId: Int, title: String, totalValue: Int, startDate: Date, endDate: Date, employeeId: Int, userId: Int){
+    func createReservation(reservationId: Int, title: String, totalValue: Int, startDate: String, endDate: String, observation: String, isActive: Bool, employeeId: Int, userId: Int){
         // Construir el cuerpo de la solicitud manualmente
         let body: [String: Any] = [
             "data": [
@@ -56,7 +76,9 @@ class ReservationViewModel: ObservableObject{
                 "tittle": title,
                 "totalValue": totalValue,
                 "startDate":startDate,
-                "endDate":endDate,
+                "endDate": endDate,
+                "observation": observation,
+                "isActive": isActive,
                 "employee":[
                     "connect":[
                         ["id": employeeId]
@@ -255,3 +277,45 @@ class ReservationViewModel: ObservableObject{
             .store(in: &cancellables)
     }
 }
+/* CREATE RESERVATION
+reservationViewModel.updateReservationDates()
+reservationViewModel.createReservation(reservationId: 99, title: "try-reserve", totalValue: 9999, startDate: reservationViewModel.startDateString, endDate: reservationViewModel.endDateString,observation: "try-observation", isActive: true, employeeId: 3, userId: 5)
+ */
+
+/* UPDATE RESERVATION INSTANCE
+reservationViewModel.updateReservation(reservationId: 7,newTitle: "new-title",newObservation: "new-observation")
+    .sink(
+        receiveCompletion: { completion in
+            switch completion {
+            case .finished:
+                print("Actualización exitosa.")
+            case .failure(let error):
+                print("Error al actualizar el empleado:", error.localizedDescription)
+            }
+        },
+        receiveValue: { _ in
+            print("HELLO SON EMPLOYEE")
+            // Este bloque se llama solo en caso de éxito, puedes agregar lógica adicional aquí si es necesario.
+        }
+    )
+    .store(in: &cancellables)
+ */
+
+//reservationViewModel.updateReservationRelations(reservationId: 7, employeeId: 1, userId: 6)
+
+//reservationViewModel.deleteReservation(idReservation: 7)
+
+
+/* ADD TO THE VIEW BUT NEEDS FORMAT
+DatePicker(
+        "Start Date",
+        selection: $reservationViewModel.startDate,
+        displayedComponents: [.date, .hourAndMinute]
+    )
+
+DatePicker(
+        "End Date",
+        selection: $reservationViewModel.endDate,
+        displayedComponents: [.date, .hourAndMinute]
+    )
+ */

@@ -9,6 +9,10 @@ import Foundation
 import Combine
 
 class InvoiceViewModel: ObservableObject{
+    // VARIABLE PARA TESTING
+    @Published var date: Date = Date()
+    @Published var dateString: String = ""
+    
     private var sessionManager: SessionManager
     private var dataViewModel: DataViewModel
     private var cancellables = Set<AnyCancellable>()
@@ -26,13 +30,20 @@ class InvoiceViewModel: ObservableObject{
         self.dataViewModel.$invoices
             .sink { [weak self] invoices in
                 self?.invoices = invoices
-                print(self?.invoices)
             }
             .store(in: &cancellables)
     }
+    
+    func updatePaymentDate(){
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "yyyy-MM-dd"
+        dateFormatter.timeZone = TimeZone(abbreviation: "UTC")
+        self.dateString = dateFormatter.string(from: self.date)
+    }
+    
     func getInvoice(id: Int) -> Invoice{
         let now = Date()
-        var rta = Invoice(id: 99, reservationId: 99, paymentDate: now, totalValue: 99)
+        var rta = Invoice(id: 99, paymentDate: now, totalValue: 99, reservationId: 99, businessId: 99)
         // check id existance
         if !self.invoices.contains(where: { $0.id == id }){
             print("The invoice with the given id was not found")
@@ -48,7 +59,7 @@ class InvoiceViewModel: ObservableObject{
         return rta
     }
     
-    func createInvoice(invoiceId: Int, paymentDate: Date, totalValue: Int, businessId: Int, reservationId: Int){
+    func createInvoice(invoiceId: Int, paymentDate: String, totalValue: Int, businessId: Int, reservationId: Int){
         // Construir el cuerpo de la solicitud manualmente
         let body: [String: Any] = [
             "data": [
@@ -245,3 +256,43 @@ class InvoiceViewModel: ObservableObject{
             .store(in: &cancellables)
     }
 }
+/*
+print("CREANDO UN INVOICE")
+invoiceViewModel.updatePaymentDate()
+invoiceViewModel.createInvoice(invoiceId: 99, paymentDate: invoiceViewModel.dateString, totalValue: 9999, businessId: 1, reservationId: 1)
+*/
+
+/*
+print("EDITANDO INVOICE")
+invoiceViewModel.updateInvoice(invoiceId: 5, newTotalValue: 8000)
+    .sink(
+        receiveCompletion: { completion in
+            switch completion {
+            case .finished:
+                print("Actualización exitosa.")
+            case .failure(let error):
+                print("Error al actualizar el empleado:", error.localizedDescription)
+            }
+        },
+        receiveValue: { _ in
+            print("HELLO SON EMPLOYEE")
+            // Este bloque se llama solo en caso de éxito, puedes agregar lógica adicional aquí si es necesario.
+        }
+    )
+    .store(in: &cancellables)
+ */
+
+//invoiceViewModel.updateInvoiceRelations(invoiceId: 2, businessId: 2, reservationId: 1)
+
+//invoiceViewModel.deleteInvoice(idInvoice: 6)
+
+
+// SET ON THE VIEW but needs format and colours
+
+/*
+ DatePicker(
+         "Start Date",
+         selection: $invoiceViewModel.date,
+         displayedComponents: [.date]
+     )
+ */
