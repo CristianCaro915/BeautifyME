@@ -73,7 +73,7 @@ class ReservationViewModel: ObservableObject{
         let body: [String: Any] = [
             "data": [
                 "id": reservationId,
-                "tittle": title,
+                "title": title,
                 "totalValue": totalValue,
                 "startDate":startDate,
                 "endDate": endDate,

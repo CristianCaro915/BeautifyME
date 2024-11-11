@@ -8,6 +8,7 @@ import Foundation
 
 class LogInViewModel: ObservableObject{
     private var sessionManager: SessionManager
+    private(set) var jwtToken: String?
     
     @Published var email: String = ""
     @Published var password: String = ""
@@ -24,6 +25,7 @@ class LogInViewModel: ObservableObject{
                     switch result {
                     case .success(let jwtToken):
                         print("Token JWT recibido: \(jwtToken)")
+                        self?.jwtToken = jwtToken
                         self?.isAuthenticated = true
                         self?.sessionManager.loginUser()
                         self?.sessionManager.userMail = self?.email
