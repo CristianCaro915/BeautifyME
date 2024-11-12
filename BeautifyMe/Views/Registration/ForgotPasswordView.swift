@@ -22,7 +22,7 @@ struct ForgotPasswordView: View {
                 Text("Forgot Password,")
                     .font(.largeTitle)
                     .fontWeight(.bold)
-                    .foregroundColor(.black)
+                    .foregroundColor(AppColors.black)
                 
                 // subtittle
                 Text("Please type your email below and we will give you a OTP code.")
@@ -140,7 +140,7 @@ struct ForgotPasswordView: View {
             
             Spacer()
         }
-        .background(Color(.white).ignoresSafeArea())
+        .background(AppColors.white.ignoresSafeArea())
         .navigationDestination(isPresented: $viewModel.shouldNavigate) {
             ResetPasswordView()
         }

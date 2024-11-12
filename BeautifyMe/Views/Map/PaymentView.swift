@@ -71,7 +71,7 @@ struct PaymentView: View {
             }) {
                 Text("Confirm New Password")
                     .fontWeight(.bold)
-                    .foregroundColor(.white)
+                    .foregroundColor(AppColors.white)
                     .frame(maxWidth: .infinity)
                     .padding()
                     .background(AppColors.darkBlue)
@@ -81,7 +81,7 @@ struct PaymentView: View {
             .accessibilityLabel("Confirm New Password")
             .accessibilityValue("Tap to confirm the new password")
         }
-        .background(Color(.white).ignoresSafeArea())
+        .background(AppColors.white.ignoresSafeArea())
         //ends vstack
     }
 }

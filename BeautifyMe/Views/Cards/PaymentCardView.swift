@@ -18,9 +18,9 @@ struct PaymentCardView: View {
                 .aspectRatio(contentMode: .fit)
                 .frame(width: 60, height: 60)
                 .padding(2)
-                .foregroundColor(.black)
+                .foregroundColor(AppColors.black)
             Text(text)
-                .foregroundColor(.black)
+                .foregroundColor(AppColors.black)
             Spacer()
             
             Button(action: {

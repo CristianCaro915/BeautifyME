@@ -51,13 +51,13 @@ struct ServiceCardView: View {
                     Text("-")
                     Text(duration)
                         .font(.subheadline)
-                        .foregroundColor(.gray)
+                        .foregroundColor(AppColors.mediumGrey)
                 }
                 
                 
                 Text(description)
                     .font(.caption)
-                    .foregroundColor(.gray)
+                    .foregroundColor(AppColors.mediumGrey)
                     .lineLimit(2)
             }
             

@@ -71,7 +71,7 @@ struct BusinessDetailedView: View {
             }
             .padding()
         }
-        .background(Color(.white).ignoresSafeArea())
+        .background(AppColors.white.ignoresSafeArea())
         .edgesIgnoringSafeArea(.top)
 
         }

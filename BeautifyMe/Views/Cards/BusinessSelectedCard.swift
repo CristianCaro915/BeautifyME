@@ -13,7 +13,7 @@ struct BusinessSelectedCard: View {
     var body: some View {
         VStack{
             Capsule()
-                .foregroundColor(Color(.systemGray5))
+                .foregroundColor(AppColors.mediumGrey)
                 .frame(width: 48, height: 6)
                 .padding(.top, 8)
             //trip info
@@ -64,7 +64,7 @@ struct BusinessSelectedCard: View {
             
         }
         .padding(.bottom)
-        .background(.white)
+        .background(AppColors.white)
         .cornerRadius(18)
     }
     func actionState(_ state: AppState){

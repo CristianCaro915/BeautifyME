@@ -22,7 +22,7 @@ struct ResetPasswordView: View {
             Text("Reset Password,")
                 .font(.largeTitle)
                 .fontWeight(.bold)
-                .foregroundColor(.black)
+                .foregroundColor(AppColors.black)
             
             // subtittle
             Text("Now you can create new password and confirm it below.")
@@ -102,7 +102,7 @@ struct ResetPasswordView: View {
             }) {
                 Text("Confirm New Password")
                     .fontWeight(.bold)
-                    .foregroundColor(.white)
+                    .foregroundColor(AppColors.white)
                     .frame(maxWidth: .infinity)
                     .padding()
                     .background(AppColors.darkBlue)
@@ -114,7 +114,7 @@ struct ResetPasswordView: View {
             Spacer()
         }
         .padding(.horizontal, 32)
-        .background(Color(.white).ignoresSafeArea())
+        .background(AppColors.white.ignoresSafeArea())
         .alert("The fields do not have the correct values", isPresented: $showAlert) {
                     Button("OK", role: .cancel) { }
                 } message: {

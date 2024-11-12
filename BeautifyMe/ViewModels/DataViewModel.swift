@@ -409,7 +409,7 @@ class DataViewModel:ObservableObject{
     }
     
     func fetchReservations(){
-        print("Fetching reservations")
+        //print("Fetching reservations")
         guard let url = URL(string: "http://localhost:1337/api/reservations?fields[0]=title&fields[1]=startDate&fields[2]=endDate&fields[3]=observation&fields[4]=isActive") else {
             print("URL no válida")
             return
@@ -469,8 +469,8 @@ class DataViewModel:ObservableObject{
                 }
             }, receiveValue: { [weak self] reservations in
                 self?.reservations = reservations
-                print("DATA VIEW MODEL RESERVATIONS")
-                print(self!.reservations)
+                //print("DATA VIEW MODEL RESERVATIONS")
+                //print(self!.reservations)
             })
             .store(in: &cancellables)
     }

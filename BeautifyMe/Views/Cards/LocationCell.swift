@@ -14,15 +14,15 @@ struct LocationCell: View {
         HStack{
             Image(systemName: "building")
                 .resizable()
-                .foregroundColor(.blue)
-                .accentColor(.white)
+                .foregroundColor(AppColors.darkBlue)
+                .accentColor(AppColors.white)
                 .frame(width: 40, height: 40)
             VStack(alignment: .leading, spacing: 4){
                 Text(title)
                     .font(.body)
                 Text(subtitle)
                     .font(.system(size: 15))
-                    .foregroundColor(.gray)
+                    .foregroundColor(AppColors.mediumGrey)
                 Divider()
             }
             .padding(.leading, 8)

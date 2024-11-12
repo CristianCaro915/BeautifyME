@@ -21,7 +21,7 @@ struct SignInView: View {
             Text("Create an account,")
                 .font(.largeTitle)
                 .fontWeight(.bold)
-                .foregroundColor(.black)
+                .foregroundColor(AppColors.black)
                 .accessibilityLabel("Create an account title")
 
             // Subtítulo
@@ -39,8 +39,8 @@ struct SignInView: View {
                         .accessibilityLabel("Icon for name input")
                     TextField("Name", text: $viewModel.name)
                         .padding()
-                        .background(Color.white)
-                        .foregroundColor(.black)
+                        .background(AppColors.white)
+                        .foregroundColor(AppColors.black)
                         .accessibilityLabel("Name input field")
                         .accessibilityValue(viewModel.name.isEmpty ? "Empty" : viewModel.name)
                         .onChange(of: viewModel.name) { _ in
@@ -74,7 +74,7 @@ struct SignInView: View {
                         .autocapitalization(.none)
                         .padding()
                         .background(AppColors.white)
-                        .foregroundColor(.black)
+                        .foregroundColor(AppColors.black)
                         .accessibilityLabel("Email input field")
                         .accessibilityValue(viewModel.email.isEmpty ? "Empty" : viewModel.email)
                         .onChange(of: viewModel.email) { _ in
@@ -158,7 +158,7 @@ struct SignInView: View {
             // "Forgot Password?"
             VStack {
                 Text("By signing in you agree to our")
-                    .foregroundColor(.gray)
+                    .foregroundColor(AppColors.mediumGrey)
                     .font(.footnote)
                     .accessibilityLabel("Agreement notice")
                 Button(action: {
@@ -178,11 +178,13 @@ struct SignInView: View {
                 // Acción de inicio de sesión, llamar API
                 if verificationViewModel.singInHasAnyError {
                     showAlert = true
+                } else{
+                    viewModel.createUser()
                 }
             }) {
                 Text("Join Now")
                     .fontWeight(.bold)
-                    .foregroundColor(.white)
+                    .foregroundColor(AppColors.white)
                     .frame(maxWidth: .infinity)
                     .padding()
                     .background(AppColors.darkBlue)
@@ -196,10 +198,10 @@ struct SignInView: View {
                     .frame(height: 1)
                     .foregroundColor(AppColors.mediumGrey)
                 Text("or")
-                    .foregroundColor(Color.gray)
+                    .foregroundColor(AppColors.darkGrey)
                 Rectangle()
                     .frame(height: 1)
-                    .foregroundColor(Color.gray)
+                    .foregroundColor(AppColors.mediumGrey)
             }
             .padding(.vertical)
 
@@ -221,7 +223,7 @@ struct SignInView: View {
             // Enlace para registrarse
             HStack {
                 Text("Already have an account?")
-                    .foregroundColor(.gray)
+                    .foregroundColor(AppColors.mediumGrey)
                     .font(.footnote)
                     .accessibilityLabel("Already have an account text")
                 Button(action: {
@@ -240,7 +242,7 @@ struct SignInView: View {
             Spacer()
         }
         .padding(.horizontal, 32)
-        .background(Color(.white).ignoresSafeArea())
+        .background(AppColors.white.ignoresSafeArea())
         .alert("The fields do not have the correct values", isPresented: $showAlert) {
             Button("OK", role: .cancel) { }
         } message: {

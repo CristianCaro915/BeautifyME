@@ -17,7 +17,7 @@ struct IconAloneView: View {
                     .aspectRatio(contentMode: .fit)
                     .frame(width: 60, height: 60)
                     .clipShape(Circle())
-                    .overlay(Circle().stroke(Color.gray, lineWidth: 2))
+                    .overlay(Circle().stroke(AppColors.mediumGrey, lineWidth: 2))
             } placeholder: {
                 ProgressView()
             }

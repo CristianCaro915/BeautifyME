@@ -19,9 +19,9 @@ struct IconTextView: View {
                         .resizable()
                         .aspectRatio(contentMode: .fit)
                         .frame(width: 60, height: 60)
-                        .background(Color.gray.opacity(0.2))
+                        .background(AppColors.mediumGrey.opacity(0.2))
                         .clipShape(Circle())
-                        .overlay(Circle().stroke(Color.gray, lineWidth: 2))
+                        .overlay(Circle().stroke(AppColors.mediumGrey, lineWidth: 2))
                 } placeholder: {
                     ProgressView()
                 }
@@ -29,7 +29,7 @@ struct IconTextView: View {
                 
             Text(title)
                 .font(.footnote)
-                .foregroundColor(.gray)
+                .foregroundColor(AppColors.mediumGrey)
                 .frame(maxWidth: 80) // Ajusta este valor según lo necesites
                 .lineLimit(2) // Limita el texto a un máximo de 2 líneas
                 .truncationMode(.tail) // Agrega "..." si el texto es demasiado largo

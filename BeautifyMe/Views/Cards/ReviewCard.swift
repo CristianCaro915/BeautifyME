@@ -33,7 +33,7 @@ struct ReviewCard: View {
                     Spacer()
                     Text("1 week ago")
                         .font(.caption)
-                        .foregroundColor(.gray)
+                        .foregroundColor(AppColors.mediumGrey)
                 }
                 
                 HStack(spacing: 2) {

@@ -44,7 +44,7 @@ struct BusinessCardView: View {
                     
                     Text("Location")
                         .font(.subheadline)
-                        .foregroundColor(.gray)
+                        .foregroundColor(AppColors.mediumGrey)
                         .accessibilityLabel("Location")
                         .accessibilityValue("Location Placeholder")
                 }
@@ -61,7 +61,7 @@ struct BusinessCardView: View {
             // Descripción del negocio
             Text("This is a short description of the business, offering services that you love.")
                 .font(.body)
-                .foregroundColor(.gray)
+                .foregroundColor(AppColors.mediumGrey)
                 .accessibilityLabel("Description")
                 .accessibilityValue("Short description of the business")
             
@@ -84,7 +84,7 @@ struct BusinessCardView: View {
             }
         }
         .padding()
-        .background(Color(.white).ignoresSafeArea())
+        .background(AppColors.white.ignoresSafeArea())
         .cornerRadius(10)
         .shadow(radius: 2)
     }

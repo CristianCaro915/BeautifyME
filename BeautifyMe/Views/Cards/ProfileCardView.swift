@@ -26,7 +26,7 @@ struct ProfileCardView: View {
                     .font(.headline)
                 Text(subtitle)
                     .font(.subheadline)
-                    .foregroundColor(.gray)
+                    .foregroundColor(AppColors.mediumGrey)
             }
             .padding(.leading, 0)
             
@@ -35,10 +35,10 @@ struct ProfileCardView: View {
             Button(action: {
                 //Change for enum with case values for every opening
                 if title == "LogOut"{
-                    print(sessionManager.isAuthenticated)
-                    print("MUST LOG OUT")
-                    sessionManager.logoutUser()
-                    print(sessionManager.isAuthenticated)
+                    //print(sessionManager.isAuthenticated)
+                    //print("MUST LOG OUT")
+                    sessionManager.isAuthenticated = false
+                    //print(sessionManager.isAuthenticated)
                 }
             }) {
                 Image(systemName: "chevron.right")

@@ -38,7 +38,7 @@ struct MapView: View {
                     .transition(.move(edge: .bottom))
             }
         }
-        .background(Color(.white).ignoresSafeArea())
+        .background(AppColors.white.ignoresSafeArea())
     }
 }
 

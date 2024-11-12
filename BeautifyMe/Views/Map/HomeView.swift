@@ -28,7 +28,7 @@ struct HomeView: View {
                         
                         Text("Find the service you want, and treat yourself")
                             .font(.subheadline)
-                            .foregroundColor(.gray)
+                            .foregroundColor(AppColors.mediumGrey)
                             .accessibilityLabel(Text("User description"))
                             .accessibilityValue(Text("Find the service you want, and treat yourself"))
                     }
@@ -196,9 +196,9 @@ struct HomeView: View {
                 Spacer()
             }
             .padding(.top, 20)
-            .background(Color(.white).ignoresSafeArea())
+            .background(AppColors.white.ignoresSafeArea())
         }
-        .background(Color(.white).ignoresSafeArea())
+        .background(AppColors.white.ignoresSafeArea())
         .fullScreenCover(isPresented: $navigateBusinessDetail) {
             BusinessDetailedView() // Present the BusinessDetailedView component in full-screen mode
         }

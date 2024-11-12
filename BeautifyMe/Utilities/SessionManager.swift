@@ -13,21 +13,17 @@ class SessionManager: ObservableObject {
     @Published var userMail: String?
     @Published var userID: Int?
     @Published var users: [User] = []
+    @Published var jwtToken: String = ""
+    
     @Published var businessSelected: Business?
     @Published var serviceSelected: Service?
+    
     
     static let shared = SessionManager()
     
     //singleton
     private init() {}
     
-    func loginUser(){
-        self.isAuthenticated = true
-    }
-    
-    func logoutUser() {
-        self.isAuthenticated = false
-    }
     
     func fetchUserIDByEmail() {
         guard let email = userMail else {
@@ -122,7 +118,7 @@ class SessionManager: ObservableObject {
                             }
                             self?.searchUserById()
                             
-                            //print("USERS PRINT")
+                            //print("SESSION MAMANGER: USERS PRINT")
                             //print(self?.users)
                         }
                     }

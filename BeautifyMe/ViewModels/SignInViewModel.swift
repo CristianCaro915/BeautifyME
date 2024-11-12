@@ -25,6 +25,11 @@ class SignInViewModel: ObservableObject{
         self.sessionManager = sessionManager
     }
     
+    func updateToken(){
+        self.sessionManager.jwtToken = self.jwtToken ?? ""
+        //print("TOKEN UPDATED IN SESSION MANAGER: \(self.sessionManager.jwtToken)")
+    }
+    
     func createUser() {
         // URL de la solicitud
         guard let url = URL(string: "http://localhost:1337/api/auth/local/register") else {
@@ -36,7 +41,12 @@ class SignInViewModel: ObservableObject{
             "username": self.name,
             "email": self.email,
             "password": self.password,
-            "phone": self.phone
+            "phone": self.phone,
+            "profile_photo": [
+                "set": [
+                    ["id": 31] // ID de `person_generic_icon` en Strapi
+                ]
+            ]
         ]
         
         guard let jsonData = try? JSONSerialization.data(withJSONObject: body, options: []) else {
@@ -70,7 +80,20 @@ class SignInViewModel: ObservableObject{
                 // Almacena el JWT si está presente en la respuesta
                 if let jwt = responseDict["jwt"] as? String {
                     self?.jwtToken = jwt
-                    print("JWT guardado exitosamente: \(jwt)")
+                    //print("JWT guardado exitosamente: \(jwt)")
+                    
+                    if let userData = responseDict["user"] as? [String : Any],
+                       let email = userData["email"] as? String{
+                        DispatchQueue.main.async {
+                            //print("FROM SIGN IN, SESSION MANAGER WILL BE UPDATED WITH NEW USER WITH EMAIL: \(email)")
+                            self?.updateToken()
+                            self?.sessionManager.userMail = email
+                            self?.sessionManager.fetchUserIDByEmail()
+                            self?.sessionManager.isAuthenticated = true
+                        }
+                    } else {
+                        print("ID de usuario no encontrado en la respuesta")
+                    }
                 } else {
                     print("JWT no encontrado en la respuesta")
                 }
@@ -78,7 +101,11 @@ class SignInViewModel: ObservableObject{
             .store(in: &cancellables)
     }
     
-    func updateUserRole(currentUserId: Int, jwtToken: String) {
+    func updateUserRole(currentUserId: Int, jwtToken: String, isAdmin: Bool) {
+        var roleId = 4
+        if isAdmin{
+            roleId = 3
+        }
             // URL de la solicitud
             guard let url = URL(string: "http://localhost:1337/api/users/\(currentUserId)") else {
                 print("URL no válida")
@@ -92,7 +119,7 @@ class SignInViewModel: ObservableObject{
                         ["id": 1]
                     ],
                     "connect": [
-                        ["id": 3]
+                        ["id": roleId]
                     ]
                 ]
             ]

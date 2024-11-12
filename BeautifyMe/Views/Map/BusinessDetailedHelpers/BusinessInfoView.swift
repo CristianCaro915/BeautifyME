@@ -24,7 +24,7 @@ struct BusinessInfoView: View {
                 .accessibilityValue(Text(name))
             
             Text(address)
-                .foregroundColor(.gray)
+                .foregroundColor(AppColors.mediumGrey)
                 .accessibilityLabel(Text("Business Address"))
                 .accessibilityValue(Text(address))
             

@@ -83,7 +83,7 @@ struct ServiceListView: View {
             }
         }
         .padding(.top, 20)
-        .background(Color(.white).ignoresSafeArea())
+        .background(AppColors.white.ignoresSafeArea())
     }
 }
 

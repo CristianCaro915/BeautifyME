@@ -89,7 +89,7 @@ struct ServiceDetailedView: View {
                 
                 TextField("Type your notes here", text: $notes)
                     .padding()
-                    .background(Color(UIColor.systemGray6))
+                    .background(AppColors.mediumGrey)
                     .cornerRadius(10)
                     .padding(.horizontal)
             }
@@ -117,7 +117,7 @@ struct ServiceDetailedView: View {
                 }) {
                     Text("Book Now")
                         .font(.headline)
-                        .foregroundColor(.white)
+                        .foregroundColor(AppColors.white)
                         .padding()
                         .frame(maxWidth: .infinity)
                         .background(AppColors.darkBlue)
@@ -128,7 +128,7 @@ struct ServiceDetailedView: View {
             .padding(.bottom, 20)
         }
         .padding(.leading)
-        .background(Color(.white).ignoresSafeArea())
+        .background(AppColors.white.ignoresSafeArea())
     }
 }
 

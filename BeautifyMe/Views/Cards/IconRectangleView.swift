@@ -18,7 +18,7 @@ struct IconRectangleView: View {
                     .frame(width: 200, height: 140)
                     .aspectRatio(contentMode: .fit)
                     .cornerRadius(10)
-                    .overlay(Rectangle().stroke(Color.gray, lineWidth: 2))
+                    .overlay(Rectangle().stroke(AppColors.mediumGrey, lineWidth: 2))
             } placeholder: {
                 ProgressView()
             }

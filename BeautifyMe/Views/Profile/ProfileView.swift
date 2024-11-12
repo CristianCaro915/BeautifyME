@@ -104,7 +104,7 @@ struct ProfileView: View {
             
             Spacer()
         }
-        .background(Color(.white).ignoresSafeArea())
+        .background(AppColors.white.ignoresSafeArea())
         .padding(.top, 40)
     }
 }

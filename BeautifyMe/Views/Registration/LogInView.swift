@@ -11,7 +11,6 @@ import Combine
 struct LogInView: View {
     @StateObject private var viewModel = LogInViewModel()
     @StateObject private var verificationViewModel = VerificationViewModel()
-    @StateObject private var reservationViewModel = ReservationViewModel()
     @State private var feedbackMessage: String = ""
     @EnvironmentObject var sessionManager: SessionManager
     @Binding var isOnLoginScreen: Bool
@@ -28,7 +27,7 @@ struct LogInView: View {
                 Text("Welcome back,")
                     .font(.largeTitle)
                     .fontWeight(.bold)
-                    .foregroundColor(.black)
+                    .foregroundColor(AppColors.black)
                     .accessibilityLabel("Welcome back message")
                 
                 // Subtítulo
@@ -52,8 +51,8 @@ struct LogInView: View {
                             .padding()
                             .keyboardType(.emailAddress)
                             .autocapitalization(.none)
-                            .background(Color.white)
-                            .foregroundColor(.black)
+                            .background(AppColors.white)
+                            .foregroundColor(AppColors.black)
                             .accessibilityLabel("Email input field")
                             .accessibilityValue(viewModel.email.isEmpty ? "Empty" : viewModel.email)
                             .onChange(of: viewModel.email) { _ in
@@ -73,8 +72,8 @@ struct LogInView: View {
                         
                         SecureField("Password", text: $viewModel.password)
                             .padding()
-                            .background(Color.white)
-                            .foregroundColor(.black)
+                            .background(AppColors.white)
+                            .foregroundColor(AppColors.black)
                             .accessibilityLabel("Password input field")
                             .accessibilityValue(viewModel.password.isEmpty ? "Empty" : "Entered")
                             .onChange(of: viewModel.password) { _ in
@@ -103,12 +102,13 @@ struct LogInView: View {
                     if verificationViewModel.logInHasAnyError {
                         showAlert = true
                     } else {
+                        print("AUTH HAPPENING")
                         viewModel.authenticateUser()
                     }
                 }) {
                     Text("Log In")
                         .fontWeight(.bold)
-                        .foregroundColor(.white)
+                        .foregroundColor(AppColors.white)
                         .frame(maxWidth: .infinity)
                         .padding()
                         .background(AppColors.darkBlue)
@@ -122,10 +122,10 @@ struct LogInView: View {
                         .frame(height: 1)
                         .foregroundColor(AppColors.mediumGrey)
                     Text("or")
-                        .foregroundColor(Color.gray)
+                        .foregroundColor(AppColors.darkGrey)
                     Rectangle()
                         .frame(height: 1)
-                        .foregroundColor(Color.gray)
+                        .foregroundColor(AppColors.mediumGrey)
                 }
                 .padding(.vertical)
                 .accessibilityHidden(true)
@@ -149,7 +149,7 @@ struct LogInView: View {
                 // Enlace para registrarse
                 HStack {
                     Text("Don’t have an account?")
-                        .foregroundColor(.gray)
+                        .foregroundColor(AppColors.mediumGrey)
                         .padding(.horizontal)
                     
                     Button(action: {
@@ -166,7 +166,7 @@ struct LogInView: View {
                 Spacer()
             }
             .padding(.horizontal, 32)
-            .background(Color(.white).ignoresSafeArea())
+            .background(AppColors.white.ignoresSafeArea())
             .alert("The fields do not have the correct values", isPresented: $showAlert) {
                 Button("OK", role: .cancel) { }
             } message: {

@@ -19,6 +19,11 @@ class LogInViewModel: ObservableObject{
         self.sessionManager = sessionManager
     }
     
+    func updateToken(){
+        self.sessionManager.jwtToken = self.jwtToken ?? ""
+        //print("TOKEN UPDATED IN SESSION MANAGER: \(self.sessionManager.jwtToken)")
+    }
+    
     func authenticateUser() {
         authenticateUser(identifier: email, password: password) { [weak self] result in
                 DispatchQueue.main.async {
@@ -26,8 +31,8 @@ class LogInViewModel: ObservableObject{
                     case .success(let jwtToken):
                         print("Token JWT recibido: \(jwtToken)")
                         self?.jwtToken = jwtToken
+                        self?.updateToken()
                         self?.isAuthenticated = true
-                        self?.sessionManager.loginUser()
                         self?.sessionManager.userMail = self?.email
                         self?.sessionManager.fetchUserIDByEmail()
                         self?.sessionManager.isAuthenticated = true
@@ -35,7 +40,7 @@ class LogInViewModel: ObservableObject{
                     case .failure(let error):
                         self?.errorMessage = error.localizedDescription
                         self?.isAuthenticated = false
-                        self?.sessionManager.isAuthenticated = false
+                        self?.sessionManager.isAuthenticated = true
                     }
                 }
             }
@@ -51,19 +56,16 @@ class LogInViewModel: ObservableObject{
             return
         }
         
-        // Body of the request
         let parameters: [String: Any] = [
             "identifier": identifier,
             "password": password
         ]
         
-        // Serialization into JSON
         guard let httpBody = try? JSONSerialization.data(withJSONObject: parameters, options: []) else {
             completion(.failure(NSError(domain: "Invalid JSON", code: 400, userInfo: nil)))
             return
         }
         
-        // query HTTP
         var request = URLRequest(url: url)
         request.httpMethod = "POST"
         request.setValue("application/json", forHTTPHeaderField: "Content-Type")
