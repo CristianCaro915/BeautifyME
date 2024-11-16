@@ -36,7 +36,7 @@ struct OptionsButton: View {
             //solve bug of keeping a past location
             appState = .noInput
             viewModel.selectedLocation = nil
-        case .businessDetailed,.booking,.payment,.addedToCalendar:
+        case .businessDetailed,.booking,.payment, .commentList, .serviceList:
             break
         }
     }
@@ -44,7 +44,7 @@ struct OptionsButton: View {
         switch state{
         case .noInput:
             return "line.3.horizontal"
-        case .searchingForLocation, .locationSelected, .polylineaddded, .categorySelected, .businessDetailed, .booking, .payment, .addedToCalendar:
+        case .searchingForLocation, .locationSelected, .polylineaddded, .categorySelected, .businessDetailed, .booking, .payment, .commentList, .serviceList:
             return "arrow.left"
         }
     }

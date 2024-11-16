@@ -14,7 +14,8 @@ enum AppState{
     case locationSelected // there is an specific location selected
     case polylineaddded // when a location is clicked
     case businessDetailed // a specific business is selected
+    case commentList // list of all comments and user can create one comment
+    case serviceList // list of all services
     case booking // a reservation is being created
     case payment // the service was paid
-    case addedToCalendar // service was added to calendar
 }

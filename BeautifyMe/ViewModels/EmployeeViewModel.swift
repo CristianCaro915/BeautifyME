@@ -92,7 +92,9 @@ class EmployeeViewModel: ObservableObject{
             var request = URLRequest(url: url)
             request.httpMethod = "POST"
             request.setValue("application/json", forHTTPHeaderField: "Content-Type")
-            request.setValue("Bearer \(self.sessionManager.jwtToken)", forHTTPHeaderField: "Authorization")
+            if (self.sessionManager.isAuthenticated){
+                request.setValue("Bearer \(self.sessionManager.jwtToken)", forHTTPHeaderField: "Authorization")
+            }
             request.httpBody = jsonData
             
             // Realizar la solicitud POST usando Combine
@@ -128,7 +130,9 @@ class EmployeeViewModel: ObservableObject{
         var request = URLRequest(url: url)
         request.httpMethod = "PUT"
         request.setValue("application/json", forHTTPHeaderField: "Content-Type")
-        request.setValue("Bearer \(self.sessionManager.jwtToken)", forHTTPHeaderField: "Authorization")
+        if (self.sessionManager.isAuthenticated){
+            request.setValue("Bearer \(self.sessionManager.jwtToken)", forHTTPHeaderField: "Authorization")
+        }
         
         let body: [String: Any] = [
             "data": [
@@ -168,7 +172,9 @@ class EmployeeViewModel: ObservableObject{
         var request = URLRequest(url: url)
         request.httpMethod = "PUT"
         request.setValue("application/json", forHTTPHeaderField: "Content-Type")
-        request.setValue("Bearer \(self.sessionManager.jwtToken)", forHTTPHeaderField: "Authorization")
+        if (self.sessionManager.isAuthenticated){
+            request.setValue("Bearer \(self.sessionManager.jwtToken)", forHTTPHeaderField: "Authorization")
+        }
         
         let body: [String: Any] = [
             "data": [
@@ -212,7 +218,9 @@ class EmployeeViewModel: ObservableObject{
         var request = URLRequest(url: url)
         request.httpMethod = "DELETE"
         request.setValue("application/json", forHTTPHeaderField: "Content-Type")
-        request.setValue("Bearer \(self.sessionManager.jwtToken)", forHTTPHeaderField: "Authorization")
+        if (self.sessionManager.isAuthenticated){
+            request.setValue("Bearer \(self.sessionManager.jwtToken)", forHTTPHeaderField: "Authorization")
+        }
         
         URLSession.shared.dataTaskPublisher(for: request)
             .map(\.data)
@@ -286,7 +294,9 @@ class EmployeeViewModel: ObservableObject{
         var request = URLRequest(url: url)
         request.httpMethod = "PUT"
         request.setValue("application/json", forHTTPHeaderField: "Content-Type")
-        request.setValue("Bearer \(self.sessionManager.jwtToken)", forHTTPHeaderField: "Authorization")
+        if (self.sessionManager.isAuthenticated){
+            request.setValue("Bearer \(self.sessionManager.jwtToken)", forHTTPHeaderField: "Authorization")
+        }
         request.httpBody = httpBody
         
         return URLSession.shared.dataTaskPublisher(for: request)
@@ -334,7 +344,9 @@ class EmployeeViewModel: ObservableObject{
         var request = URLRequest(url: url)
         request.httpMethod = "PUT"
         request.setValue("application/json", forHTTPHeaderField: "Content-Type")
-        request.setValue("Bearer \(self.sessionManager.jwtToken)", forHTTPHeaderField: "Authorization")
+        if (self.sessionManager.isAuthenticated){
+            request.setValue("Bearer \(self.sessionManager.jwtToken)", forHTTPHeaderField: "Authorization")
+        }
         request.httpBody = jsonData
         
         URLSession.shared.dataTaskPublisher(for: request)

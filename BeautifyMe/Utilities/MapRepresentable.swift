@@ -60,7 +60,9 @@ struct MapRepresentable: UIViewRepresentable{
             break
         case .payment:
             break
-        case .addedToCalendar:
+        case .serviceList:
+            break
+        case .commentList:
             break
         }
     }
