@@ -41,8 +41,6 @@ struct ForgotPasswordView: View {
                                 .padding(10)
                             TextField("Email Address", text: $viewModel.email)
                                 .padding()
-                                .keyboardType(.emailAddress)
-                                .autocapitalization(.none)
                                 .onChange(of: viewModel.email) { _ in
                                     verificationViewModel.validateEmail(viewModel.email)
                                 }

@@ -70,8 +70,6 @@ struct SignInView: View {
                         .padding(10)
                         .accessibilityLabel("Icon for email input")
                     TextField("Email address", text: $viewModel.email)
-                        .keyboardType(.emailAddress)
-                        .autocapitalization(.none)
                         .padding()
                         .background(AppColors.white)
                         .foregroundColor(AppColors.black)

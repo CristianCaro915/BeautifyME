@@ -49,8 +49,6 @@ struct LogInView: View {
                         
                         TextField("Email", text: $viewModel.email)
                             .padding()
-                            .keyboardType(.emailAddress)
-                            .autocapitalization(.none)
                             .background(AppColors.white)
                             .foregroundColor(AppColors.black)
                             .accessibilityLabel("Email input field")
