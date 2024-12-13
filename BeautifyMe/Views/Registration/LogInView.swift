@@ -49,6 +49,8 @@ struct LogInView: View {
                         
                         TextField("Email", text: $viewModel.email)
                             .padding()
+                            .keyboardType(.emailAddress)
+                            .autocapitalization(.none)
                             .background(AppColors.white)
                             .foregroundColor(AppColors.black)
                             .accessibilityLabel("Email input field")
@@ -100,7 +102,7 @@ struct LogInView: View {
                     if verificationViewModel.logInHasAnyError {
                         showAlert = true
                     } else {
-                        print("AUTH HAPPENING")
+                        //print("AUTH HAPPENING")
                         viewModel.authenticateUser()
                     }
                 }) {

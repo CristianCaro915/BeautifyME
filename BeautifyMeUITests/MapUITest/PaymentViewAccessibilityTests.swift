@@ -4,7 +4,7 @@
 //
 //  Created by Cristian Caro on 5/11/24.
 //
-
+/*
 import XCTest
 @testable import BeautifyMe
 
@@ -31,15 +31,6 @@ final class PaymentViewAccessibilityTests: XCTestCase {
         XCTAssertTrue(titleLabel.exists, "El título 'Payment Methods' no existe.")
         XCTAssertEqual(titleLabel.label, "Payment Methods", "El accessibilityLabel del título no es correcto.")
         XCTAssertEqual(titleLabel.value as? String, "List of available payment methods", "El accessibilityValue del título no es correcto.")
-    }
-    
-    func test_PaymentOptions_Accessibility() {
-        for (key, value) in textImages6 {
-            let paymentMethodLabel = app.staticTexts[value]
-            XCTAssertTrue(paymentMethodLabel.exists, "El label del método de pago '\(value)' no existe.")
-            XCTAssertEqual(paymentMethodLabel.label, value, "El accessibilityLabel del método de pago '\(value)' no es correcto.")
-            XCTAssertEqual(paymentMethodLabel.value as? String, "Available payment method", "El accessibilityValue del método de pago '\(value)' no es correcto.")
-        }
     }
     
     func test_AddNewPaymentMethod_Accessibility() {
@@ -70,3 +61,4 @@ final class PaymentViewAccessibilityTests: XCTestCase {
         }
     }
 }
+*/

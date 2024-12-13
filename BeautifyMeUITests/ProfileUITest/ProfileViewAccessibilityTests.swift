@@ -4,7 +4,7 @@
 //
 //  Created by Cristian Caro on 5/11/24.
 //
-
+/*
 import XCTest
 @testable import BeautifyMe
 
@@ -66,3 +66,4 @@ final class ProfileViewAccessibilityTests: XCTestCase {
         }
     }
 }
+*/

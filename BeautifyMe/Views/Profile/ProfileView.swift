@@ -15,20 +15,46 @@ struct ProfileView: View {
         VStack(spacing: 20) {
             // Primera Sección: Información del usuario
             HStack {
-                if let iconURL = URL(string: "http://localhost:1337" + sessionManager.user!.imageURL) {
-                    AsyncImage(url: iconURL) { image in
-                        image.resizable()
+                if let user = sessionManager.user {
+                    let imageURLString = user.imageURL // No es opcional, simplemente úsalo directamente
+                    if let iconURL = URL(string: "http://localhost:1337" + imageURLString) {
+                        // Imagen remota
+                        AsyncImage(url: iconURL) { image in
+                            image.resizable()
+                                .aspectRatio(contentMode: .fit)
+                                .frame(width: 100, height: 90)
+                                .cornerRadius(30)
+                                .padding(.leading)
+                                .accessibilityLabel("User Profile Image")
+                                .accessibilityValue("Profile picture of \(user.username ?? "User")")
+                        } placeholder: {
+                            ProgressView()
+                                .accessibilityLabel("Loading Profile Image")
+                        }
+                    } else {
+                        // Si no se puede construir la URL, usa una imagen local
+                        Image("person_generic_icon")
+                            .resizable()
                             .aspectRatio(contentMode: .fit)
                             .frame(width: 100, height: 90)
                             .cornerRadius(30)
                             .padding(.leading)
-                            .accessibilityLabel("User Profile Image")
-                            .accessibilityValue("Profile picture of \(sessionManager.user?.username ?? "User")")
-                    } placeholder: {
-                        ProgressView()
-                            .accessibilityLabel("Loading Profile Image")
+                            .accessibilityLabel("Default User Profile Image")
+                            .accessibilityValue("Default profile picture")
                     }
+                } else {
+                    // Si no hay usuario, usa una imagen local
+                    Image("person_generic_icon")
+                        .resizable()
+                        .aspectRatio(contentMode: .fit)
+                        .frame(width: 100, height: 90)
+                        .cornerRadius(30)
+                        .padding(.leading)
+                        .accessibilityLabel("Default User Profile Image")
+                        .accessibilityValue("Default profile picture")
                 }
+
+
                 
                 VStack {
                     HStack {

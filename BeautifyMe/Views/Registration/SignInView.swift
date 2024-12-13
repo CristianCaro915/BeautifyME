@@ -71,6 +71,8 @@ struct SignInView: View {
                         .accessibilityLabel("Icon for email input")
                     TextField("Email address", text: $viewModel.email)
                         .padding()
+                        .keyboardType(.emailAddress)
+                        .autocapitalization(.none)
                         .background(AppColors.white)
                         .foregroundColor(AppColors.black)
                         .accessibilityLabel("Email input field")
@@ -177,7 +179,20 @@ struct SignInView: View {
                 if verificationViewModel.singInHasAnyError {
                     showAlert = true
                 } else{
-                    viewModel.createUser()
+                    viewModel.createUser { result in
+                        switch result {
+                        case .success:
+                            // Manejo de éxito, por ejemplo, mostrar una alerta o navegar a otra pantalla
+                            DispatchQueue.main.async {
+                                print("Usuario creado exitosamente")
+                            }
+                        case .failure(let error):
+                            // Manejo de errores, por ejemplo, mostrar un mensaje de error
+                            DispatchQueue.main.async {
+                                print("Error al crear el usuario: \(error.localizedDescription)")
+                            }
+                        }
+                    }
                 }
             }) {
                 Text("Join Now")
