@@ -20,6 +20,7 @@ class SignInViewModel: ObservableObject{
     
     private var cancellables = Set<AnyCancellable>()
     private(set) var jwtToken: String?
+    var userId: Int?
     
     init(sessionManager: SessionManager = SessionManager.shared) {
         self.sessionManager = sessionManager
@@ -106,9 +107,15 @@ class SignInViewModel: ObservableObject{
                         completion(.failure(.jwtNotFound))
                         return
                     }
-
+                    guard let data = responseDict["user"] as? [String: Any],
+                    let id = data["id"] as? Int else {
+                        completion(.failure(.invalidData))
+                        return
+                    }
+                    
+                    self.userId = id
                     self.jwtToken = jwt
-                    print("JWT guardado exitosamente: \(jwt)")
+                    //print("JWT guardado exitosamente: \(jwt)")
 
                     guard let userData = responseDict["user"] as? [String: Any],
                           let email = userData["email"] as? String else {
@@ -117,7 +124,7 @@ class SignInViewModel: ObservableObject{
                         return
                     }
 
-                    DispatchQueue.main.async {
+                    DispatchQueue.main.sync {
                         self.updateToken()
                         self.sessionManager.userMail = email
 

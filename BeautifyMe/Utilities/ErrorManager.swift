@@ -29,4 +29,6 @@ enum ErrorManager: Error{
     case emptyEmail
     case emptyPassword
     case invalidCredentials
+    // business
+    case invalidDescription
 }

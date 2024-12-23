@@ -31,12 +31,11 @@ class BusinessViewModel: ObservableObject{
             .store(in: &cancellables)
     }
     
-    func getBusiness(by id: Int) -> Business{
+    func getBusiness(by id: Int) -> Result<Business, ErrorManager>{
         var rta = Business(id: 99, name: "", category: "", description: "", images: [""], latitude: "", longitude: "", gallery: [""], logo: "")
         // Check the Id existance
         if !self.businesses.contains(where: { $0.id == id }){
-            print("The business with the given id was not found")
-            return rta
+            return .failure(.invalidUserId)
         }
         // get business
         for business in self.businesses{
@@ -45,13 +44,56 @@ class BusinessViewModel: ObservableObject{
                 break
             }
         }
-        return rta
+        return .success(rta)
     }
     
-    func createBusiness(id:Int, name: String, category: String, description:String, latitude: String, longitude:String){
+    func createBusiness(id: Int, name: String?, category: String?, description: String?, latitude: String?, longitude: String?, completion: @escaping (Result<Void, ErrorManager>) -> Void){
         // Construir el cuerpo de la solicitud manualmente
+             
+        guard let name = name, !name.isEmpty else {
+            completion(.failure(.invalidUsername))
+            return
+        }
+        
+        guard let category = category, !category.isEmpty else {
+            completion(.failure(.invalidUsername))
+            return
+        }
+        
+        guard let description = description, !description.isEmpty else {
+            completion(.failure(.invalidDescription))
+            return
+        }
+        
+        let minLatitude: Double = -90
+        let maxLatitude: Double = 90
+        
+        guard let latitude = latitude,
+              !latitude.isEmpty,
+              let latitudeValue = Double(latitude),
+              latitudeValue >= minLatitude,
+              latitudeValue <= maxLatitude else {
+            completion(.failure(.invalidData))
+            return
+        }
+        
+        let minLongitude: Double = -180
+        let maxLongitude: Double = 180
+        
+        guard let longitude = longitude,
+              !longitude.isEmpty,
+              let longitudeValue = Double(longitude),
+              longitudeValue >= minLongitude,
+              longitudeValue <= maxLongitude else {
+            completion(.failure(.invalidData))
+            return
+        }
+        
         if !self.sessionManager.isAuthenticated{
-            self.sessionManager.userID = 99999 // make it fail
+            //self.sessionManager.userID = 99999 // make it fail
+            completion(.failure(.jwtNotFound))
+            return
+            
         }
         let body: [String: Any] = [
             "data": [
@@ -76,13 +118,13 @@ class BusinessViewModel: ObservableObject{
         
         // Convertir el cuerpo de la solicitud a JSON
         guard let jsonData = try? JSONSerialization.data(withJSONObject: body, options: []) else {
-            print("Error al serializar el cuerpo en JSON")
+            completion(.failure(.serializationError))
             return
         }
         
         // Crear la URL de la API
         guard let url = URL(string: "http://localhost:1337/api/businesses") else {
-            print("URL inválida")
+            completion(.failure(.invalidURL))
             return
         }
         
@@ -90,76 +132,65 @@ class BusinessViewModel: ObservableObject{
         var request = URLRequest(url: url)
         request.httpMethod = "POST"
         request.setValue("application/json", forHTTPHeaderField: "Content-Type")
-        if (self.sessionManager.isAuthenticated){
-            request.setValue("Bearer \(self.sessionManager.jwtToken)", forHTTPHeaderField: "Authorization")
-        }
+        request.setValue("Bearer \(self.sessionManager.jwtToken)", forHTTPHeaderField: "Authorization")
+        request.httpBody = jsonData
         
         request.httpBody = jsonData
         
         // Realizar la solicitud POST usando Combine
         URLSession.shared.dataTaskPublisher(for: request)
             .tryMap { response -> Data in
-                // Verificar el código de estado HTTP
                 guard let httpResponse = response.response as? HTTPURLResponse,
                       (200...299).contains(httpResponse.statusCode) else {
-                    throw URLError(.badServerResponse)
+                    throw ErrorManager.serverError
                 }
                 return response.data
             }
-            .sink(receiveCompletion: { completion in
-                switch completion {
+            .sink(receiveCompletion: { completionStatus in
+                switch completionStatus {
+                case .failure:
+                    completion(.failure(.serverError))
                 case .finished:
-                    print("Business creado con éxito.")
-                case .failure(let error):
-                    print("Error al crear el business: \(error.localizedDescription)")
+                    completion(.success(()))
                 }
             }, receiveValue: { data in
-                // Imprimir la respuesta cruda en caso de necesitarla
-                print("Respuesta del servidor: \(String(data: data, encoding: .utf8) ?? "No se recibió respuesta")")
+                print("Business creado con éxito. Respuesta: \(String(data: data, encoding: .utf8) ?? "Sin respuesta")")
             })
             .store(in: &cancellables)
     }
     
-    func deleteBusiness(businessID: Int) {
-        //Check the relations and ID existance
-        if !self.businesses.contains(where: { $0.id == businessID }){
-            print("The reservation with the given id was not found")
+    func deleteBusiness(businessID: Int, completion: @escaping (Result<Void, ErrorManager>) -> Void) {
+        guard businesses.contains(where: { $0.id == businessID }) else {
+            completion(.failure(.invalidUserId))
             return
         }
         
-        
-        guard let url = URL(string: "http://localhost:1337/api/business/\(businessID)") else {
-            print("URL inválida")
+        guard let url = URL(string: "http://localhost:1337/api/businesses/\(businessID)") else {
+            completion(.failure(.invalidURL))
             return
         }
         
         var request = URLRequest(url: url)
         request.httpMethod = "DELETE"
-        request.setValue("application/json", forHTTPHeaderField: "Content-Type")
-        if (self.sessionManager.isAuthenticated){
-            request.setValue("Bearer \(self.sessionManager.jwtToken)", forHTTPHeaderField: "Authorization")
-        }
+        request.setValue("Bearer \(sessionManager.jwtToken ?? "")", forHTTPHeaderField: "Authorization")
         
         URLSession.shared.dataTaskPublisher(for: request)
-            .map(\.data)
-            .tryMap { data in
-                // Comprobar si la respuesta es null
-                if data.isEmpty {
-                    throw NSError(domain: "APIError", code: 0, userInfo: [NSLocalizedDescriptionKey: "No se recibió respuesta del servidor."])
+            .tryMap { response -> Data in
+                guard let httpResponse = response.response as? HTTPURLResponse,
+                      (200...299).contains(httpResponse.statusCode) else {
+                    throw ErrorManager.serverError
                 }
-                return data
+                return response.data
             }
-        //.decode(type: [String: Service].self, decoder: JSONDecoder())
-            .sink(receiveCompletion: { completion in
-                switch completion {
+            .sink(receiveCompletion: { completionStatus in
+                switch completionStatus {
+                case .failure:
+                    completion(.failure(.serverError))
                 case .finished:
-                    print("Business borrado con éxito.")
-                case .failure(let error):
-                    print("Error al borrar el business: \(error)")
+                    completion(.success(()))
                 }
-            }, receiveValue: { response in
-                // Manejo de la respuesta si es necesario
-                print("Respuesta del servidor: \(response)")
+            }, receiveValue: { _ in
+                print("Business eliminado correctamente")
             })
             .store(in: &cancellables)
     }
