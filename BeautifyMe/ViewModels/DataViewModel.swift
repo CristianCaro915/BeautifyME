@@ -18,7 +18,6 @@ class DataViewModel:ObservableObject{
     @Published var reservations: [Reservation] = []
     
     private var cancellables = Set<AnyCancellable>()
-    private let serialQueue = DispatchQueue(label: "com.tuapp.queue.serial")
     static let shared = DataViewModel()
     
     private init() {
@@ -474,5 +473,41 @@ class DataViewModel:ObservableObject{
             })
             .store(in: &cancellables)
     }
+    
+    func waitForBusinessWithID(businessID: Int, timeout: TimeInterval = 5.0, completion: @escaping (Bool) -> Void) {
+        let startTime = Date()
+        
+        func checkForUpdate() {
+            if self.businesses.contains(where: { $0.id == businessID }) {
+                completion(true)
+            } else if Date().timeIntervalSince(startTime) > timeout {
+                completion(false)
+            } else {
+                DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+                    checkForUpdate()
+                }
+            }
+        }
+        
+        checkForUpdate()
+    }
+    
+    func waitForEmployeeWithID(employeeID: Int, timeout: TimeInterval = 5.0, completion: @escaping (Bool) -> Void) {
+        let startTime = Date()
+        
+        func checkForUpdate() {
+            if self.employees.contains(where: { $0.id == employeeID }) {
+                completion(true)
+            } else if Date().timeIntervalSince(startTime) > timeout {
+                completion(false)
+            } else {
+                DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+                    checkForUpdate()
+                }
+            }
+        }
+        checkForUpdate()
+    }
+
 }
 

@@ -15,6 +15,7 @@ class BusinessViewModel: ObservableObject{
     
     @Published var businesses: [Business] = []
     @Published var currentBusiness: Business?
+    @Published var businessId: Int?
     
     init(sessionManager: SessionManager = SessionManager.shared, dataViewModel: DataViewModel = DataViewModel.shared) {
         self.sessionManager = sessionManager
@@ -103,6 +104,16 @@ class BusinessViewModel: ObservableObject{
                 "description": description,
                 "latitude":latitude,
                 "longitude": longitude,
+                "images":[
+                    "set":[
+                        ["id": 33]
+                    ]
+                ],
+                "gallery":[
+                    "set":[
+                        ["id": 33]
+                    ]
+                ],
                 "logo":[
                     "set":[
                         ["id": 33]
@@ -151,17 +162,33 @@ class BusinessViewModel: ObservableObject{
                 case .failure:
                     completion(.failure(.serverError))
                 case .finished:
-                    completion(.success(()))
+                    break
                 }
-            }, receiveValue: { data in
-                print("Business creado con éxito. Respuesta: \(String(data: data, encoding: .utf8) ?? "Sin respuesta")")
+            }, receiveValue: { [weak self] data in
+                do {
+                    if let jsonResponse = try JSONSerialization.jsonObject(with: data, options: []) as? [String: Any],
+                       let dataDict = jsonResponse["data"] as? [String: Any],
+                       let businessId = dataDict["id"] as? Int {
+                        self?.businessId = businessId
+                        print("Business creado con éxito. ID: \(businessId)")
+                        completion(.success(()))
+                    } else {
+                        print("No se pudo extraer el ID del negocio.")
+                        completion(.failure(.invalidData))
+                    }
+                } catch {
+                    completion(.failure(.invalidData))
+                }
             })
             .store(in: &cancellables)
     }
     
     func deleteBusiness(businessID: Int, completion: @escaping (Result<Void, ErrorManager>) -> Void) {
+        //dataViewModel.fetchBusinesses()
+        //Thread.sleep(forTimeInterval: 3)
+        
         guard businesses.contains(where: { $0.id == businessID }) else {
-            completion(.failure(.invalidUserId))
+            completion(.failure(.invalidBusinessId))
             return
         }
         

@@ -14,6 +14,7 @@ class EmployeeViewModel: ObservableObject{
     private var cancellables = Set<AnyCancellable>()
     
     @Published var employees: [Employee] = []
+    @Published var employeeId: Int?
     
     init(sessionManager: SessionManager = SessionManager.shared, dataViewModel: DataViewModel = DataViewModel.shared) {
         self.sessionManager = sessionManager
@@ -29,6 +30,7 @@ class EmployeeViewModel: ObservableObject{
             }
             .store(in: &cancellables)
     }
+    
     func getEmployee(id: Int) -> Employee{
         var rta = Employee(id: 99, name: "", gender: "", mail: "", phone: "", earnings: 2, photo: "")
         // check id existance
@@ -46,80 +48,136 @@ class EmployeeViewModel: ObservableObject{
         return rta
     }
     
-    func createEmployee(id: Int, name: String, gender: String, mail: String, phone: String, earnings: Int, photoURL: String, businessId: Int, serviceId: Int) {
-            // Construir el cuerpo de la solicitud manualmente
-            let body: [String: Any] = [
-                "data": [
-                    "id": id,
-                    "name": name,
-                    "gender": gender,
-                    "mail": mail,
-                    "phone": phone,
-                    "earning": earnings,
-                    "photo": [
-                        "data": [
-                            "attributes": [
-                                "url": photoURL
-                            ]
+    func createEmployee(
+        id: Int,
+        name: String?,
+        gender: String?,
+        mail: String?,
+        phone: String?,
+        earnings: Int?,
+        photoURL: String,
+        businessId: Int,
+        serviceId: Int,
+        completion: @escaping (Result<Void, ErrorManager>) -> Void
+    ) {
+        // 1. Validaciones de entrada
+        guard let name = name, !name.isEmpty else {
+            completion(.failure(.invalidUsername))
+            return
+        }
+        
+        guard let gender = gender, !gender.isEmpty else {
+            completion(.failure(.invalidGender))
+            return
+        }
+        
+        guard let mail = mail, !mail.isEmpty else {
+            completion(.failure(.invalidEmail))
+            return
+        }
+        
+        guard let phone = phone, !phone.isEmpty else {
+            completion(.failure(.invalidPhone))
+            return
+        }
+        
+        guard let earnings = earnings, earnings > 0 else {
+            completion(.failure(.invalidEarnings))
+            return
+        }
+        
+        // 2. Validar existencia de negocio y servicio
+        guard dataViewModel.businesses.contains(where: { $0.id == businessId }) else {
+            completion(.failure(.invalidBusinessId))
+            return
+        }
+        
+        guard dataViewModel.services.contains(where: { $0.id == serviceId }) else {
+            completion(.failure(.invalidServiceId))
+            return
+        }
+        
+        // 3. Construir el cuerpo de la solicitud
+        let body: [String: Any] = [
+            "data": [
+                "id": id,
+                "name": name,
+                "gender": gender,
+                "mail": mail,
+                "phone": phone,
+                "earning": earnings,
+                "photo": [
+                    "data": [
+                        "attributes": [
+                            "url": photoURL
                         ]
-                    ],
-                    "business": [
-                        "connect": [
-                            ["id": businessId]
-                        ]
-                    ],
-                    "services": [
-                        "connect":[
-                            ["id": serviceId]
-                        ]
+                    ]
+                ],
+                "business": [
+                    "connect": [
+                        ["id": businessId]
+                    ]
+                ],
+                "services": [
+                    "connect": [
+                        ["id": serviceId]
                     ]
                 ]
             ]
-            
-            // Convertir el cuerpo de la solicitud a JSON
-            guard let jsonData = try? JSONSerialization.data(withJSONObject: body, options: []) else {
-                print("Error al serializar el cuerpo en JSON")
-                return
-            }
-            
-            // Crear la URL de la API
-            guard let url = URL(string: "http://localhost:1337/api/employees") else {
-                print("URL inválida")
-                return
-            }
-            
-            // Configurar la solicitud
-            var request = URLRequest(url: url)
-            request.httpMethod = "POST"
-            request.setValue("application/json", forHTTPHeaderField: "Content-Type")
-            if (self.sessionManager.isAuthenticated){
-                request.setValue("Bearer \(self.sessionManager.jwtToken)", forHTTPHeaderField: "Authorization")
-            }
-            request.httpBody = jsonData
-            
-            // Realizar la solicitud POST usando Combine
-            URLSession.shared.dataTaskPublisher(for: request)
-                .tryMap { response -> Data in
-                    // Verificar el código de estado HTTP
-                    guard let httpResponse = response.response as? HTTPURLResponse,
-                          (200...299).contains(httpResponse.statusCode) else {
-                        throw URLError(.badServerResponse)
-                    }
-                    return response.data
-                }
-                .sink(receiveCompletion: { completion in
-                    switch completion {
-                    case .finished:
-                        print("Empleado creado con éxito.")
-                    case .failure(let error):
-                        print("Error al crear el empleado: \(error.localizedDescription)")
-                    }
-                }, receiveValue: { data in
-                    // Imprimir la respuesta cruda en caso de necesitarla
-                    print("Respuesta del servidor: \(String(data: data, encoding: .utf8) ?? "No se recibió respuesta")")
-                })
-                .store(in: &cancellables)
+        ]
+        
+        // 4. Serializar el cuerpo a JSON
+        guard let jsonData = try? JSONSerialization.data(withJSONObject: body, options: []) else {
+            completion(.failure(.serializationError))
+            return
         }
+        
+        // 5. Crear URL del endpoint
+        guard let url = URL(string: "http://localhost:1337/api/employees") else {
+            completion(.failure(.invalidURL))
+            return
+        }
+        
+        // 6. Configurar la solicitud HTTP
+        var request = URLRequest(url: url)
+        request.httpMethod = "POST"
+        request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+        request.setValue("Bearer \(sessionManager.jwtToken)", forHTTPHeaderField: "Authorization")
+        request.httpBody = jsonData
+        
+        // 7. Realizar la solicitud POST
+        URLSession.shared.dataTaskPublisher(for: request)
+            .tryMap { response -> Data in
+                guard let httpResponse = response.response as? HTTPURLResponse,
+                      (200...299).contains(httpResponse.statusCode) else {
+                    throw URLError(.badServerResponse)
+                }
+                return response.data
+            }
+            .sink(receiveCompletion: { completionStatus in
+                // Eliminar completion(.success) aquí para evitar duplicidad
+                if case .failure = completionStatus {
+                    completion(.failure(.serverError))
+                }
+            }, receiveValue: { [weak self] data in
+                do {
+                    if let jsonResponse = try JSONSerialization.jsonObject(with: data, options: []) as? [String: Any],
+                       let dataDict = jsonResponse["data"] as? [String: Any],
+                       let employeeId = dataDict["id"] as? Int {
+                        self?.employeeId = employeeId
+                        print("Employee creado con éxito. ID: \(employeeId)")
+                        completion(.success(()))  // Se llama una sola vez aquí
+                    } else {
+                        print("No se pudo extraer el ID del employee.")
+                        completion(.failure(.invalidData))
+                    }
+                } catch {
+                    completion(.failure(.invalidData))
+                }
+            })
+            .store(in: &self.cancellables)
+    }
+
     
     func addEmployeeService(employeeId: Int, serviceId: Int) ->  AnyPublisher<Bool, Error> {
         // Endpoint
@@ -202,113 +260,92 @@ class EmployeeViewModel: ObservableObject{
             .mapError { $0 }
             .eraseToAnyPublisher()
     }
-    func deleteEmployee(employeeID: Int) {
-        //Check the relations and ID existance
-        if !self.employees.contains(where: { $0.id == employeeID }){
-            print("The employee with the given id was not found")
+    func deleteEmployee(employeeID: Int, completion: @escaping (Result<Void, ErrorManager>) -> Void) {
+        guard self.employees.contains(where: { $0.id == employeeID }) else {
+            completion(.failure(.invalidUserId))
             return
         }
         
-        
         guard let url = URL(string: "http://localhost:1337/api/employees/\(employeeID)") else {
-            print("URL inválida")
+            completion(.failure(.invalidURL))
             return
         }
         
         var request = URLRequest(url: url)
         request.httpMethod = "DELETE"
-        request.setValue("application/json", forHTTPHeaderField: "Content-Type")
-        if (self.sessionManager.isAuthenticated){
+        if self.sessionManager.isAuthenticated {
             request.setValue("Bearer \(self.sessionManager.jwtToken)", forHTTPHeaderField: "Authorization")
         }
         
         URLSession.shared.dataTaskPublisher(for: request)
-            .map(\.data)
-            .tryMap { data in
-                    // Comprobar si la respuesta es null
-                    if data.isEmpty {
-                        throw NSError(domain: "APIError", code: 0, userInfo: [NSLocalizedDescriptionKey: "No se recibió respuesta del servidor."])
-                    }
-                    return data
-                }
-            //.decode(type: [String: Employee].self, decoder: JSONDecoder())
-            .sink(receiveCompletion: { completion in
-                switch completion {
+            .sink(receiveCompletion: { completionStatus in
+                switch completionStatus {
                 case .finished:
-                    print("Employee borrado con éxito.")
-                case .failure(let error):
-                    print("Error al borrar el employee: \(error)")
+                    completion(.success(()))
+                case .failure:
+                    completion(.failure(.serverError))
                 }
-            }, receiveValue: { response in
-                // Manejo de la respuesta si es necesario
-                print("Respuesta del servidor: \(response)")
+            }, receiveValue: { _ in
+                print("Empleado eliminado correctamente.")
             })
             .store(in: &cancellables)
     }
-    func updateEmployee(employeeId: Int,
-        newName: String? = nil,
-        newGender: String? = nil,
-        newMail: String? = nil,
-        newPhone: String? = nil,
-        newEarning: Int? = nil,
-        newUrl: String? = nil
-    ) -> AnyPublisher<Void, Error> {
-        // Endpoint
+    
+    func editEmployee(employeeId: Int, newEarnings: Int?, completion: @escaping (Result<Void, ErrorManager>) -> Void) {
+        
+        // Validación de ganancias negativas
+        if let newEarnings = newEarnings, newEarnings <= 0 {
+            completion(.failure(.invalidEarnings))
+            return
+        }
+        
+        var updateData: [String: Any] = [:]
+        
+        if let newEarnings = newEarnings {
+            updateData["earning"] = newEarnings
+        }
+        
+        let body: [String: Any] = ["data": updateData]
+        
+        guard let jsonData = try? JSONSerialization.data(withJSONObject: body, options: []) else {
+            completion(.failure(.serializationError))
+            return
+        }
+        
         guard let url = URL(string: "http://localhost:1337/api/employees/\(employeeId)") else {
-            return Fail(error: URLError(.badURL)).eraseToAnyPublisher()
+            completion(.failure(.invalidURL))
+            return
         }
         
-        var photoData: [String: Any] = [:]
-        var photo: [String: Any] = [:]
-        var employeeData: [String: Any] = [:]
-        
-        // Only add the fields that have non-nil values
-        if let name = newName {
-            employeeData["name"] = name
-        }
-        if let gender = newGender {
-            employeeData["gender"] = gender
-        }
-        if let mail = newMail {
-            employeeData["mail"] = mail
-        }
-        if let phone = newPhone {
-            employeeData["phone"] = phone
-        }
-        if let earning = newEarning {
-            employeeData["earning"] = earning
-        }
-        if let url = newUrl {
-            photo["url"] = url
-            photoData = ["data": photo]
-            employeeData["photo"] = photoData
-        }
-        
-        let requestBody: [String: Any] = ["data": employeeData]
-        
-        guard let httpBody = try? JSONSerialization.data(withJSONObject: requestBody, options: []) else {
-            return Fail(error: URLError(.cannotParseResponse)).eraseToAnyPublisher()
-        }
-        
-        // Configure query
         var request = URLRequest(url: url)
         request.httpMethod = "PUT"
         request.setValue("application/json", forHTTPHeaderField: "Content-Type")
-        if (self.sessionManager.isAuthenticated){
+        if self.sessionManager.isAuthenticated {
             request.setValue("Bearer \(self.sessionManager.jwtToken)", forHTTPHeaderField: "Authorization")
         }
-        request.httpBody = httpBody
+        request.httpBody = jsonData
         
-        return URLSession.shared.dataTaskPublisher(for: request)
-            .tryMap { data, response in
-                // Valid response
-                guard let httpResponse = response as? HTTPURLResponse, httpResponse.statusCode == 200 else {
+        URLSession.shared.dataTaskPublisher(for: request)
+            .tryMap { response -> Data in
+                guard let httpResponse = response.response as? HTTPURLResponse,
+                      (200...299).contains(httpResponse.statusCode) else {
                     throw URLError(.badServerResponse)
                 }
+                return response.data
             }
-            .eraseToAnyPublisher()
+            .sink(receiveCompletion: { completionStatus in
+                switch completionStatus {
+                case .finished:
+                    completion(.success(()))
+                case .failure:
+                    completion(.failure(.serverError))
+                }
+            }, receiveValue: { data in
+                print("Empleado actualizado correctamente.")
+            })
+            .store(in: &cancellables)
     }
-
+    
     
     func updateEmployeeRelations(employeeId: Int, businessId: Int,serviceId: Int ,reservationId: Int){
         let body: [String: Any] = [
@@ -371,63 +408,53 @@ class EmployeeViewModel: ObservableObject{
             })
             .store(in: &cancellables)
     }
-}
-/* CREATE EMPLOYEE
-employeeViewModel.createEmployee(id: 1, name: "try", gender: "try", mail: "try", phone: "234567892", earnings: 22, photoURL: "url", businessId: 1, serviceId: 1)
-*/
-
-
-
-/* ADD EMPLOYEE RELATION WITH SERVICE
-employeeViewModel.addEmployeeService(employeeId: 6, serviceId: 2)
-    .sink(receiveCompletion: { completion in
-        switch completion {
-        case .finished:
-            print("Relación actualizada correctamente")
-        case .failure(let error):
-            print("Error al actualizar la relación: \(error)")
+    
+    func findEmployeeByName(name: String, completion: @escaping (Result<Int, ErrorManager>) -> Void) {
+        guard let encodedName = name.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed),
+              let url = URL(string: "http://localhost:1337/api/employees?filters[name][$eq]=\(encodedName)") else {
+            completion(.failure(.invalidURL))
+            return
         }
-    }, receiveValue: { success in
-        print("¿Actualización exitosa? \(success)")
-    })
-    .store(in: &cancellables)
- */
-
-/* ADD EMPLOYEE RELATION WITH RESERVATION
-employeeViewModel.addEmployeeReservation(employeeId: 6, reservationId: 1)
-    .sink(receiveCompletion: { completion in
-        switch completion {
-        case .finished:
-            print("Relación actualizada correctamente")
-        case .failure(let error):
-            print("Error al actualizar la relación: \(error)")
-        }
-    }, receiveValue: { success in
-        print("¿Actualización exitosa? \(success)")
-    })
-    .store(in: &cancellables)
- */
-
-//employeeViewModel.deleteEmployee(employeeID: 7)
-
-
-/* UPDATE EMPLOYEE INSTANCE ATRIBUTES
-employeeViewModel.updateEmployee(employeeId: 6, newName: "new-name", newGender: "new-gender", newMail: "new-main", newPhone: "3214567891")
-    .sink(
-        receiveCompletion: { completion in
-            switch completion {
-            case .finished:
-                print("Actualización exitosa.")
-            case .failure(let error):
-                print("Error al actualizar el empleado:", error.localizedDescription)
+        
+        var request = URLRequest(url: url)
+        request.httpMethod = "GET"
+        request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+        
+        URLSession.shared.dataTaskPublisher(for: request)
+            .tryMap { response -> Data in
+                guard let httpResponse = response.response as? HTTPURLResponse,
+                      (200...299).contains(httpResponse.statusCode) else {
+                    throw URLError(.badServerResponse)
+                }
+                return response.data
             }
-        },
-        receiveValue: { _ in
-            print("HELLO SON EMPLOYEE")
-            // Este bloque se llama solo en caso de éxito, puedes agregar lógica adicional aquí si es necesario.
-        }
-    )
-    .store(in: &cancellables)
- */
+            .tryMap { data -> Int? in
+                let jsonObject = try JSONSerialization.jsonObject(with: data, options: [])
+                
+                guard let jsonDict = jsonObject as? [String: Any],
+                      let dataArray = jsonDict["data"] as? [[String: Any]],
+                      let firstEmployee = dataArray.first,
+                      let id = firstEmployee["id"] as? Int else {
+                    return nil
+                }
+                return id
+            }
+            .sink(receiveCompletion: { completionStatus in
+                switch completionStatus {
+                case .failure:
+                    completion(.failure(.serverError))
+                case .finished:
+                    break
+                }
+            }, receiveValue: { employeeID in
+                if let employeeID = employeeID {
+                    completion(.success(employeeID))
+                } else {
+                    completion(.failure(.invalidUserId))
+                }
+            })
+            .store(in: &cancellables)
+    }
 
-//employeeViewModel.updateEmployeeRelations(employeeId: 6, businessId: 2, serviceId: 3, reservationId: 3)
+
+}

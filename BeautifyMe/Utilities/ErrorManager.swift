@@ -31,4 +31,10 @@ enum ErrorManager: Error{
     case invalidCredentials
     // business
     case invalidDescription
+    case invalidBusinessId
+    // employee
+    case invalidEarnings
+    case invalidGender
+    // service
+    case invalidServiceId
 }

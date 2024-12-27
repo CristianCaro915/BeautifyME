@@ -24,32 +24,32 @@ final class BusinessTest: XCTestCase {
     
     override func setUpWithError() throws {
         sessionManager = SessionManager.shared
-            signInViewModel = SignInViewModel(sessionManager: sessionManager)
-            viewModel = BusinessViewModel(sessionManager: sessionManager)
-            
-            let expectation = expectation(description: "Create admin user")
-            
-            // 1. Llama a la función para crear el usuario
-            createUser(email: adminEmail, isAdmin: true) { [weak self] result in
-                switch result {
-                case .success(let userID):
-                    self?.adminUserID = userID
-                    print("Admin created with ID: \(userID)")
-                    expectation.fulfill()
-                case .failure(let error):
-                    XCTFail("Failed to create admin: \(error)")
-                    expectation.fulfill()
-                }
+        signInViewModel = SignInViewModel(sessionManager: sessionManager)
+        viewModel = BusinessViewModel(sessionManager: sessionManager)
+        
+        let expectation = expectation(description: "Create admin user")
+        
+        // 1. Llama a la función para crear el usuario
+        createUser(email: adminEmail, isAdmin: true) { [weak self] result in
+            switch result {
+            case .success(let userID):
+                self?.adminUserID = userID
+                print("Admin created with ID: \(userID)")
+                expectation.fulfill()
+            case .failure(let error):
+                XCTFail("Failed to create admin: \(error)")
+                expectation.fulfill()
             }
-            
-            // 2. Esperar 10 segundos para asegurar la creación del usuario
-            wait(for: [expectation], timeout: 20.0)
+        }
+        
+        // 2. Esperar 10 segundos para asegurar la creación del usuario
+        wait(for: [expectation], timeout: 10.0)
     }
-
+    
     
     override func tearDownWithError() throws {
         let deleteGroup = DispatchGroup()
-
+        
         // 1. Eliminar el negocio creado si existe
         if let businessID = createdBusinessID {
             deleteGroup.enter()
@@ -91,7 +91,7 @@ final class BusinessTest: XCTestCase {
         signInViewModel = nil
         sessionManager = nil
     }
-
+    
     
     private func createUser(email: String, isAdmin: Bool, completion: @escaping (Result<Int, ErrorManager>) -> Void) {
         signInViewModel.email = email
@@ -112,7 +112,7 @@ final class BusinessTest: XCTestCase {
                 }
                 
                 print("User created successfully. Updating role...")
-
+                
                 // 3. Actualizar el rol a admin
                 self?.signInViewModel.updateUserRole(
                     currentUserId: userID,
@@ -132,8 +132,8 @@ final class BusinessTest: XCTestCase {
             }
         }
     }
-
-
+    
+    
     
     func testCreateBusinessWithWrongLatitude() {
         let expectation = expectation(description: "Business should not be created with wrong latitude")
@@ -247,7 +247,7 @@ final class BusinessTest: XCTestCase {
         viewModel.deleteBusiness(businessID: 999) { result in
             switch result {
             case .failure(let error):
-                XCTAssertEqual(error, .invalidUserId)
+                XCTAssertEqual(error, .invalidBusinessId)
                 expectation.fulfill()
             case .success:
                 XCTFail("Business should not be deleted.")
