@@ -1,0 +1,3641 @@
+{
+	"info": {
+		"_postman_id": "3cd2de59-bb01-4a8e-8b57-0deccbdb6db3",
+		"name": "BeautifyMe",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "39633295"
+	},
+	"item": [
+		{
+			"name": "Business Admin",
+			"item": [
+				{
+					"name": "Users",
+					"item": [
+						{
+							"name": "Create Auth User",
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											"pm.collectionVariables.set('AUTH_PATH',\"localhost:1337/api/auth/local/register\");",
+											"pm.collectionVariables.set('USER_ICON_ID',31)"
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								},
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"let jsonData = pm.response.json();",
+											"if (jsonData[\"user\"][\"id\"]){",
+											"    pm.collectionVariables.set('USER_AUTH_ID',jsonData[\"user\"][\"id\"])",
+											"    pm.collectionVariables.set('USER_TOKEN',jsonData[\"jwt\"])",
+											"}"
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"username\": \"Strapi-User-first\",\n    \"email\":\"user1@strapi.com\",\n    \"password\":\"Strapi1\",\n    \"phone\":\"3002345609\",\n    \"profile_photo\":{\n            \"set\":[\n                {\"id\":{{USER_ICON_ID}}}\n            ]\n        }\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://{{AUTH_PATH}}",
+									"protocol": "http",
+									"host": [
+										"{{AUTH_PATH}}"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Get Me Admin",
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											"pm.collectionVariables.set('USERS_PATH',\"localhost:1337/api/users\");"
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								},
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "noauth"
+								},
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer {{USER_TOKEN}}",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "http://{{USERS_PATH}}/me",
+									"protocol": "http",
+									"host": [
+										"{{USERS_PATH}}"
+									],
+									"path": [
+										"me"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Update Auth User to Admin",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"let jsonData = pm.response.json();",
+											"if (jsonData[\"id\"]){",
+											"    pm.collectionVariables.set('BUSINESS_ADMIN_ID',jsonData[\"id\"])",
+											"}",
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								},
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											"pm.collectionVariables.set('ROLE_AUTH_ID',1)",
+											"pm.collectionVariables.set('ROLE_BUSINESS_ADMIN_ID',3)"
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "noauth"
+								},
+								"method": "PUT",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer {{USER_TOKEN}}",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"role\": {\n    \"disconnect\": [\n      {\n        \"id\": {{ROLE_AUTH_ID}}\n      }\n    ],\n    \"connect\": [\n      {\n        \"id\": {{ROLE_BUSINESS_ADMIN_ID}}\n      }\n    ]\n  }\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://{{USERS_PATH}}/{{USER_AUTH_ID}}",
+									"protocol": "http",
+									"host": [
+										"{{USERS_PATH}}"
+									],
+									"path": [
+										"{{USER_AUTH_ID}}"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Update Admin User",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"let jsonData = pm.response.json();",
+											"console.log(jsonData)"
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								},
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "noauth"
+								},
+								"method": "PUT",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer {{USER_TOKEN}}",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"username\": \"Strapi-User-admin\",\n    \"email\":\"user-admin@strapi.com\",\n    \"phone\":\"3002345000\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://{{USERS_PATH}}/{{BUSINESS_ADMIN_ID}}",
+									"protocol": "http",
+									"host": [
+										"{{USERS_PATH}}"
+									],
+									"path": [
+										"{{BUSINESS_ADMIN_ID}}"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Delete User Admin",
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "DELETE",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer {{USER_TOKEN}}",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "http://{{USERS_PATH}}/{{BUSINESS_ADMIN_ID}}",
+									"protocol": "http",
+									"host": [
+										"{{USERS_PATH}}"
+									],
+									"path": [
+										"{{BUSINESS_ADMIN_ID}}"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Businesses",
+					"item": [
+						{
+							"name": "Get All Businesses",
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											"pm.collectionVariables.set('BUSINESS_PATH',\"localhost:1337/api/businesses\")"
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer {{USER_TOKEN}}",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "http://{{BUSINESS_PATH}}",
+									"protocol": "http",
+									"host": [
+										"{{BUSINESS_PATH}}"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Create Business",
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											"pm.collectionVariables.set('BUSINESS_ICON_ID',33)"
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								},
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"let jsonData = pm.response.json();",
+											"if (jsonData[\"data\"][\"id\"]){",
+											"    pm.collectionVariables.set('BUSINESS_ID',jsonData[\"data\"][\"id\"])",
+											"}"
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer {{USER_TOKEN}}",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{   \n    \"data\":{\n        \"name\": \"new-name\",\n        \"category\": \"new-category\",\n        \"description\": \"2024-09-10T17:00:00.000Z\",\n        \"latitude\": \"2024-09-11T18:15:00.000Z\",\n        \"longitude\": \"new-observation\",\n        \"logo\":{\n            \"set\":[\n                {\"id\":{{BUSINESS_ICON_ID}}}\n            ]\n        },\n        \"owner\":{\n            \"set\":[\n                {\"id\":{{BUSINESS_ADMIN_ID}}}\n            ]\n        }\n    }\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://{{BUSINESS_PATH}}",
+									"protocol": "http",
+									"host": [
+										"{{BUSINESS_PATH}}"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Get One Business",
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer {{USER_TOKEN}}",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "http://{{BUSINESS_PATH}}/{{BUSINESS_ID}}",
+									"protocol": "http",
+									"host": [
+										"{{BUSINESS_PATH}}"
+									],
+									"path": [
+										"{{BUSINESS_ID}}"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Update Business",
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "PUT",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer {{USER_TOKEN}}",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{   \n    \"data\":{\n        \"name\": \"updated-name\",\n        \"category\": \"updated-category\",\n        \"description\": \"2024-09-10T17:00:00.000Z\",\n        \"latitude\": \"2024-09-11T18:15:00.000Z\",\n        \"longitude\": \"updated-observation\"\n    }\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://{{BUSINESS_PATH}}/{{BUSINESS_ID}}",
+									"protocol": "http",
+									"host": [
+										"{{BUSINESS_PATH}}"
+									],
+									"path": [
+										"{{BUSINESS_ID}}"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Delete Business",
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "DELETE",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer {{USER_TOKEN}}",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "http://{{BUSINESS_PATH}}/{{BUSINESS_ID}}",
+									"protocol": "http",
+									"host": [
+										"{{BUSINESS_PATH}}"
+									],
+									"path": [
+										"{{BUSINESS_ID}}"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Services",
+					"item": [
+						{
+							"name": "Get All Services",
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											"pm.collectionVariables.set('SERVICES_PATH',\"localhost:1337/api/services\")"
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer {{USER_TOKEN}}",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "http://{{SERVICES_PATH}}",
+									"protocol": "http",
+									"host": [
+										"{{SERVICES_PATH}}"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Create Service",
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											"pm.collectionVariables.set('SERVICE_ICON_ID',32)"
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								},
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"let jsonData = pm.response.json();",
+											"if (jsonData[\"data\"][\"id\"]){",
+											"    pm.collectionVariables.set('SERVICE_ID',jsonData[\"data\"][\"id\"])",
+											"}"
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer {{USER_TOKEN}}",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{   \n    \"data\":{\n        \"description\": \"new-description\",\n        \"price\": 10000,\n        \"name\": \"new-name\",\n        \"category\": \"new-category\",\n        \"icon\":{\n            \"set\":[\n                {\"id\":{{SERVICE_ICON_ID}}}\n            ]\n        }\n    }\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://{{SERVICES_PATH}}",
+									"protocol": "http",
+									"host": [
+										"{{SERVICES_PATH}}"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Get One Service",
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer {{USER_TOKEN}}",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "http://{{SERVICES_PATH}}/{{SERVICE_ID}}",
+									"protocol": "http",
+									"host": [
+										"{{SERVICES_PATH}}"
+									],
+									"path": [
+										"{{SERVICE_ID}}"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Update Service",
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "PUT",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer {{USER_TOKEN}}",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{   \n    \"data\":{\n        \"description\": \"update-description\",\n        \"price\": 11111,\n        \"name\": \"update-name\",\n        \"category\": \"update-category\"\n    }\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://{{SERVICES_PATH}}/{{SERVICE_ID}}",
+									"protocol": "http",
+									"host": [
+										"{{SERVICES_PATH}}"
+									],
+									"path": [
+										"{{SERVICE_ID}}"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Delete Service",
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "DELETE",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer {{USER_TOKEN}}",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "http://{{SERVICES_PATH}}/{{SERVICE_ID}}",
+									"protocol": "http",
+									"host": [
+										"{{SERVICES_PATH}}"
+									],
+									"path": [
+										"{{SERVICE_ID}}"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Employees",
+					"item": [
+						{
+							"name": "Get All Employees",
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											"pm.collectionVariables.set('EMPLOYEES_PATH',\"localhost:1337/api/employees\")"
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer {{USER_TOKEN}}",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "http://{{EMPLOYEES_PATH}}",
+									"protocol": "http",
+									"host": [
+										"{{EMPLOYEES_PATH}}"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Create Employee",
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											"pm.collectionVariables.set('EMPLOYEE_ICON_ID',31)"
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								},
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"let jsonData = pm.response.json();",
+											"if (jsonData[\"data\"][\"id\"]){",
+											"    pm.collectionVariables.set('EMPLOYEE_ID',jsonData[\"data\"][\"id\"])",
+											"}"
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer {{USER_TOKEN}}",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{   \n    \"data\":{\n        \"name\": \"new-name\",\n        \"gender\": \"new-gender\",\n        \"mail\": \"new-mail\",\n        \"phone\": \"3000000000\",\n        \"earning\": 200000,\n        \"photo\":{\n            \"set\":[\n                {\"id\":{{EMPLOYEE_ICON_ID}}}\n            ]\n        }\n    }\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://{{EMPLOYEES_PATH}}",
+									"protocol": "http",
+									"host": [
+										"{{EMPLOYEES_PATH}}"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Get One Employee",
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer {{USER_TOKEN}}",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "http://{{EMPLOYEES_PATH}}/{{EMPLOYEE_ID}}",
+									"protocol": "http",
+									"host": [
+										"{{EMPLOYEES_PATH}}"
+									],
+									"path": [
+										"{{EMPLOYEE_ID}}"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Update Employee",
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "PUT",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer {{USER_TOKEN}}",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{   \n    \"data\":{\n        \"name\": \"updated-name\",\n        \"gender\": \"updated-gender\",\n        \"mail\": \"updated-mail\",\n        \"phone\": \"3010010101\",\n        \"earning\": 210000\n    }\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://{{EMPLOYEES_PATH}}/{{EMPLOYEE_ID}}",
+									"protocol": "http",
+									"host": [
+										"{{EMPLOYEES_PATH}}"
+									],
+									"path": [
+										"{{EMPLOYEE_ID}}"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Delete Employe",
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "DELETE",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer {{USER_TOKEN}}",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "http://{{EMPLOYEES_PATH}}/{{EMPLOYEE_ID}}",
+									"protocol": "http",
+									"host": [
+										"{{EMPLOYEES_PATH}}"
+									],
+									"path": [
+										"{{EMPLOYEE_ID}}"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Comments",
+					"item": [
+						{
+							"name": "Get All Comments",
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											"pm.collectionVariables.set('COMMENTS_PATH',\"localhost:1337/api/comments\")"
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer {{USER_TOKEN}}",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "http://{{COMMENTS_PATH}}",
+									"protocol": "http",
+									"host": [
+										"{{COMMENTS_PATH}}"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Get First Comment",
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											"pm.collectionVariables.set('COMMENT_ID',1)"
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer {{USER_TOKEN}}",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "http://{{COMMENTS_PATH}}/{{COMMENT_ID}}",
+									"protocol": "http",
+									"host": [
+										"{{COMMENTS_PATH}}"
+									],
+									"path": [
+										"{{COMMENT_ID}}"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Invoices",
+					"item": [
+						{
+							"name": "Get All invoices",
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											"pm.collectionVariables.set('INVOICES_PATH',\"localhost:1337/api/invoices\")"
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer {{USER_TOKEN}}",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "http://{{INVOICES_PATH}}",
+									"protocol": "http",
+									"host": [
+										"{{INVOICES_PATH}}"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Create Invoice",
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								},
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"let jsonData = pm.response.json();",
+											"if (jsonData[\"data\"][\"id\"]){",
+											"    pm.collectionVariables.set('INVOICE_ID',jsonData[\"data\"][\"id\"])",
+											"}"
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer {{USER_TOKEN}}",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{   \n    \"data\":{\n        \"paymentDate\": \"2024-09-11T18:15:00.000Z\",\n        \"totalValue\": 23000\n    }\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://{{INVOICES_PATH}}",
+									"protocol": "http",
+									"host": [
+										"{{INVOICES_PATH}}"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Get One Invoice",
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer {{USER_TOKEN}}",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "http://{{INVOICES_PATH}}/{{INVOICE_ID}}",
+									"protocol": "http",
+									"host": [
+										"{{INVOICES_PATH}}"
+									],
+									"path": [
+										"{{INVOICE_ID}}"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Update Invoice",
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "PUT",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer {{USER_TOKEN}}",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{   \n    \"data\":{\n        \"paymentDate\": \"2024-09-11T18:15:00.000Z\",\n        \"totalValue\": 13000\n    }\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://{{INVOICES_PATH}}/{{INVOICE_ID}}",
+									"protocol": "http",
+									"host": [
+										"{{INVOICES_PATH}}"
+									],
+									"path": [
+										"{{INVOICE_ID}}"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Delete Invoice",
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "DELETE",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer {{USER_TOKEN}}",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "http://{{INVOICES_PATH}}/{{INVOICE_ID}}",
+									"protocol": "http",
+									"host": [
+										"{{INVOICES_PATH}}"
+									],
+									"path": [
+										"{{INVOICE_ID}}"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Reservations",
+					"item": [
+						{
+							"name": "Get All Reservations",
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											"pm.collectionVariables.set('RESERVATIONS_PATH',\"localhost:1337/api/reservations\")"
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								},
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer {{USER_TOKEN}}",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "http://{{RESERVATIONS_PATH}}",
+									"protocol": "http",
+									"host": [
+										"{{RESERVATIONS_PATH}}"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Get First Reservation",
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											"pm.collectionVariables.set('RESERVATION_ID',1)"
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								},
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer {{USER_TOKEN}}",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "http://{{RESERVATIONS_PATH}}/{{RESERVATION_ID}}",
+									"protocol": "http",
+									"host": [
+										"{{RESERVATIONS_PATH}}"
+									],
+									"path": [
+										"{{RESERVATION_ID}}"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Update First Reservation",
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											"pm.collectionVariables.set('RESERVATION_ID',1)"
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								},
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "PUT",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer {{USER_TOKEN}}",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{   \n    \"data\":{\n        \"title\": \"new-title\",\n        \"totalValue\": 9999,\n        \"startDate\": \"2024-09-10T17:00:00.000Z\",\n        \"endDate\": \"2024-09-11T18:15:00.000Z\",\n        \"observation\": \"new-observation\",\n        \"isActive\": true\n    }\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://{{RESERVATIONS_PATH}}/{{RESERVATION_ID}}",
+									"protocol": "http",
+									"host": [
+										"{{RESERVATIONS_PATH}}"
+									],
+									"path": [
+										"{{RESERVATION_ID}}"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Delete First Reservation",
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											"pm.collectionVariables.set('RESERVATION_ID',1)"
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								},
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "DELETE",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer {{USER_TOKEN}}",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "http://{{RESERVATIONS_PATH}}/{{RESERVATION_ID}}",
+									"protocol": "http",
+									"host": [
+										"{{RESERVATIONS_PATH}}"
+									],
+									"path": [
+										"{{RESERVATION_ID}}"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "Client",
+			"item": [
+				{
+					"name": "Users",
+					"item": [
+						{
+							"name": "Create Auth User",
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											"pm.collectionVariables.set('AUTH_PATH',\"localhost:1337/api/auth/local/register\");",
+											"pm.collectionVariables.set('USER_ICON_ID',31)"
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								},
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"let jsonData = pm.response.json();",
+											"if (jsonData[\"user\"][\"id\"]){",
+											"    pm.collectionVariables.set('USER_AUTH_ID',jsonData[\"user\"][\"id\"])",
+											"    pm.collectionVariables.set('USER_TOKEN',jsonData[\"jwt\"])",
+											"}"
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"username\": \"Strapi-User-first\",\n    \"email\":\"user1@strapi.com\",\n    \"password\":\"Strapi1\",\n    \"phone\":\"3002345609\",\n    \"profile_photo\":{\n            \"set\":[\n                {\"id\":{{USER_ICON_ID}}}\n            ]\n        }\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://{{AUTH_PATH}}",
+									"protocol": "http",
+									"host": [
+										"{{AUTH_PATH}}"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Get Me Client",
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								},
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "noauth"
+								},
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer {{USER_TOKEN}}",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "http://{{USERS_PATH}}/me",
+									"protocol": "http",
+									"host": [
+										"{{USERS_PATH}}"
+									],
+									"path": [
+										"me"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Update Auth User to Client",
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											"pm.collectionVariables.set('ROLE_AUTH_ID',1)",
+											"pm.collectionVariables.set('ROLE_CLIENT_ID',4)"
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								},
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.collectionVariables.set('USERS_PATH',\"localhost:1337/api/users\")",
+											"let jsonData = pm.response.json();",
+											"if (jsonData[\"id\"]){",
+											"    pm.collectionVariables.set('CLIENT_ID',jsonData[\"id\"])",
+											"}"
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "noauth"
+								},
+								"method": "PUT",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer {{USER_TOKEN}}",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"role\": {\n    \"disconnect\": [\n      {\n        \"id\": {{ROLE_AUTH_ID}}\n      }\n    ],\n    \"connect\": [\n      {\n        \"id\": {{ROLE_CLIENT_ID}}\n      }\n    ]\n  }\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://{{USERS_PATH}}/{{USER_AUTH_ID}}",
+									"protocol": "http",
+									"host": [
+										"{{USERS_PATH}}"
+									],
+									"path": [
+										"{{USER_AUTH_ID}}"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Update Client User",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"let jsonData = pm.response.json();",
+											"console.log(jsonData)"
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								},
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "noauth"
+								},
+								"method": "PUT",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer {{USER_TOKEN}}",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"username\": \"Strapi-User-client\",\n    \"email\":\"user-client@strapi.com\",\n    \"phone\":\"3002345111\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://{{USERS_PATH}}/{{CLIENT_ID}}",
+									"protocol": "http",
+									"host": [
+										"{{USERS_PATH}}"
+									],
+									"path": [
+										"{{CLIENT_ID}}"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Delete User Client",
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "DELETE",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer {{USER_TOKEN}}",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "http://{{USERS_PATH}}/{{CLIENT_ID}}",
+									"protocol": "http",
+									"host": [
+										"{{USERS_PATH}}"
+									],
+									"path": [
+										"{{CLIENT_ID}}"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Services",
+					"item": [
+						{
+							"name": "Get All Services",
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											"pm.collectionVariables.set('SERVICES_PATH',\"localhost:1337/api/services\")"
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer {{USER_TOKEN}}",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "http://{{SERVICES_PATH}}",
+									"protocol": "http",
+									"host": [
+										"{{SERVICES_PATH}}"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Get One Service",
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											"pm.collectionVariables.set('SERVICE_ID',1)"
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer {{USER_TOKEN}}",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "http://{{SERVICES_PATH}}/{{SERVICE_ID}}",
+									"protocol": "http",
+									"host": [
+										"{{SERVICES_PATH}}"
+									],
+									"path": [
+										"{{SERVICE_ID}}"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Businesses",
+					"item": [
+						{
+							"name": "Get All Businesses",
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											"pm.collectionVariables.set('BUSINESS_PATH',\"localhost:1337/api/businesses\")"
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer {{USER_TOKEN}}",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "http://{{BUSINESS_PATH}}",
+									"protocol": "http",
+									"host": [
+										"{{BUSINESS_PATH}}"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Get One Business",
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											"pm.collectionVariables.set('BUSINESS_ID',1)"
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer {{USER_TOKEN}}",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "http://{{BUSINESS_PATH}}/{{BUSINESS_ID}}",
+									"protocol": "http",
+									"host": [
+										"{{BUSINESS_PATH}}"
+									],
+									"path": [
+										"{{BUSINESS_ID}}"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Employees",
+					"item": [
+						{
+							"name": "Get All Employees",
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											"pm.collectionVariables.set('EMPLOYEES_PATH',\"localhost:1337/api/employees\")"
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer {{USER_TOKEN}}",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "http://{{EMPLOYEES_PATH}}",
+									"protocol": "http",
+									"host": [
+										"{{EMPLOYEES_PATH}}"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Get One Employee",
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											"pm.collectionVariables.set('EMPLOYEE_ID',1)"
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer {{USER_TOKEN}}",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "http://{{EMPLOYEES_PATH}}/{{EMPLOYEE_ID}}",
+									"protocol": "http",
+									"host": [
+										"{{EMPLOYEES_PATH}}"
+									],
+									"path": [
+										"{{EMPLOYEE_ID}}"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Comments",
+					"item": [
+						{
+							"name": "Get All Comments",
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											"pm.collectionVariables.set('COMMENTS_PATH',\"localhost:1337/api/comments\")"
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer {{USER_TOKEN}}",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "http://{{COMMENTS_PATH}}",
+									"protocol": "http",
+									"host": [
+										"{{COMMENTS_PATH}}"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Create Comment",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"let jsonData = pm.response.json();",
+											"if (jsonData[\"data\"][\"id\"]){",
+											"    pm.collectionVariables.set('COMMENT_ID',jsonData[\"data\"][\"id\"])",
+											"}"
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								},
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											"pm.collectionVariables.set('BUSINESS_ID',1)"
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer {{USER_TOKEN}}",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{   \n    \"data\":{\n        \"description\": \"new-description\",\n        \"ranking\": 5,\n        \"user\": {\n            \"set\": [\n                {\"id\": {{CLIENT_ID}}}\n            ]\n        },\n        \"business\": {\n            \"set\":[\n                {\"id\": {{BUSINESS_ID}}}\n            ]\n        }\n    }\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://{{COMMENTS_PATH}}",
+									"protocol": "http",
+									"host": [
+										"{{COMMENTS_PATH}}"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Update Comment",
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											"",
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "PUT",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer {{USER_TOKEN}}",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{   \n    \"data\":{\n        \"description\": \"edited-description\",\n        \"ranking\": 4,\n        \"user\": {\n            \"set\":[\n                {\"id\": {{CLIENT_ID}}}\n            ]\n        },\n        \"business\": {\n            \"connect\":[\n                {\"id\": {{BUSINESS_ID}}}\n            ]\n        }\n    }\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://{{COMMENTS_PATH}}/{{COMMENT_ID}}",
+									"protocol": "http",
+									"host": [
+										"{{COMMENTS_PATH}}"
+									],
+									"path": [
+										"{{COMMENT_ID}}"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Get One Comment",
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer {{USER_TOKEN}}",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "http://{{COMMENTS_PATH}}/{{COMMENT_ID}}",
+									"protocol": "http",
+									"host": [
+										"{{COMMENTS_PATH}}"
+									],
+									"path": [
+										"{{COMMENT_ID}}"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Delete Comment",
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "DELETE",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer {{USER_TOKEN}}",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "http://{{COMMENTS_PATH}}/{{COMMENT_ID}}",
+									"protocol": "http",
+									"host": [
+										"{{COMMENTS_PATH}}"
+									],
+									"path": [
+										"{{COMMENT_ID}}"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Invoices",
+					"item": [
+						{
+							"name": "Get All invoices",
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											"pm.collectionVariables.set('INVOICES_PATH',\"localhost:1337/api/invoices\")"
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer {{USER_TOKEN}}",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "http://{{INVOICES_PATH}}",
+									"protocol": "http",
+									"host": [
+										"{{INVOICES_PATH}}"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Get One invoice",
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											"pm.collectionVariables.set('INVOICE_ID',1)",
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer {{USER_TOKEN}}",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "http://{{INVOICES_PATH}}/{{INVOICE_ID}}",
+									"protocol": "http",
+									"host": [
+										"{{INVOICES_PATH}}"
+									],
+									"path": [
+										"{{INVOICE_ID}}"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Reservations",
+					"item": [
+						{
+							"name": "Get All Reservations",
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											"pm.collectionVariables.set('RESERVATIONS_PATH',\"localhost:1337/api/reservations\")"
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								},
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer {{USER_TOKEN}}",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "http://{{RESERVATIONS_PATH}}",
+									"protocol": "http",
+									"host": [
+										"{{RESERVATIONS_PATH}}"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Create Reservation",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"let jsonData = pm.response.json();",
+											"if (jsonData[\"data\"][\"id\"]){",
+											"    pm.collectionVariables.set('RESERVATION_ID',jsonData[\"data\"][\"id\"])",
+											"}"
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								},
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											"// CHANGE AFTER EMPLOYEE IS IMPLEMENTED",
+											"pm.collectionVariables.set('EMPLOYEE_ID',\"1\")"
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer {{USER_TOKEN}}",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{   \n    \"data\":{\n        \"title\": \"new-title\",\n        \"totalValue\": 9999,\n        \"startDate\": \"2024-09-10T17:00:00.000Z\",\n        \"endDate\": \"2024-09-11T18:15:00.000Z\",\n        \"observation\": \"new-observation\",\n        \"isActive\": true,\n        \"employee\": {\n            \"connect\": [\n                {\"id\": {{EMPLOYEE_ID}}}\n            ]\n        },\n        \"user\": {\n            \"connect\":[\n                {\"id\": {{CLIENT_ID}}}\n            ]\n        }\n    }\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://{{RESERVATIONS_PATH}}",
+									"protocol": "http",
+									"host": [
+										"{{RESERVATIONS_PATH}}"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Update Reservation",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								},
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "PUT",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer {{USER_TOKEN}}",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{   \n    \"data\":{\n        \"title\": \"updated-title\",\n        \"totalValue\": 9999,\n        \"startDate\": \"2024-09-10T17:00:00.000Z\",\n        \"endDate\": \"2024-09-11T18:15:00.000Z\",\n        \"observation\": \"updated-observation\",\n        \"isActive\": true,\n        \"employee\": {\n            \"connect\": [\n                {\"id\": {{EMPLOYEE_ID}}}\n            ]\n        },\n        \"user\": {\n            \"connect\":[\n                {\"id\": {{CLIENT_ID}}}\n            ]\n        }\n    }\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://{{RESERVATIONS_PATH}}",
+									"protocol": "http",
+									"host": [
+										"{{RESERVATIONS_PATH}}"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Get One Reservation",
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								},
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer {{USER_TOKEN}}",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "http://{{RESERVATIONS_PATH}}/{{RESERVATION_ID}}",
+									"protocol": "http",
+									"host": [
+										"{{RESERVATIONS_PATH}}"
+									],
+									"path": [
+										"{{RESERVATION_ID}}"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Delete Reservation",
+							"request": {
+								"method": "DELETE",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer {{USER_TOKEN}}",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "http://{{RESERVATIONS_PATH}}/{{RESERVATION_ID}}",
+									"protocol": "http",
+									"host": [
+										"{{RESERVATIONS_PATH}}"
+									],
+									"path": [
+										"{{RESERVATION_ID}}"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "Client Flow",
+			"item": [
+				{
+					"name": "Create Auth User",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"let jsonData = pm.response.json();",
+									"if (jsonData[\"user\"][\"id\"]){",
+									"    pm.collectionVariables.set('USER_AUTH_ID',jsonData[\"user\"][\"id\"])",
+									"    pm.collectionVariables.set('USER_TOKEN',jsonData[\"jwt\"])",
+									"}"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"username\": \"Strapi-User-second\",\n    \"email\":\"user2@strapi.com\",\n    \"password\":\"Strapi2\",\n    \"phone\":\"3082343209\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://{{AUTH_PATH}}",
+							"protocol": "http",
+							"host": [
+								"{{AUTH_PATH}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update Auth User to Client",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"pm.collectionVariables.set('ROLE_AUTH_ID',1)",
+									"pm.collectionVariables.set('ROLE_CLIENT_ID',4)"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.collectionVariables.set('USERS_PATH',\"localhost:1337/api/users\")",
+									"let jsonData = pm.response.json();",
+									"if (jsonData[\"id\"]){",
+									"    pm.collectionVariables.set('CLIENT_ID',jsonData[\"id\"])",
+									"}"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{USER_TOKEN}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"role\": {\n    \"disconnect\": [\n      {\n        \"id\": {{ROLE_AUTH_ID}}\n      }\n    ],\n    \"connect\": [\n      {\n        \"id\": {{ROLE_CLIENT_ID}}\n      }\n    ]\n  }\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://{{USERS_PATH}}/{{USER_AUTH_ID}}",
+							"protocol": "http",
+							"host": [
+								"{{USERS_PATH}}"
+							],
+							"path": [
+								"{{USER_AUTH_ID}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get All Services",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"pm.collectionVariables.set('SERVICES_PATH',\"localhost:1337/api/services\")"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{USER_TOKEN}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "http://{{SERVICES_PATH}}",
+							"protocol": "http",
+							"host": [
+								"{{SERVICES_PATH}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get All Businesses",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"pm.collectionVariables.set('BUSINESS_PATH',\"localhost:1337/api/businesses\")"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{USER_TOKEN}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "http://{{BUSINESS_PATH}}",
+							"protocol": "http",
+							"host": [
+								"{{BUSINESS_PATH}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get First Business",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"pm.collectionVariables.set('BUSINESS_ID',1)"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{USER_TOKEN}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "http://{{BUSINESS_PATH}}/{{BUSINESS_ID}}",
+							"protocol": "http",
+							"host": [
+								"{{BUSINESS_PATH}}"
+							],
+							"path": [
+								"{{BUSINESS_ID}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get All Employees",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"pm.collectionVariables.set('EMPLOYEES_PATH',\"localhost:1337/api/employees\")"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{USER_TOKEN}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "http://{{EMPLOYEES_PATH}}",
+							"protocol": "http",
+							"host": [
+								"{{EMPLOYEES_PATH}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get First Employee",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"pm.collectionVariables.set('EMPLOYEE_ID',1)"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{USER_TOKEN}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "http://{{EMPLOYEES_PATH}}/{{EMPLOYEE_ID}}",
+							"protocol": "http",
+							"host": [
+								"{{EMPLOYEES_PATH}}"
+							],
+							"path": [
+								"{{EMPLOYEE_ID}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create Reservation",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"let jsonData = pm.response.json();",
+									"if (jsonData[\"data\"][\"id\"]){",
+									"    pm.collectionVariables.set('RESERVATION_ID',jsonData[\"data\"][\"id\"])",
+									"}"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"// CHANGE AFTER EMPLOYEE IS IMPLEMENTED",
+									"pm.collectionVariables.set('EMPLOYEE_ID',\"1\")"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{USER_TOKEN}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{   \n    \"data\":{\n        \"title\": \"new-title\",\n        \"totalValue\": 9999,\n        \"startDate\": \"2024-09-10T17:00:00.000Z\",\n        \"endDate\": \"2024-09-11T18:15:00.000Z\",\n        \"observation\": \"new-observation\",\n        \"isActive\": true,\n        \"employee\": {\n            \"connect\": [\n                {\"id\": {{EMPLOYEE_ID}}}\n            ]\n        },\n        \"user\": {\n            \"connect\":[\n                {\"id\": {{CLIENT_ID}}}\n            ]\n        }\n    }\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://{{RESERVATIONS_PATH}}",
+							"protocol": "http",
+							"host": [
+								"{{RESERVATIONS_PATH}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create Comment",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"let jsonData = pm.response.json();",
+									"if (jsonData[\"data\"][\"id\"]){",
+									"    pm.collectionVariables.set('COMMENT_ID',jsonData[\"data\"][\"id\"])",
+									"}"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"pm.collectionVariables.set('BUSINESS_ID',1)"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{USER_TOKEN}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{   \n    \"data\":{\n        \"description\": \"new-description\",\n        \"ranking\": 5,\n        \"user\": {\n            \"connect\": [\n                {\"id\": {{CLIENT_ID}}}\n            ]\n        },\n        \"business\": {\n            \"connect\":[\n                {\"id\": {{BUSINESS_ID}}}\n            ]\n        }\n    }\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://{{COMMENTS_PATH}}",
+							"protocol": "http",
+							"host": [
+								"{{COMMENTS_PATH}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Comment",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{USER_TOKEN}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "http://{{COMMENTS_PATH}}/{{COMMENT_ID}}",
+							"protocol": "http",
+							"host": [
+								"{{COMMENTS_PATH}}"
+							],
+							"path": [
+								"{{COMMENT_ID}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Reservation",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{USER_TOKEN}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "http://{{RESERVATIONS_PATH}}/{{RESERVATION_ID}}",
+							"protocol": "http",
+							"host": [
+								"{{RESERVATIONS_PATH}}"
+							],
+							"path": [
+								"{{RESERVATION_ID}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete User Client",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{USER_TOKEN}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "http://{{USERS_PATH}}/{{CLIENT_ID}}",
+							"protocol": "http",
+							"host": [
+								"{{USERS_PATH}}"
+							],
+							"path": [
+								"{{CLIENT_ID}}"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Business Admin Flow",
+			"item": [
+				{
+					"name": "Create Auth User",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"pm.collectionVariables.set('AUTH_PATH',\"localhost:1337/api/auth/local/register\");"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"let jsonData = pm.response.json();",
+									"if (jsonData[\"user\"][\"id\"]){",
+									"    pm.collectionVariables.set('USER_AUTH_ID',jsonData[\"user\"][\"id\"])",
+									"    pm.collectionVariables.set('USER_TOKEN',jsonData[\"jwt\"])",
+									"}"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"username\": \"Strapi-User-first\",\n    \"email\":\"user1@strapi.com\",\n    \"password\":\"Strapi1\",\n    \"phone\":\"3002345609\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://{{AUTH_PATH}}",
+							"protocol": "http",
+							"host": [
+								"{{AUTH_PATH}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update Auth User to Admin",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"let jsonData = pm.response.json();",
+									"if (jsonData[\"id\"]){",
+									"    pm.collectionVariables.set('BUSINESS_ADMIN_ID',jsonData[\"id\"])",
+									"}",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"pm.collectionVariables.set('ROLE_AUTH_ID',1)",
+									"pm.collectionVariables.set('ROLE_BUSINESS_ADMIN_ID',3)"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{USER_TOKEN}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"role\": {\n    \"disconnect\": [\n      {\n        \"id\": {{ROLE_AUTH_ID}}\n      }\n    ],\n    \"connect\": [\n      {\n        \"id\": {{ROLE_BUSINESS_ADMIN_ID}}\n      }\n    ]\n  }\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://{{USERS_PATH}}/{{USER_AUTH_ID}}",
+							"protocol": "http",
+							"host": [
+								"{{USERS_PATH}}"
+							],
+							"path": [
+								"{{USER_AUTH_ID}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create Business",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"let jsonData = pm.response.json();",
+									"if (jsonData[\"data\"][\"id\"]){",
+									"    pm.collectionVariables.set('BUSINESS_ID',jsonData[\"data\"][\"id\"])",
+									"}"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{USER_TOKEN}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{   \n    \"data\":{\n        \"name\": \"new-name\",\n        \"category\": \"new-category\",\n        \"description\": \"2024-09-10T17:00:00.000Z\",\n        \"latitude\": \"2024-09-11T18:15:00.000Z\",\n        \"longitude\": \"new-observation\"\n    }\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://{{BUSINESS_PATH}}",
+							"protocol": "http",
+							"host": [
+								"{{BUSINESS_PATH}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create Service",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"pm.collectionVariables.set('SERVICES_PATH',\"localhost:1337/api/services\")"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"let jsonData = pm.response.json();",
+									"if (jsonData[\"data\"][\"id\"]){",
+									"    pm.collectionVariables.set('SERVICE_ID',jsonData[\"data\"][\"id\"])",
+									"}"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{USER_TOKEN}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{   \n    \"data\":{\n        \"description\": \"new-description\",\n        \"price\": 10000,\n        \"name\": \"new-name\",\n        \"category\": \"new-category\"\n    }\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://{{SERVICES_PATH}}",
+							"protocol": "http",
+							"host": [
+								"{{SERVICES_PATH}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create Employee",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"let jsonData = pm.response.json();",
+									"if (jsonData[\"data\"][\"id\"]){",
+									"    pm.collectionVariables.set('EMPLOYEE_ID',jsonData[\"data\"][\"id\"])",
+									"}"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{USER_TOKEN}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{   \n    \"data\":{\n        \"name\": \"new-name\",\n        \"gender\": \"new-gender\",\n        \"mail\": \"new-mail\",\n        \"phone\": \"3000000000\",\n        \"earning\": 200000\n    }\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://{{EMPLOYEES_PATH}}",
+							"protocol": "http",
+							"host": [
+								"{{EMPLOYEES_PATH}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get All Reservations",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"pm.collectionVariables.set('RESERVATIONS_PATH',\"localhost:1337/api/reservations\")"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{USER_TOKEN}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "http://{{RESERVATIONS_PATH}}",
+							"protocol": "http",
+							"host": [
+								"{{RESERVATIONS_PATH}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get First Reservation",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"pm.collectionVariables.set('RESERVATION_ID',1)"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{USER_TOKEN}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "http://{{RESERVATIONS_PATH}}/{{RESERVATION_ID}}",
+							"protocol": "http",
+							"host": [
+								"{{RESERVATIONS_PATH}}"
+							],
+							"path": [
+								"{{RESERVATION_ID}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create Invoice",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"let jsonData = pm.response.json();",
+									"if (jsonData[\"data\"][\"id\"]){",
+									"    pm.collectionVariables.set('INVOICE_ID',jsonData[\"data\"][\"id\"])",
+									"}"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{USER_TOKEN}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{   \n    \"data\":{\n        \"paymentDate\": \"2024-09-11T18:15:00.000Z\",\n        \"totalValue\": 23000\n    }\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://{{INVOICES_PATH}}",
+							"protocol": "http",
+							"host": [
+								"{{INVOICES_PATH}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Invoice",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{USER_TOKEN}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "http://{{INVOICES_PATH}}/{{INVOICE_ID}}",
+							"protocol": "http",
+							"host": [
+								"{{INVOICES_PATH}}"
+							],
+							"path": [
+								"{{INVOICE_ID}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Employe",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{USER_TOKEN}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "http://{{EMPLOYEES_PATH}}/{{EMPLOYEE_ID}}",
+							"protocol": "http",
+							"host": [
+								"{{EMPLOYEES_PATH}}"
+							],
+							"path": [
+								"{{EMPLOYEE_ID}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Service",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{USER_TOKEN}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "http://{{SERVICES_PATH}}/{{SERVICE_ID}}",
+							"protocol": "http",
+							"host": [
+								"{{SERVICES_PATH}}"
+							],
+							"path": [
+								"{{SERVICE_ID}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Business",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{USER_TOKEN}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "http://{{BUSINESS_PATH}}/{{BUSINESS_ID}}",
+							"protocol": "http",
+							"host": [
+								"{{BUSINESS_PATH}}"
+							],
+							"path": [
+								"{{BUSINESS_ID}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete User Admin",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{USER_TOKEN}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "http://{{USERS_PATH}}/{{BUSINESS_ADMIN_ID}}",
+							"protocol": "http",
+							"host": [
+								"{{USERS_PATH}}"
+							],
+							"path": [
+								"{{BUSINESS_ADMIN_ID}}"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "USERS_PATH",
+			"value": "localhost:1337/api/users",
+			"type": "string"
+		},
+		{
+			"key": "BUSINESS_PATH",
+			"value": "localhost:1337/api/businesses",
+			"type": "string"
+		},
+		{
+			"key": "COMMENTS_PATH",
+			"value": "localhost:1337/api/comments",
+			"type": "string"
+		},
+		{
+			"key": "EMPLOYEES_PATH",
+			"value": "localhost:1337/api/employees",
+			"type": "string"
+		},
+		{
+			"key": "INVOICES_PATH",
+			"value": "localhost:1337/api/invoices",
+			"type": "string"
+		},
+		{
+			"key": "RESERVATIONS_PATH",
+			"value": "localhost:1337/api/reservations",
+			"type": "string"
+		},
+		{
+			"key": "SERVICES_PATH",
+			"value": "localhost:1337/api/services",
+			"type": "string"
+		},
+		{
+			"key": "AUTH_PATH",
+			"value": "localhost:1337/api/auth/local/register",
+			"type": "string"
+		},
+		{
+			"key": "USER_AUTH_ID",
+			"value": null,
+			"type": "string"
+		},
+		{
+			"key": "USER_TOKEN",
+			"value": null,
+			"type": "string"
+		},
+		{
+			"key": "CLIENT_ID",
+			"value": null,
+			"type": "string"
+		},
+		{
+			"key": "BUSINESS_ADMIN_ID",
+			"value": null,
+			"type": "string"
+		},
+		{
+			"key": "BUSINESS_ID",
+			"value": null,
+			"type": "string"
+		},
+		{
+			"key": "COMMENT_ID",
+			"value": null,
+			"type": "string"
+		},
+		{
+			"key": "EMPLOYEE_ID",
+			"value": null,
+			"type": "string"
+		},
+		{
+			"key": "INVOICE_ID",
+			"value": null,
+			"type": "string"
+		},
+		{
+			"key": "RESERVATION_ID",
+			"value": null,
+			"type": "string"
+		},
+		{
+			"key": "SERVICE_ID",
+			"value": null,
+			"type": "string"
+		},
+		{
+			"key": "ROLE_AUTH_ID",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "ROLE_BUSINESS_ADMIN_ID",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "ROLE_CLIENT_ID",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "BUSINESS_ICON_ID",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "SERVICE_ICON_ID",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "EMPLOYEE_ICON_ID",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "USER_ICON_ID",
+			"value": "",
+			"type": "string"
+		}
+	]
+}
